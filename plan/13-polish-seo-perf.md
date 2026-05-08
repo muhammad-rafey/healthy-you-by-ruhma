@@ -57,14 +57,14 @@ pnpm add @vercel/og @vercel/analytics schema-dts
 pnpm add -D @axe-core/playwright @playwright/test playwright lighthouse @lhci/cli
 ```
 
-| Package | Purpose | Pinning |
-|---|---|---|
-| `@vercel/og` | Dynamic OG image generation via Edge runtime + Satori | latest stable, no major upgrades pending |
-| `@vercel/analytics` | Web Vitals + pageviews telemetry to Vercel | latest |
-| `schema-dts` | TypeScript types for Schema.org JSON-LD | latest |
-| `@axe-core/playwright` | axe-core integration for Playwright tests | latest |
-| `@playwright/test` + `playwright` | Browser test runner for axe + redirect QA | matched versions |
-| `lighthouse` + `@lhci/cli` | Lighthouse audit CLI + CI helper | latest |
+| Package                           | Purpose                                               | Pinning                                  |
+| --------------------------------- | ----------------------------------------------------- | ---------------------------------------- |
+| `@vercel/og`                      | Dynamic OG image generation via Edge runtime + Satori | latest stable, no major upgrades pending |
+| `@vercel/analytics`               | Web Vitals + pageviews telemetry to Vercel            | latest                                   |
+| `schema-dts`                      | TypeScript types for Schema.org JSON-LD               | latest                                   |
+| `@axe-core/playwright`            | axe-core integration for Playwright tests             | latest                                   |
+| `@playwright/test` + `playwright` | Browser test runner for axe + redirect QA             | matched versions                         |
+| `lighthouse` + `@lhci/cli`        | Lighthouse audit CLI + CI helper                      | latest                                   |
 
 After install, run `pnpm playwright install chromium` once to fetch the browser binary (CI uses the matching Docker image instead).
 
@@ -279,30 +279,44 @@ Acceptance for 5.6: Lighthouse CI green on every route, mobile and desktop; no r
 Goal: zero axe violations in CI; manual keyboard nav passes; `prefers-reduced-motion` respected.
 
 1. **axe-core in CI** — `tests/a11y.spec.ts` (Playwright):
+
    ```ts
-   import { test, expect } from '@playwright/test';
-   import AxeBuilder from '@axe-core/playwright';
+   import { test, expect } from "@playwright/test";
+   import AxeBuilder from "@axe-core/playwright";
 
    const ROUTES = [
-     '/', '/about', '/services',
-     '/programs/diet-planning', '/programs/coaching', '/programs/consultation',
-     '/focus/hormonal-health', '/focus/weight-management',
-     '/library', '/library/pcos-guidebook', '/library/diabetes-essentials', '/library/skin-secrets',
-     '/journal', '/contact',
-     '/legal/privacy', '/legal/terms', '/legal/refunds',
+     "/",
+     "/about",
+     "/services",
+     "/programs/diet-planning",
+     "/programs/coaching",
+     "/programs/consultation",
+     "/focus/hormonal-health",
+     "/focus/weight-management",
+     "/library",
+     "/library/pcos-guidebook",
+     "/library/diabetes-essentials",
+     "/library/skin-secrets",
+     "/journal",
+     "/contact",
+     "/legal/privacy",
+     "/legal/terms",
+     "/legal/refunds",
    ];
 
    for (const route of ROUTES) {
      test(`a11y: ${route}`, async ({ page }) => {
        await page.goto(route);
        const results = await new AxeBuilder({ page })
-         .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'best-practice'])
+         .withTags(["wcag2a", "wcag2aa", "wcag21aa", "best-practice"])
          .analyze();
        expect(results.violations).toEqual([]);
      });
    }
    ```
+
    Failing = failing CI.
+
 2. **Manual keyboard pass** — for each route, tab from page top, verify:
    - Tab order matches visual order.
    - Focus ring is visible on every interactive element. Default `outline: 2px solid var(--mauve); outline-offset: 2px;` set in `globals.css` `:focus-visible`. No `outline: none` anywhere except where replaced by an equivalent.
@@ -324,7 +338,14 @@ Goal: zero axe violations in CI; manual keyboard nav passes; `prefers-reduced-mo
 5. **Reduced motion** — `globals.css` has a global guard:
    ```css
    @media (prefers-reduced-motion: reduce) {
-     *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+     *,
+     *::before,
+     *::after {
+       animation-duration: 0.01ms !important;
+       animation-iteration-count: 1 !important;
+       transition-duration: 0.01ms !important;
+       scroll-behavior: auto !important;
+     }
    }
    ```
    Plus the three motion components (`<FadeUp>`, `<ImageReveal>`, `<LetterStagger>`) read `useReducedMotion()` from Motion and short-circuit to a non-animated render. Verify by toggling the OS preference and reloading every page.
@@ -339,13 +360,15 @@ Goal: Plausible + Vercel Analytics live with the three custom events wired.
 
 1. **Plausible** — env var `NEXT_PUBLIC_PLAUSIBLE_DOMAIN` (e.g., `dietitianruhma.com`). In `app/layout.tsx`:
    ```tsx
-   {process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN && (
-     <Script
-       src="https://plausible.io/js/script.outbound-links.js"
-       data-domain={process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN}
-       strategy="afterInteractive"
-     />
-   )}
+   {
+     process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN && (
+       <Script
+         src="https://plausible.io/js/script.outbound-links.js"
+         data-domain={process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN}
+         strategy="afterInteractive"
+       />
+     );
+   }
    ```
    The `script.outbound-links.js` variant auto-tracks outbound link clicks — that gets us Library buy-clicks for free. We also fire explicit named events for the three conversion moments (more reliable than relying on link text):
    - `Library / Buy / <slug>` — fired on `<a href={buyUrl}>` click in `app/library/[slug]/page.tsx`.
@@ -353,17 +376,23 @@ Goal: Plausible + Vercel Analytics live with the three custom events wired.
    - `Contact / Submit` — fired on successful contact form submission (server action returns `{ ok: true }`, client fires the event).
 2. **`components/analytics/track.ts`** — typed wrapper:
    ```ts
-   type EventName = `Library / Buy / ${string}` | `Programs / Book / ${string}` | 'Contact / Submit';
+   type EventName =
+     | `Library / Buy / ${string}`
+     | `Programs / Book / ${string}`
+     | "Contact / Submit";
    export function track(name: EventName, props?: Record<string, string | number>) {
-     if (typeof window === 'undefined') return;
-     (window as unknown as { plausible?: (e: string, o?: { props?: object }) => void }).plausible?.(name, props ? { props } : undefined);
+     if (typeof window === "undefined") return;
+     (window as unknown as { plausible?: (e: string, o?: { props?: object }) => void }).plausible?.(
+       name,
+       props ? { props } : undefined,
+     );
    }
    ```
 3. **Vercel Analytics** — in `app/layout.tsx`:
    ```tsx
-   import { Analytics } from '@vercel/analytics/next';
+   import { Analytics } from "@vercel/analytics/next";
    // ...
-   <Analytics />
+   <Analytics />;
    ```
    Vercel Web Vitals reports LCP / CLS / INP automatically — no extra config. Confirms in production whether the Lighthouse-lab numbers translate to field data.
 4. **Verification** — open the deployed preview, click an external Buy link, submit the contact form (with a test address), check Plausible's "Goals" view for the events. Vercel dashboard's Analytics tab shows the pageview within ~1 minute.
@@ -426,14 +455,14 @@ These are **not** in Phase 6. Do not pull them in.
 
 ## 8. Risks and mitigations
 
-| Risk | Likelihood | Mitigation |
-|---|---|---|
-| `@vercel/og` Edge runtime can't read MDX from `content/` | Medium | If `fs` is constrained at edge, pre-generate a JSON manifest of frontmatter at build time (`scripts/build-og-manifest.ts`) and import that JSON in the OG route handler. Adds 10 min, fully sidesteps the issue. |
-| Lighthouse mobile LCP misses on a slow real-3G profile | High | The hero image budget is the lever. If LCP > 2.0 s, drop hero AVIF quality from 80 → 72 (visually imperceptible at retina sizes) and re-test. If still missing, switch hero from `next/image` to a `<picture>` with hand-tuned `srcSet` and pre-rendered `Link rel="preload"` in `<head>`. |
-| One of the 18 redirects has a typo and goes to a 404 | Medium | `tests/redirects.spec.ts` runs in CI on the preview URL; a typo fails the build. Manually run `pnpm check:redirects` against the preview before approving the merge to main. |
-| axe-core flags a violation we can't fix without redesign (e.g., a Radix primitive's default ARIA) | Low | Radix is well-tested; rare. If it happens, narrow the rule scope (`new AxeBuilder({ page }).disableRules(['<rule-id>'])`) **with a code comment explaining why** — never blanket-disable. |
-| Mauve-on-cream contrast fails on a panel we missed | Medium | The §5.7.3 rule is "body text uses ink-soft, links use mauve-deep, mauve is for accents only." A grep at audit time (`rg "text-mauve\b" app/ components/` to find pure mauve uses) catches stragglers. |
-| Bundle bloat from a transitively-imported library (e.g., date-fns full bundle) | Medium | `bundle-analyzer` makes this visible in 30 seconds. Common fix: switch to `date-fns/format` named import or `dayjs` (2 KB). |
+| Risk                                                                                              | Likelihood | Mitigation                                                                                                                                                                                                                                                                                 |
+| ------------------------------------------------------------------------------------------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `@vercel/og` Edge runtime can't read MDX from `content/`                                          | Medium     | If `fs` is constrained at edge, pre-generate a JSON manifest of frontmatter at build time (`scripts/build-og-manifest.ts`) and import that JSON in the OG route handler. Adds 10 min, fully sidesteps the issue.                                                                           |
+| Lighthouse mobile LCP misses on a slow real-3G profile                                            | High       | The hero image budget is the lever. If LCP > 2.0 s, drop hero AVIF quality from 80 → 72 (visually imperceptible at retina sizes) and re-test. If still missing, switch hero from `next/image` to a `<picture>` with hand-tuned `srcSet` and pre-rendered `Link rel="preload"` in `<head>`. |
+| One of the 18 redirects has a typo and goes to a 404                                              | Medium     | `tests/redirects.spec.ts` runs in CI on the preview URL; a typo fails the build. Manually run `pnpm check:redirects` against the preview before approving the merge to main.                                                                                                               |
+| axe-core flags a violation we can't fix without redesign (e.g., a Radix primitive's default ARIA) | Low        | Radix is well-tested; rare. If it happens, narrow the rule scope (`new AxeBuilder({ page }).disableRules(['<rule-id>'])`) **with a code comment explaining why** — never blanket-disable.                                                                                                  |
+| Mauve-on-cream contrast fails on a panel we missed                                                | Medium     | The §5.7.3 rule is "body text uses ink-soft, links use mauve-deep, mauve is for accents only." A grep at audit time (`rg "text-mauve\b" app/ components/` to find pure mauve uses) catches stragglers.                                                                                     |
+| Bundle bloat from a transitively-imported library (e.g., date-fns full bundle)                    | Medium     | `bundle-analyzer` makes this visible in 30 seconds. Common fix: switch to `date-fns/format` named import or `dayjs` (2 KB).                                                                                                                                                                |
 
 ---
 
@@ -443,26 +472,26 @@ This is the canonical copy for `lib/seo/metadata.ts`. Every static route's `titl
 
 Route key uses absolute path. `Title` is the **document title** (what shows in the browser tab and search results); the OG title is identical unless noted. `Description` is 145–160 chars (Google's mobile snippet ceiling).
 
-| # | Route | Title | Description | Eyebrow (OG) | OG image |
-|---|---|---|---|---|---|
-| 1 | `/` | Healthy You By Ruhma — Clinical Dietitian in Lahore | Evidence-based diet planning, hormonal health and weight management programs from Dr. Ruhma. Nourishing you inside out for healthy you throughout. | HEALTHY YOU BY RUHMA | `/opengraph-image` |
-| 2 | `/about` | About Dr. Ruhma — Clinical Dietitian, Lahore | Dr. Ruhma is a clinical dietitian in Lahore specializing in PCOS, hormonal health, and sustainable weight management. Read her story and approach. | DR. RUHMA | `/about/opengraph-image` |
-| 3 | `/services` | Services — Programs and Consultations with Dr. Ruhma | Three ways to work together: a 1:1 consultation call, a structured diet planning program, and an 8-week coaching program. | SERVICES | `/services/opengraph-image` |
-| 4 | `/programs/diet-planning` | Diet Planning Program — Personalized Meal Plans by Dr. Ruhma | A custom 4-week diet plan built around your goals, lifestyle, and health markers. Sample week included. Pakistan-wide, fully remote. | PROGRAM 01 | dynamic |
-| 5 | `/programs/coaching` | 8-Week Coaching Program — Sustainable Change with Dr. Ruhma | Eight weeks of structured support: weekly check-ins, plan adjustments, and the accountability needed to make changes that actually stick. | PROGRAM 02 | dynamic |
-| 6 | `/programs/consultation` | 1:1 Consultation Call — Book a Session with Dr. Ruhma | A focused 45-minute video call to assess your situation and map out next steps. Honest, evidence-based, no upsell. | PROGRAM 03 | dynamic |
-| 7 | `/focus/hormonal-health` | Hormonal Health — PCOS, Thyroid, and Cortisol, Explained | Where hormones meet daily life: a longread on PCOS, thyroid, and cortisol — what's actually happening, and what helps. | FOCUS AREA | dynamic |
-| 8 | `/focus/weight-management` | Weight Management — A Calm, Evidence-Based Approach | Sustainable weight management without crash diets or shame. The mechanisms, the missteps, and the markers that matter. | FOCUS AREA | dynamic |
-| 9 | `/library` | The Library — Three Guidebooks by Dr. Ruhma | Practical, evidence-based guidebooks for women managing PCOS, diabetes, and skin health. Digital PDF, instant delivery. | THE LIBRARY | `/library/opengraph-image` |
-| 10 | `/library/diabetes-essentials` | Diabetes Essentials — Guidebook by Dr. Ruhma | A practical guidebook for living well with diabetes: meals, monitoring, and the markers that matter. PKR pricing, instant PDF. | GUIDEBOOK 01 | dynamic (cover) |
-| 11 | `/library/pcos-guidebook` | PCOS Guidebook — Hormonal Health Reference by Dr. Ruhma | The hormonal cascade in plain language, plus the diet and lifestyle changes that make a real difference for PCOS. | GUIDEBOOK 02 | dynamic (cover) |
-| 12 | `/library/skin-secrets` | Skin Secrets — A Nutrition Guide for Healthy Skin | What you eat shows up on your skin. A nutrition-first guide to clear, calm skin from a clinical dietitian. | GUIDEBOOK 03 | dynamic (cover) |
-| 13 | `/journal` | Journal — Notes on Nutrition, Hormones, and Honest Wellness | Long-form notes on nutrition, hormonal health, and the everyday science of feeling well. New entries arriving regularly. | JOURNAL | `/journal/opengraph-image` |
-| 14 | `/journal/[slug]` | (frontmatter title) — Healthy You By Ruhma | (frontmatter description) | (frontmatter category, uppercase) | dynamic |
-| 15 | `/contact` | Contact — Reach Dr. Ruhma's Practice | Email, WhatsApp, and a direct contact form. Most messages are answered within one working day. | CONTACT | `/contact/opengraph-image` |
-| 16 | `/legal/privacy` | Privacy Policy — Healthy You By Ruhma | How we collect, use, and protect personal information for visitors and clients of Healthy You By Ruhma. | LEGAL | `/opengraph-image` (root) |
-| 17 | `/legal/terms` | Terms — Healthy You By Ruhma | Terms governing the use of healthyyoubyruhma.com and the programs and guidebooks offered through it. | LEGAL | `/opengraph-image` (root) |
-| 18 | `/legal/refunds` | Refund Policy — Healthy You By Ruhma | Refund and cancellation terms for programs, consultations, and guidebooks purchased through Healthy You By Ruhma. | LEGAL | `/opengraph-image` (root) |
+| #   | Route                          | Title                                                        | Description                                                                                                                                        | Eyebrow (OG)                      | OG image                    |
+| --- | ------------------------------ | ------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------- | --------------------------- |
+| 1   | `/`                            | Healthy You By Ruhma — Clinical Dietitian in Lahore          | Evidence-based diet planning, hormonal health and weight management programs from Dr. Ruhma. Nourishing you inside out for healthy you throughout. | HEALTHY YOU BY RUHMA              | `/opengraph-image`          |
+| 2   | `/about`                       | About Dr. Ruhma — Clinical Dietitian, Lahore                 | Dr. Ruhma is a clinical dietitian in Lahore specializing in PCOS, hormonal health, and sustainable weight management. Read her story and approach. | DR. RUHMA                         | `/about/opengraph-image`    |
+| 3   | `/services`                    | Services — Programs and Consultations with Dr. Ruhma         | Three ways to work together: a 1:1 consultation call, a structured diet planning program, and an 8-week coaching program.                          | SERVICES                          | `/services/opengraph-image` |
+| 4   | `/programs/diet-planning`      | Diet Planning Program — Personalized Meal Plans by Dr. Ruhma | A custom 4-week diet plan built around your goals, lifestyle, and health markers. Sample week included. Pakistan-wide, fully remote.               | PROGRAM 01                        | dynamic                     |
+| 5   | `/programs/coaching`           | 8-Week Coaching Program — Sustainable Change with Dr. Ruhma  | Eight weeks of structured support: weekly check-ins, plan adjustments, and the accountability needed to make changes that actually stick.          | PROGRAM 02                        | dynamic                     |
+| 6   | `/programs/consultation`       | 1:1 Consultation Call — Book a Session with Dr. Ruhma        | A focused 45-minute video call to assess your situation and map out next steps. Honest, evidence-based, no upsell.                                 | PROGRAM 03                        | dynamic                     |
+| 7   | `/focus/hormonal-health`       | Hormonal Health — PCOS, Thyroid, and Cortisol, Explained     | Where hormones meet daily life: a longread on PCOS, thyroid, and cortisol — what's actually happening, and what helps.                             | FOCUS AREA                        | dynamic                     |
+| 8   | `/focus/weight-management`     | Weight Management — A Calm, Evidence-Based Approach          | Sustainable weight management without crash diets or shame. The mechanisms, the missteps, and the markers that matter.                             | FOCUS AREA                        | dynamic                     |
+| 9   | `/library`                     | The Library — Three Guidebooks by Dr. Ruhma                  | Practical, evidence-based guidebooks for women managing PCOS, diabetes, and skin health. Digital PDF, instant delivery.                            | THE LIBRARY                       | `/library/opengraph-image`  |
+| 10  | `/library/diabetes-essentials` | Diabetes Essentials — Guidebook by Dr. Ruhma                 | A practical guidebook for living well with diabetes: meals, monitoring, and the markers that matter. PKR pricing, instant PDF.                     | GUIDEBOOK 01                      | dynamic (cover)             |
+| 11  | `/library/pcos-guidebook`      | PCOS Guidebook — Hormonal Health Reference by Dr. Ruhma      | The hormonal cascade in plain language, plus the diet and lifestyle changes that make a real difference for PCOS.                                  | GUIDEBOOK 02                      | dynamic (cover)             |
+| 12  | `/library/skin-secrets`        | Skin Secrets — A Nutrition Guide for Healthy Skin            | What you eat shows up on your skin. A nutrition-first guide to clear, calm skin from a clinical dietitian.                                         | GUIDEBOOK 03                      | dynamic (cover)             |
+| 13  | `/journal`                     | Journal — Notes on Nutrition, Hormones, and Honest Wellness  | Long-form notes on nutrition, hormonal health, and the everyday science of feeling well. New entries arriving regularly.                           | JOURNAL                           | `/journal/opengraph-image`  |
+| 14  | `/journal/[slug]`              | (frontmatter title) — Healthy You By Ruhma                   | (frontmatter description)                                                                                                                          | (frontmatter category, uppercase) | dynamic                     |
+| 15  | `/contact`                     | Contact — Reach Dr. Ruhma's Practice                         | Email, WhatsApp, and a direct contact form. Most messages are answered within one working day.                                                     | CONTACT                           | `/contact/opengraph-image`  |
+| 16  | `/legal/privacy`               | Privacy Policy — Healthy You By Ruhma                        | How we collect, use, and protect personal information for visitors and clients of Healthy You By Ruhma.                                            | LEGAL                             | `/opengraph-image` (root)   |
+| 17  | `/legal/terms`                 | Terms — Healthy You By Ruhma                                 | Terms governing the use of healthyyoubyruhma.com and the programs and guidebooks offered through it.                                               | LEGAL                             | `/opengraph-image` (root)   |
+| 18  | `/legal/refunds`               | Refund Policy — Healthy You By Ruhma                         | Refund and cancellation terms for programs, consultations, and guidebooks purchased through Healthy You By Ruhma.                                  | LEGAL                             | `/opengraph-image` (root)   |
 
 Counts: **18 entries**, of which **14 are top-level routes** and 4 are dynamic-namespace examples (the three programs already counted, three library, two focus, three legal — yielding the actual sitemap count separately). The legal pages all use the root OG by design — they're not share-targets.
 
@@ -471,11 +500,11 @@ Frontmatter contract for dynamic routes (programs / focus / library / journal):
 ```yaml
 title: PCOS Guidebook
 description: The hormonal cascade in plain language, plus the diet and lifestyle changes that make a real difference for PCOS.
-eyebrow: Guidebook 02            # uppercased on OG
-ogTitle:                         # optional, defaults to title
-ogDescription:                   # optional, defaults to description
-publishedAt: 2025-08-12          # journal + focus only
-updatedAt: 2025-09-01            # all
+eyebrow: Guidebook 02 # uppercased on OG
+ogTitle: # optional, defaults to title
+ogDescription: # optional, defaults to description
+publishedAt: 2025-08-12 # journal + focus only
+updatedAt: 2025-09-01 # all
 ```
 
 The `metadata.ts` builder reads these fields when present and falls back gracefully when absent.
@@ -499,111 +528,125 @@ import type {
   WebSite,
   WithContext,
   Graph,
-} from 'schema-dts';
+} from "schema-dts";
 
 // --- Site-wide constants (kept in this file so the schema is auditable in one place) ---
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://dietitianruhma.com';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://dietitianruhma.com";
 
 const PERSON_ID = `${SITE_URL}/#person`;
 const ORG_ID = `${SITE_URL}/#org`;
 const SITE_ID = `${SITE_URL}/#website`;
 
 const PERSON: Person = {
-  '@type': 'Person',
-  '@id': PERSON_ID,
-  name: 'Dr. Ruhma',
-  jobTitle: 'Clinical Dietitian',
+  "@type": "Person",
+  "@id": PERSON_ID,
+  name: "Dr. Ruhma",
+  jobTitle: "Clinical Dietitian",
   url: `${SITE_URL}/about`,
   image: `${SITE_URL}/media/coach-1.jpg`,
   address: {
-    '@type': 'PostalAddress',
-    addressLocality: 'Lahore',
-    addressCountry: 'PK',
+    "@type": "PostalAddress",
+    addressLocality: "Lahore",
+    addressCountry: "PK",
   },
-  worksFor: { '@id': ORG_ID },
+  worksFor: { "@id": ORG_ID },
   sameAs: [
-    'https://instagram.com/dietitianruhma',
-    'https://wa.me/923000000000', // confirm with Dr. Ruhma
+    "https://instagram.com/dietitianruhma",
+    "https://wa.me/923000000000", // confirm with Dr. Ruhma
     // Add Twitter/LinkedIn/Facebook only if real, verified profiles exist.
   ],
 };
 
 const ORG: Organization = {
-  '@type': 'Organization',
-  '@id': ORG_ID,
-  name: 'Healthy You By Ruhma',
+  "@type": "Organization",
+  "@id": ORG_ID,
+  name: "Healthy You By Ruhma",
   url: SITE_URL,
   logo: `${SITE_URL}/media/wordmark.png`,
-  founder: { '@id': PERSON_ID },
+  founder: { "@id": PERSON_ID },
   address: {
-    '@type': 'PostalAddress',
-    addressLocality: 'Lahore',
-    addressCountry: 'PK',
+    "@type": "PostalAddress",
+    addressLocality: "Lahore",
+    addressCountry: "PK",
   },
   sameAs: PERSON.sameAs,
 };
 
 const WEBSITE: WebSite = {
-  '@type': 'WebSite',
-  '@id': SITE_ID,
+  "@type": "WebSite",
+  "@id": SITE_ID,
   url: SITE_URL,
-  name: 'Healthy You By Ruhma',
-  publisher: { '@id': ORG_ID },
-  inLanguage: ['en-US', 'en-PK'],
+  name: "Healthy You By Ruhma",
+  publisher: { "@id": ORG_ID },
+  inLanguage: ["en-US", "en-PK"],
 };
 
 // --- Builders ---
 
 export function homeGraph(): WithContext<Graph> {
   return {
-    '@context': 'https://schema.org',
-    '@graph': [WEBSITE, PERSON, ORG],
+    "@context": "https://schema.org",
+    "@graph": [WEBSITE, PERSON, ORG],
   };
 }
 
 export function aboutGraph(): WithContext<Person> {
   return {
-    '@context': 'https://schema.org',
+    "@context": "https://schema.org",
     ...PERSON,
     description:
-      'Clinical dietitian based in Lahore, Pakistan, specializing in PCOS, hormonal health, and evidence-based weight management.',
+      "Clinical dietitian based in Lahore, Pakistan, specializing in PCOS, hormonal health, and evidence-based weight management.",
     url: `${SITE_URL}/about`,
     mainEntityOfPage: `${SITE_URL}/about`,
   };
 }
 
-export function servicesGraph(services: { name: string; slug: string; description: string; price?: number }[]): WithContext<ItemList> {
+export function servicesGraph(
+  services: { name: string; slug: string; description: string; price?: number }[],
+): WithContext<ItemList> {
   return {
-    '@context': 'https://schema.org',
-    '@type': 'ItemList',
+    "@context": "https://schema.org",
+    "@type": "ItemList",
     itemListElement: services.map((s, idx) => ({
-      '@type': 'ListItem',
+      "@type": "ListItem",
       position: idx + 1,
       item: serviceSchema(s),
     })),
   };
 }
 
-export function programGraph(input: { name: string; slug: string; description: string; price: number; serviceType?: string }): WithContext<Service> {
-  return { '@context': 'https://schema.org', ...serviceSchema(input) };
+export function programGraph(input: {
+  name: string;
+  slug: string;
+  description: string;
+  price: number;
+  serviceType?: string;
+}): WithContext<Service> {
+  return { "@context": "https://schema.org", ...serviceSchema(input) };
 }
 
-function serviceSchema(input: { name: string; slug: string; description: string; price?: number; serviceType?: string }): Service {
+function serviceSchema(input: {
+  name: string;
+  slug: string;
+  description: string;
+  price?: number;
+  serviceType?: string;
+}): Service {
   return {
-    '@type': 'Service',
+    "@type": "Service",
     name: input.name,
     description: input.description,
-    serviceType: input.serviceType ?? 'Dietitian Service',
+    serviceType: input.serviceType ?? "Dietitian Service",
     url: `${SITE_URL}/programs/${input.slug}`,
-    provider: { '@id': PERSON_ID },
-    areaServed: { '@type': 'Country', name: 'PK' },
+    provider: { "@id": PERSON_ID },
+    areaServed: { "@type": "Country", name: "PK" },
     ...(input.price && {
       offers: {
-        '@type': 'Offer',
+        "@type": "Offer",
         price: String(input.price),
-        priceCurrency: 'PKR',
-        availability: 'https://schema.org/InStock',
+        priceCurrency: "PKR",
+        availability: "https://schema.org/InStock",
         url: `${SITE_URL}/programs/${input.slug}`,
       },
     }),
@@ -619,12 +662,12 @@ export function focusArticleGraph(input: {
   image?: string;
 }): WithContext<Article> {
   return {
-    '@context': 'https://schema.org',
-    '@type': 'Article',
+    "@context": "https://schema.org",
+    "@type": "Article",
     headline: input.title,
     description: input.description,
-    author: { '@id': PERSON_ID },
-    publisher: { '@id': ORG_ID },
+    author: { "@id": PERSON_ID },
+    publisher: { "@id": ORG_ID },
     datePublished: input.publishedAt,
     dateModified: input.updatedAt ?? input.publishedAt,
     mainEntityOfPage: `${SITE_URL}/focus/${input.slug}`,
@@ -643,20 +686,20 @@ export function bookGraph(input: {
   numberOfPages?: number;
 }): WithContext<Book> {
   return {
-    '@context': 'https://schema.org',
-    '@type': 'Book',
+    "@context": "https://schema.org",
+    "@type": "Book",
     name: input.title,
     description: input.description,
-    bookFormat: 'https://schema.org/EBook',
-    author: { '@id': PERSON_ID },
-    image: input.cover.startsWith('http') ? input.cover : `${SITE_URL}${input.cover}`,
+    bookFormat: "https://schema.org/EBook",
+    author: { "@id": PERSON_ID },
+    image: input.cover.startsWith("http") ? input.cover : `${SITE_URL}${input.cover}`,
     url: `${SITE_URL}/library/${input.slug}`,
     ...(input.numberOfPages && { numberOfPages: input.numberOfPages }),
     offers: {
-      '@type': 'Offer',
+      "@type": "Offer",
       price: String(input.salePrice ?? input.price),
-      priceCurrency: 'PKR',
-      availability: 'https://schema.org/InStock',
+      priceCurrency: "PKR",
+      availability: "https://schema.org/InStock",
       url: input.buyUrl,
     },
   };
@@ -664,10 +707,10 @@ export function bookGraph(input: {
 
 export function libraryListGraph(books: { title: string; slug: string }[]): WithContext<ItemList> {
   return {
-    '@context': 'https://schema.org',
-    '@type': 'ItemList',
+    "@context": "https://schema.org",
+    "@type": "ItemList",
     itemListElement: books.map((b, idx) => ({
-      '@type': 'ListItem',
+      "@type": "ListItem",
       position: idx + 1,
       url: `${SITE_URL}/library/${b.slug}`,
       name: b.title,
@@ -675,19 +718,21 @@ export function libraryListGraph(books: { title: string; slug: string }[]): With
   };
 }
 
-export function journalGraph(posts: { title: string; slug: string; publishedAt: string }[]): WithContext<Blog> {
+export function journalGraph(
+  posts: { title: string; slug: string; publishedAt: string }[],
+): WithContext<Blog> {
   return {
-    '@context': 'https://schema.org',
-    '@type': 'Blog',
-    name: 'Journal — Healthy You By Ruhma',
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    name: "Journal — Healthy You By Ruhma",
     url: `${SITE_URL}/journal`,
-    publisher: { '@id': ORG_ID },
+    publisher: { "@id": ORG_ID },
     blogPost: posts.map((p) => ({
-      '@type': 'BlogPosting',
+      "@type": "BlogPosting",
       headline: p.title,
       url: `${SITE_URL}/journal/${p.slug}`,
       datePublished: p.publishedAt,
-      author: { '@id': PERSON_ID },
+      author: { "@id": PERSON_ID },
     })),
   };
 }
@@ -701,12 +746,12 @@ export function journalPostGraph(input: {
   image?: string;
 }): WithContext<Article> {
   return {
-    '@context': 'https://schema.org',
-    '@type': 'Article',
+    "@context": "https://schema.org",
+    "@type": "Article",
     headline: input.title,
     description: input.description,
-    author: { '@id': PERSON_ID },
-    publisher: { '@id': ORG_ID },
+    author: { "@id": PERSON_ID },
+    publisher: { "@id": ORG_ID },
     datePublished: input.publishedAt,
     dateModified: input.updatedAt ?? input.publishedAt,
     mainEntityOfPage: `${SITE_URL}/journal/${input.slug}`,
@@ -716,11 +761,11 @@ export function journalPostGraph(input: {
 
 export function contactGraph(): WithContext<ContactPage> {
   return {
-    '@context': 'https://schema.org',
-    '@type': 'ContactPage',
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
     url: `${SITE_URL}/contact`,
-    name: 'Contact — Healthy You By Ruhma',
-    about: { '@id': ORG_ID },
+    name: "Contact — Healthy You By Ruhma",
+    about: { "@id": ORG_ID },
   };
 }
 ```
@@ -728,7 +773,7 @@ export function contactGraph(): WithContext<ContactPage> {
 And the React component (`components/seo/JsonLd.tsx`):
 
 ```tsx
-import 'server-only';
+import "server-only";
 
 interface Props {
   graph: object;
@@ -736,7 +781,7 @@ interface Props {
 
 export function JsonLd({ graph }: Props) {
   // Escape `<` to prevent any chance of breaking out of the script tag.
-  const json = JSON.stringify(graph).replace(/</g, '\\u003c');
+  const json = JSON.stringify(graph).replace(/</g, "\\u003c");
   return (
     <script
       type="application/ld+json"
@@ -751,8 +796,8 @@ Usage in a route:
 
 ```tsx
 // app/library/[slug]/page.tsx
-import { JsonLd } from '@/components/seo/JsonLd';
-import { bookGraph } from '@/lib/seo/jsonLd';
+import { JsonLd } from "@/components/seo/JsonLd";
+import { bookGraph } from "@/lib/seo/jsonLd";
 
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -780,28 +825,28 @@ Self-contained, no dependencies beyond `node:` builtins — runs under `tsx`.
  * Override base: BASE_URL=https://preview.vercel.app pnpm check:redirects
  */
 
-const BASE = process.env.BASE_URL ?? 'http://localhost:3000';
+const BASE = process.env.BASE_URL ?? "http://localhost:3000";
 
 const REDIRECTS: ReadonlyArray<readonly [string, string]> = [
-  ['/about-me', '/about'],
-  ['/contact-me', '/contact'],
-  ['/diet-plannig-program', '/programs/diet-planning'],
-  ['/coaching-program', '/programs/coaching'],
-  ['/conultation-call', '/programs/consultation'],
-  ['/hormonal-health', '/focus/hormonal-health'],
-  ['/weight-management', '/focus/weight-management'],
-  ['/shop', '/library'],
-  ['/shop/diabetes-essentials', '/library/diabetes-essentials'],
-  ['/shop/pcos-guidebook', '/library/pcos-guidebook'],
-  ['/shop/skin-secrets', '/library/skin-secrets'],
-  ['/cart', '/library'],
-  ['/checkout', '/library'],
-  ['/my-account', '/library'],
-  ['/refund_returns', '/legal/refunds'],
-  ['/privacy-policy', '/legal/privacy'],
-  ['/terms-and-conditions', '/legal/terms'],
+  ["/about-me", "/about"],
+  ["/contact-me", "/contact"],
+  ["/diet-plannig-program", "/programs/diet-planning"],
+  ["/coaching-program", "/programs/coaching"],
+  ["/conultation-call", "/programs/consultation"],
+  ["/hormonal-health", "/focus/hormonal-health"],
+  ["/weight-management", "/focus/weight-management"],
+  ["/shop", "/library"],
+  ["/shop/diabetes-essentials", "/library/diabetes-essentials"],
+  ["/shop/pcos-guidebook", "/library/pcos-guidebook"],
+  ["/shop/skin-secrets", "/library/skin-secrets"],
+  ["/cart", "/library"],
+  ["/checkout", "/library"],
+  ["/my-account", "/library"],
+  ["/refund_returns", "/legal/refunds"],
+  ["/privacy-policy", "/legal/privacy"],
+  ["/terms-and-conditions", "/legal/terms"],
   // Trailing-slash sanity check — Next 15 with trailingSlash:false strips it
-  ['/about-me/', '/about'],
+  ["/about-me/", "/about"],
 ];
 
 interface Result {
@@ -813,12 +858,13 @@ interface Result {
 }
 
 async function check(oldPath: string, expected: string): Promise<Result> {
-  const res = await fetch(`${BASE}${oldPath}`, { redirect: 'manual' });
-  const actualLocation = res.headers.get('location');
+  const res = await fetch(`${BASE}${oldPath}`, { redirect: "manual" });
+  const actualLocation = res.headers.get("location");
   // Normalize: redirect target may be absolute or relative.
-  const normalized = actualLocation && actualLocation.startsWith('http')
-    ? new URL(actualLocation).pathname
-    : actualLocation;
+  const normalized =
+    actualLocation && actualLocation.startsWith("http")
+      ? new URL(actualLocation).pathname
+      : actualLocation;
   const ok = res.status === 308 && normalized === expected;
   return { oldPath, expected, status: res.status, actualLocation: normalized, ok };
 }
@@ -828,16 +874,20 @@ async function main() {
   const failed = results.filter((r) => !r.ok);
 
   for (const r of results) {
-    const mark = r.ok ? 'OK ' : 'FAIL';
-    console.log(`${mark}  ${r.oldPath.padEnd(28)} -> ${r.actualLocation ?? '(none)'}   [${r.status}]`);
+    const mark = r.ok ? "OK " : "FAIL";
+    console.log(
+      `${mark}  ${r.oldPath.padEnd(28)} -> ${r.actualLocation ?? "(none)"}   [${r.status}]`,
+    );
   }
-  console.log('');
+  console.log("");
   console.log(`Passed ${results.length - failed.length} / ${results.length}`);
 
   if (failed.length > 0) {
-    console.error('\nFailures:');
+    console.error("\nFailures:");
     for (const f of failed) {
-      console.error(`  ${f.oldPath} -> expected 308 ${f.expected}, got ${f.status} ${f.actualLocation ?? '(none)'}`);
+      console.error(
+        `  ${f.oldPath} -> expected 308 ${f.expected}, got ${f.status} ${f.actualLocation ?? "(none)"}`,
+      );
     }
     process.exit(1);
   }

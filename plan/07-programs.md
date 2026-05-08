@@ -37,8 +37,8 @@ Add (to `package.json`):
 ```jsonc
 {
   "dependencies": {
-    "@calcom/embed-react": "^1.5.3"   // Consultation booking widget. See alternatives below.
-  }
+    "@calcom/embed-react": "^1.5.3", // Consultation booking widget. See alternatives below.
+  },
 }
 ```
 
@@ -52,10 +52,10 @@ The master plan (§3.6 and §7) defers the final pick to Dr. Ruhma. We implement
 
 **Drop-in alternatives** (swap one component, not the page):
 
-| Option | Package | Component change |
-|---|---|---|
-| **Calendly** | `react-calendly` | Replace `<BookingWidget>` body with `<InlineWidget url="…" styles={{ height: 720 }} />`. Branding limited to a single accent color via Calendly settings. |
-| **Plain link-out** (zero-dep fallback) | n/a | Replace `<BookingWidget>` body with a `<Button>` linking to `https://cal.com/ruhma/15min` in a new tab. Keeps the page shippable if the embed fails review. |
+| Option                                 | Package          | Component change                                                                                                                                            |
+| -------------------------------------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Calendly**                           | `react-calendly` | Replace `<BookingWidget>` body with `<InlineWidget url="…" styles={{ height: 720 }} />`. Branding limited to a single accent color via Calendly settings.   |
+| **Plain link-out** (zero-dep fallback) | n/a              | Replace `<BookingWidget>` body with a `<Button>` linking to `https://cal.com/ruhma/15min` in a new tab. Keeps the page shippable if the embed fails review. |
 
 If Dr. Ruhma picks Calendly, swap the dep, change one component file, and update the `BookingWidget` JSX (~15 lines) — no changes elsewhere.
 
@@ -111,62 +111,89 @@ import { z } from "zod";
 
 export const ProgramFrontmatterSchema = z.object({
   title: z.string().min(2),
-  eyebrow: z.string().min(2),                        // e.g. "Program 01"
+  eyebrow: z.string().min(2), // e.g. "Program 01"
   slug: z.enum(["diet-planning", "coaching", "consultation"]),
-  priceFrom: z.number().int().positive(),            // PKR, integer rupees
+  priceFrom: z.number().int().positive(), // PKR, integer rupees
   currency: z.literal("PKR"),
   heroImage: z.string().startsWith("/media/"),
   heroImageAlt: z.string().min(4),
-  ctaLabel: z.string().min(2),                       // "Book a consultation" / "Reserve your slot"
-  ctaHref: z.string().min(1),                        // "#pricing" or external booking URL
-  description: z.string().min(40),                   // <meta name="description"> + JSON-LD
+  ctaLabel: z.string().min(2), // "Book a consultation" / "Reserve your slot"
+  ctaHref: z.string().min(1), // "#pricing" or external booking URL
+  description: z.string().min(40), // <meta name="description"> + JSON-LD
   ogImage: z.string().startsWith("/media/").optional(),
   // Section data below — kept in frontmatter so MDX body stays prose-only.
-  included: z.array(z.object({
-    icon: z.string(),                                // matches a key in lib/illustrations
-    title: z.string(),
-    body: z.string(),
-  })).length(6),
-  howItWorks: z.array(z.object({
-    n: z.number().int().min(1).max(4),
-    title: z.string(),
-    body: z.string(),
-  })).length(4),
-  testimonials: z.array(z.object({
-    quote: z.string().min(60),
-    name: z.string(),
-    context: z.string().optional(),                  // e.g. "PCOS, 9 months"
-  })).length(2),
+  included: z
+    .array(
+      z.object({
+        icon: z.string(), // matches a key in lib/illustrations
+        title: z.string(),
+        body: z.string(),
+      }),
+    )
+    .length(6),
+  howItWorks: z
+    .array(
+      z.object({
+        n: z.number().int().min(1).max(4),
+        title: z.string(),
+        body: z.string(),
+      }),
+    )
+    .length(4),
+  testimonials: z
+    .array(
+      z.object({
+        quote: z.string().min(60),
+        name: z.string(),
+        context: z.string().optional(), // e.g. "PCOS, 9 months"
+      }),
+    )
+    .length(2),
   pricing: z.object({
-    headline: z.string(),                            // "PKR 25,000 / month"
+    headline: z.string(), // "PKR 25,000 / month"
     bullets: z.array(z.string()).min(3).max(8),
-    note: z.string().optional(),                     // "Cancel anytime."
+    note: z.string().optional(), // "Cancel anytime."
     ctaLabel: z.string(),
     ctaHref: z.string(),
   }),
-  faq: z.array(z.object({ q: z.string(), a: z.string() })).min(4).max(8),
+  faq: z
+    .array(z.object({ q: z.string(), a: z.string() }))
+    .min(4)
+    .max(8),
   // Per-signature data (only the matching slug uses its own field).
-  sampleWeek: z.array(z.object({
-    day: z.string(),                                 // "Monday"
-    meals: z.object({
-      breakfast: z.string(),
-      lunch: z.string(),
-      snack: z.string(),
-      dinner: z.string(),
-    }),
-  })).length(7).optional(),
-  timeline: z.array(z.object({
-    week: z.number().int().min(1).max(8),
-    title: z.string(),
-    body: z.string(),
-    milestone: z.boolean().optional(),               // true → larger dot, italic title
-  })).length(8).optional(),
-  booking: z.object({
-    provider: z.enum(["cal", "calendly", "link"]),
-    calLink: z.string().optional(),                  // "ruhma/consultation-15min"
-    calendlyUrl: z.string().url().optional(),
-    fallbackUrl: z.string().url().optional(),
-  }).optional(),
+  sampleWeek: z
+    .array(
+      z.object({
+        day: z.string(), // "Monday"
+        meals: z.object({
+          breakfast: z.string(),
+          lunch: z.string(),
+          snack: z.string(),
+          dinner: z.string(),
+        }),
+      }),
+    )
+    .length(7)
+    .optional(),
+  timeline: z
+    .array(
+      z.object({
+        week: z.number().int().min(1).max(8),
+        title: z.string(),
+        body: z.string(),
+        milestone: z.boolean().optional(), // true → larger dot, italic title
+      }),
+    )
+    .length(8)
+    .optional(),
+  booking: z
+    .object({
+      provider: z.enum(["cal", "calendly", "link"]),
+      calLink: z.string().optional(), // "ruhma/consultation-15min"
+      calendlyUrl: z.string().url().optional(),
+      fallbackUrl: z.string().url().optional(),
+    })
+    .optional(),
 });
 
 export type ProgramFrontmatter = z.infer<typeof ProgramFrontmatterSchema>;
@@ -234,9 +261,11 @@ export async function generateStaticParams() {
   return PROGRAM_SLUGS.map((slug) => ({ slug }));
 }
 
-export async function generateMetadata(
-  { params }: { params: Promise<{ slug: string }> }
-): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
   const { slug } = await params;
   const program = await loadProgram(slug);
   if (!program) return {};
@@ -255,9 +284,7 @@ export async function generateMetadata(
   };
 }
 
-export default async function ProgramPage(
-  { params }: { params: Promise<{ slug: string }> }
-) {
+export default async function ProgramPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const program = await loadProgram(slug);
   if (!program) notFound();
@@ -297,20 +324,14 @@ export default async function ProgramPage(
       <HowItWorks steps={fm.howItWorks} />
 
       {/* Signature slot — exactly one renders per slug */}
-      {fm.slug === "diet-planning" && fm.sampleWeek && (
-        <SampleWeek week={fm.sampleWeek} />
-      )}
-      {fm.slug === "coaching" && fm.timeline && (
-        <CoachingTimeline weeks={fm.timeline} />
-      )}
-      {fm.slug === "consultation" && fm.booking && (
-        <BookingWidget booking={fm.booking} />
-      )}
+      {fm.slug === "diet-planning" && fm.sampleWeek && <SampleWeek week={fm.sampleWeek} />}
+      {fm.slug === "coaching" && fm.timeline && <CoachingTimeline weeks={fm.timeline} />}
+      {fm.slug === "consultation" && fm.booking && <BookingWidget booking={fm.booking} />}
 
       {/* Optional MDX body — long-form prose between signature and testimonials */}
       {body.trim().length > 0 && (
         <section className="bg-cream-deep">
-          <div className="container max-w-[680px] py-24 prose prose-editorial">
+          <div className="prose prose-editorial container max-w-[680px] py-24">
             <MDXRemote source={body} />
           </div>
         </section>
@@ -319,11 +340,7 @@ export default async function ProgramPage(
       <ProgramTestimonials items={fm.testimonials} />
       <PricingCard pricing={fm.pricing} priceFrom={fm.priceFrom} currency={fm.currency} />
       <ProgramFAQ faq={fm.faq} />
-      <CTABand
-        line="Ready when you are."
-        ctaLabel={fm.ctaLabel}
-        ctaHref={fm.ctaHref}
-      />
+      <CTABand line="Ready when you are." ctaLabel={fm.ctaLabel} ctaHref={fm.ctaHref} />
     </>
   );
 }
@@ -347,16 +364,16 @@ import type { ProgramFrontmatter } from "@/lib/programs";
 export function ProgramHero({ fm }: { fm: ProgramFrontmatter }) {
   return (
     <section className="bg-cream pt-24 pb-20 md:pt-32 md:pb-28">
-      <Container className="grid gap-12 md:grid-cols-12 md:gap-16 items-center">
+      <Container className="grid items-center gap-12 md:grid-cols-12 md:gap-16">
         <div className="md:col-span-6">
           <Eyebrow>{fm.eyebrow}</Eyebrow>
           <LetterStagger>
-            <Heading as="h1" size="display" className="mt-4 text-ink">
+            <Heading as="h1" size="display" className="text-ink mt-4">
               {fm.title}
             </Heading>
           </LetterStagger>
           <FadeUp delay={0.1}>
-            <p className="mt-6 max-w-prose text-[17px] leading-[1.6] text-ink-soft">
+            <p className="text-ink-soft mt-6 max-w-prose text-[17px] leading-[1.6]">
               {fm.description}
             </p>
           </FadeUp>
@@ -365,9 +382,9 @@ export function ProgramHero({ fm }: { fm: ProgramFrontmatter }) {
               <Button href={fm.ctaHref} variant="primary" size="lg">
                 {fm.ctaLabel}
               </Button>
-              <span className="text-sm text-ink-soft">
+              <span className="text-ink-soft text-sm">
                 <span className="text-mauve">From</span>{" "}
-                <span className="font-medium text-ink">
+                <span className="text-ink font-medium">
                   {fm.currency} {fm.priceFrom.toLocaleString("en-PK")}
                 </span>
               </span>
@@ -418,13 +435,9 @@ export function Included({ items }: { items: Item[] }) {
           {items.map((it, i) => (
             <FadeUp key={it.title} delay={i * 0.05}>
               <li className="flex flex-col">
-                <Botanical name={it.icon} className="h-12 w-12 text-ink" />
-                <h3 className="mt-6 font-display text-[22px] leading-tight text-ink">
-                  {it.title}
-                </h3>
-                <p className="mt-3 text-[15px] leading-[1.6] text-ink-soft">
-                  {it.body}
-                </p>
+                <Botanical name={it.icon} className="text-ink h-12 w-12" />
+                <h3 className="font-display text-ink mt-6 text-[22px] leading-tight">{it.title}</h3>
+                <p className="text-ink-soft mt-3 text-[15px] leading-[1.6]">{it.body}</p>
               </li>
             </FadeUp>
           ))}
@@ -456,26 +469,18 @@ export function HowItWorks({ steps }: { steps: Step[] }) {
         </Heading>
       </Container>
       <div
-        className="mt-16 flex snap-x snap-mandatory gap-8 overflow-x-auto px-6 pb-8 md:px-12
-                   md:flex-row flex-col md:overflow-x-auto overflow-x-visible"
+        className="mt-16 flex snap-x snap-mandatory flex-col gap-8 overflow-x-auto overflow-x-visible px-6 pb-8 md:flex-row md:overflow-x-auto md:px-12"
         role="list"
       >
         {steps.map((s, i) => (
           <FadeUp key={s.n} delay={i * 0.05}>
             <article
               role="listitem"
-              className="snap-start shrink-0 basis-[80%] md:basis-[360px] bg-paper px-8 py-10
-                         border-l-2 border-mauve/30"
+              className="bg-paper border-mauve/30 shrink-0 basis-[80%] snap-start border-l-2 px-8 py-10 md:basis-[360px]"
             >
-              <span className="font-display text-[64px] leading-none text-mauve">
-                0{s.n}
-              </span>
-              <h3 className="mt-6 font-display text-[26px] leading-tight text-ink">
-                {s.title}
-              </h3>
-              <p className="mt-3 text-[15px] leading-[1.6] text-ink-soft">
-                {s.body}
-              </p>
+              <span className="font-display text-mauve text-[64px] leading-none">0{s.n}</span>
+              <h3 className="font-display text-ink mt-6 text-[26px] leading-tight">{s.title}</h3>
+              <p className="text-ink-soft mt-3 text-[15px] leading-[1.6]">{s.body}</p>
             </article>
           </FadeUp>
         ))}
@@ -519,19 +524,17 @@ export function PricingCard({
           {pricing.headline}
         </Heading>
         <FadeUp>
-          <div className="mt-10 bg-paper border border-ink/10 px-8 py-10 md:px-12 md:py-14">
+          <div className="bg-paper border-ink/10 mt-10 border px-8 py-10 md:px-12 md:py-14">
             <div className="flex items-baseline gap-3">
-              <span className="font-display text-[80px] leading-none text-ink">
+              <span className="font-display text-ink text-[80px] leading-none">
                 {priceFrom.toLocaleString("en-PK")}
               </span>
-              <span className="text-[18px] uppercase tracking-[0.16em] text-mauve">
-                {currency}
-              </span>
+              <span className="text-mauve text-[18px] tracking-[0.16em] uppercase">{currency}</span>
             </div>
-            <ul className="mt-10 space-y-3 text-[16px] leading-[1.6] text-ink-soft">
+            <ul className="text-ink-soft mt-10 space-y-3 text-[16px] leading-[1.6]">
               {pricing.bullets.map((b) => (
                 <li key={b} className="flex gap-3">
-                  <span aria-hidden className="mt-[10px] h-px w-4 bg-mauve" />
+                  <span aria-hidden className="bg-mauve mt-[10px] h-px w-4" />
                   <span>{b}</span>
                 </li>
               ))}
@@ -541,9 +544,7 @@ export function PricingCard({
                 {pricing.ctaLabel}
               </Button>
               {pricing.note && (
-                <span className="text-[13px] tracking-[0.04em] text-ink-soft">
-                  {pricing.note}
-                </span>
+                <span className="text-ink-soft text-[13px] tracking-[0.04em]">{pricing.note}</span>
               )}
             </div>
           </div>
@@ -574,12 +575,17 @@ export function ProgramTestimonials({ items }: { items: T[] }) {
           {items.map((t, i) => (
             <FadeUp key={t.name} delay={i * 0.1}>
               <blockquote>
-                <p className="font-display text-[clamp(28px,3vw,40px)] leading-[1.2] text-ink -tracking-[0.01em]">
+                <p className="font-display text-ink text-[clamp(28px,3vw,40px)] leading-[1.2] -tracking-[0.01em]">
                   &ldquo;{t.quote}&rdquo;
                 </p>
-                <footer className="mt-6 text-[13px] uppercase tracking-[0.16em] text-mauve">
+                <footer className="text-mauve mt-6 text-[13px] tracking-[0.16em] uppercase">
                   &mdash; {t.name}
-                  {t.context && <span className="text-ink-soft normal-case tracking-normal"> · {t.context}</span>}
+                  {t.context && (
+                    <span className="text-ink-soft tracking-normal normal-case">
+                      {" "}
+                      · {t.context}
+                    </span>
+                  )}
                 </footer>
               </blockquote>
             </FadeUp>
@@ -609,23 +615,22 @@ export function ProgramFAQ({ faq }: { faq: Q[] }) {
         <Heading as="h2" size="h1" className="mt-3">
           Frequently asked.
         </Heading>
-        <ul className="mt-12 divide-y divide-ink/10 border-y border-ink/10">
+        <ul className="divide-ink/10 border-ink/10 mt-12 divide-y border-y">
           {faq.map(({ q, a }) => (
             <li key={q}>
               <details className="group py-6">
-                <summary className="flex cursor-pointer items-baseline justify-between gap-6 list-none">
-                  <span className="font-display text-[22px] leading-snug text-ink
-                                   group-hover:text-mauve transition-colors">
+                <summary className="flex cursor-pointer list-none items-baseline justify-between gap-6">
+                  <span className="font-display text-ink group-hover:text-mauve text-[22px] leading-snug transition-colors">
                     {q}
                   </span>
-                  <span aria-hidden
-                        className="font-display text-[24px] text-mauve transition-transform group-open:rotate-45">
+                  <span
+                    aria-hidden
+                    className="font-display text-mauve text-[24px] transition-transform group-open:rotate-45"
+                  >
                     +
                   </span>
                 </summary>
-                <p className="mt-4 max-w-[64ch] text-[16px] leading-[1.6] text-ink-soft">
-                  {a}
-                </p>
+                <p className="text-ink-soft mt-4 max-w-[64ch] text-[16px] leading-[1.6]">{a}</p>
               </details>
             </li>
           ))}
@@ -667,16 +672,15 @@ export function SampleWeek({ week }: { week: Day[] }) {
         <Heading as="h2" size="h1" className="mt-3 max-w-[18ch]">
           Real food. Seven days. Built around you.
         </Heading>
-        <p className="mt-4 max-w-prose text-[15px] leading-[1.6] text-ink-soft">
-          What follows is a representative week — not a prescription. Your plan is
-          built around your routine, kitchen, preferences and clinical picture.
+        <p className="text-ink-soft mt-4 max-w-prose text-[15px] leading-[1.6]">
+          What follows is a representative week — not a prescription. Your plan is built around your
+          routine, kitchen, preferences and clinical picture.
         </p>
       </Container>
 
       <FadeUp>
         <div
-          className="mt-14 flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-px-6 px-6 pb-10
-                     md:scroll-px-12 md:px-12"
+          className="mt-14 flex snap-x snap-mandatory scroll-px-6 gap-6 overflow-x-auto px-6 pb-10 md:scroll-px-12 md:px-12"
           role="list"
           aria-label="Seven-day sample meal plan"
         >
@@ -684,26 +688,21 @@ export function SampleWeek({ week }: { week: Day[] }) {
             <article
               key={d.day}
               role="listitem"
-              className="snap-start shrink-0 basis-[88%] sm:basis-[400px] md:basis-[340px]
-                         bg-paper border border-ink/10 px-7 py-8 flex flex-col"
+              className="bg-paper border-ink/10 flex shrink-0 basis-[88%] snap-start flex-col border px-7 py-8 sm:basis-[400px] md:basis-[340px]"
             >
-              <header className="flex items-baseline justify-between border-b border-mauve/30 pb-4">
-                <span className="font-display text-[28px] leading-none text-ink -tracking-[0.02em]">
+              <header className="border-mauve/30 flex items-baseline justify-between border-b pb-4">
+                <span className="font-display text-ink text-[28px] leading-none -tracking-[0.02em]">
                   {d.day}
                 </span>
-                <span className="text-[11px] uppercase tracking-[0.16em] text-mauve">
-                  Day
-                </span>
+                <span className="text-mauve text-[11px] tracking-[0.16em] uppercase">Day</span>
               </header>
-              <dl className="mt-6 divide-y divide-ink/10">
+              <dl className="divide-ink/10 mt-6 divide-y">
                 {ROW_LABELS.map(([key, label]) => (
                   <div key={key} className="grid grid-cols-[88px_1fr] items-baseline gap-4 py-4">
-                    <dt className="text-[11px] uppercase tracking-[0.16em] text-ink-soft">
+                    <dt className="text-ink-soft text-[11px] tracking-[0.16em] uppercase">
                       {label}
                     </dt>
-                    <dd className="font-body text-[15px] leading-[1.5] text-ink">
-                      {d.meals[key]}
-                    </dd>
+                    <dd className="font-body text-ink text-[15px] leading-[1.5]">{d.meals[key]}</dd>
                   </div>
                 ))}
               </dl>
@@ -713,7 +712,7 @@ export function SampleWeek({ week }: { week: Day[] }) {
       </FadeUp>
 
       <Container>
-        <p className="mt-2 text-[13px] tracking-[0.04em] text-ink-soft italic">
+        <p className="text-ink-soft mt-2 text-[13px] tracking-[0.04em] italic">
           &mdash; Sample only. Final plan is calibrated to your blood work, schedule and pantry.
         </p>
       </Container>
@@ -749,17 +748,16 @@ export function CoachingTimeline({ weeks }: { weeks: Week[] }) {
         <Heading as="h2" size="h1" className="mt-3 max-w-[18ch]">
           From first call to lasting change.
         </Heading>
-        <p className="mt-4 max-w-prose text-[15px] leading-[1.6] text-ink-soft">
-          The arc is consistent — the specifics are yours. Milestones marked with a
-          filled dot are the ones that matter most for the outcomes most clients
-          care about.
+        <p className="text-ink-soft mt-4 max-w-prose text-[15px] leading-[1.6]">
+          The arc is consistent — the specifics are yours. Milestones marked with a filled dot are
+          the ones that matter most for the outcomes most clients care about.
         </p>
 
         <ol className="relative mt-16 pl-10 md:pl-16" role="list">
           {/* Connector line */}
           <span
             aria-hidden
-            className="absolute left-[7px] md:left-[11px] top-2 bottom-2 w-px bg-mauve/40"
+            className="bg-mauve/40 absolute top-2 bottom-2 left-[7px] w-px md:left-[11px]"
           />
           {weeks.map((w, i) => (
             <FadeUp key={w.week} delay={i * 0.04}>
@@ -768,28 +766,28 @@ export function CoachingTimeline({ weeks }: { weeks: Week[] }) {
                 <span
                   aria-hidden
                   className={[
-                    "absolute -left-10 md:-left-16 top-[10px] block rounded-full",
+                    "absolute top-[10px] -left-10 block rounded-full md:-left-16",
                     w.milestone
-                      ? "h-[18px] w-[18px] bg-mauve ring-4 ring-cream"
-                      : "h-3 w-3 bg-cream border border-mauve",
+                      ? "bg-mauve ring-cream h-[18px] w-[18px] ring-4"
+                      : "bg-cream border-mauve h-3 w-3 border",
                   ].join(" ")}
                 />
-                <div className="grid gap-2 md:grid-cols-[120px_1fr] md:gap-8 items-baseline">
-                  <span className="font-display text-[44px] md:text-[56px] leading-none text-mauve -tracking-[0.02em]">
+                <div className="grid items-baseline gap-2 md:grid-cols-[120px_1fr] md:gap-8">
+                  <span className="font-display text-mauve text-[44px] leading-none -tracking-[0.02em] md:text-[56px]">
                     {`Week ${String(w.week).padStart(2, "0")}`}
                   </span>
                   <div>
                     <h3
                       className={[
-                        "font-display leading-tight text-ink",
+                        "font-display text-ink leading-tight",
                         w.milestone
-                          ? "text-[26px] md:text-[30px] italic -tracking-[0.01em]"
+                          ? "text-[26px] -tracking-[0.01em] italic md:text-[30px]"
                           : "text-[22px] md:text-[24px]",
                       ].join(" ")}
                     >
                       {w.title}
                     </h3>
-                    <p className="mt-3 max-w-[58ch] text-[16px] leading-[1.6] text-ink-soft">
+                    <p className="text-ink-soft mt-3 max-w-[58ch] text-[16px] leading-[1.6]">
                       {w.body}
                     </p>
                   </div>
@@ -807,7 +805,7 @@ export function CoachingTimeline({ weeks }: { weeks: Week[] }) {
 Implementation notes:
 
 - The connector line is a single absolutely-positioned `<span>`, not 7 individual segments — simpler markup, no risk of breaks between dots.
-- Milestone dots are visually heavier *and* italicize the title — two coordinated cues, both subtle.
+- Milestone dots are visually heavier _and_ italicize the title — two coordinated cues, both subtle.
 - Padded `<ol>` with negative-positioned dots; the `ring-4 ring-cream` on milestone dots punches a clean hole through the connector line so the dot reads as on top of the line, not pierced by it.
 - `FadeUp` per week with a 40ms stagger gives the timeline a "writing itself" feel on first scroll-into-view without crossing into showy territory.
 - The numbered axis is `Week 01` … `Week 08` — zero-padded for typographic regularity (Aesop's product index does the same).
@@ -840,11 +838,11 @@ export function BookingWidget({ booking }: { booking: Booking }) {
         theme: "light",
         cssVarsPerTheme: {
           light: {
-            "cal-brand": "#895575",            // --mauve
-            "cal-brand-emphasis": "#6E3F5C",   // --mauve-deep
-            "cal-bg": "#F4F0EE",               // --cream
-            "cal-bg-emphasis": "#E8E1D8",      // --cream-deep
-            "cal-text": "#1A1A1A",             // --ink
+            "cal-brand": "#895575", // --mauve
+            "cal-brand-emphasis": "#6E3F5C", // --mauve-deep
+            "cal-bg": "#F4F0EE", // --cream
+            "cal-bg-emphasis": "#E8E1D8", // --cream-deep
+            "cal-text": "#1A1A1A", // --ink
             "cal-text-emphasis": "#1A1A1A",
             "cal-border": "rgba(26,26,26,0.10)",
             "cal-border-subtle": "rgba(26,26,26,0.06)",
@@ -866,13 +864,13 @@ export function BookingWidget({ booking }: { booking: Booking }) {
         <Heading as="h2" size="h1" className="mt-3 max-w-[18ch]">
           Pick a time that works for you.
         </Heading>
-        <p className="mt-4 max-w-prose text-[15px] leading-[1.6] text-ink-soft">
-          A 15-minute introductory call by video. We'll cover what you're working
-          on, whether the practice is a fit, and the next step if it is.
+        <p className="text-ink-soft mt-4 max-w-prose text-[15px] leading-[1.6]">
+          A 15-minute introductory call by video. We'll cover what you're working on, whether the
+          practice is a fit, and the next step if it is.
         </p>
 
         <div
-          className="mt-12 bg-paper border border-ink/10 p-2 md:p-4"
+          className="bg-paper border-ink/10 mt-12 border p-2 md:p-4"
           /* Container styling is intentionally minimal — Cal.com paints itself
              cream-on-cream once cssVarsPerTheme has been applied. */
         >
@@ -891,18 +889,22 @@ export function BookingWidget({ booking }: { booking: Booking }) {
             <iframe
               src={booking.calendlyUrl}
               title="Schedule a consultation"
-              className="block w-full h-[720px] border-0"
+              className="block h-[720px] w-full border-0"
               loading="lazy"
             />
           )}
 
           {booking.provider === "link" && (
             <div className="px-6 py-12 text-center">
-              <p className="font-body text-[16px] text-ink-soft">
-                Booking opens in a new tab.
-              </p>
+              <p className="font-body text-ink-soft text-[16px]">Booking opens in a new tab.</p>
               <div className="mt-6">
-                <Button href={booking.fallbackUrl} target="_blank" rel="noopener" variant="primary" size="lg">
+                <Button
+                  href={booking.fallbackUrl}
+                  target="_blank"
+                  rel="noopener"
+                  variant="primary"
+                  size="lg"
+                >
                   Open booking page
                 </Button>
               </div>
@@ -911,13 +913,13 @@ export function BookingWidget({ booking }: { booking: Booking }) {
         </div>
 
         {booking.provider !== "link" && booking.fallbackUrl && (
-          <p className="mt-4 text-[13px] tracking-[0.04em] text-ink-soft">
+          <p className="text-ink-soft mt-4 text-[13px] tracking-[0.04em]">
             Embed not loading?{" "}
             <a
               href={booking.fallbackUrl}
               target="_blank"
               rel="noopener"
-              className="text-mauve underline decoration-mauve/40 underline-offset-4 hover:decoration-mauve"
+              className="text-mauve decoration-mauve/40 hover:decoration-mauve underline underline-offset-4"
             >
               Open the booking page in a new tab.
             </a>
@@ -966,28 +968,111 @@ ctaLabel: Reserve your slot
 ctaHref: "#pricing"
 description: A custom, sustainable food plan built around your life — your kitchen, your routine, your clinical picture. Delivered as a four-week plan with weekly check-ins and unlimited revisions.
 included:
-  - { icon: leaf,    title: "Custom meal plan",   body: "Built from your blood work, preferences, allergies and pantry." }
-  - { icon: basket,  title: "Grocery guide",      body: "Per-week shopping list, organized by section, in PKR." }
-  - { icon: bowl,    title: "Recipe pack",        body: "20+ tested recipes calibrated to your plan." }
-  - { icon: phone,   title: "WhatsApp access",    body: "Same-day answers Mon–Fri during the program window." }
-  - { icon: pencil,  title: "Plan revisions",     body: "Unlimited tweaks during your active month." }
-  - { icon: notes,   title: "Weekly check-in",    body: "A 20-minute call to keep the plan honest." }
+  - {
+      icon: leaf,
+      title: "Custom meal plan",
+      body: "Built from your blood work, preferences, allergies and pantry.",
+    }
+  - {
+      icon: basket,
+      title: "Grocery guide",
+      body: "Per-week shopping list, organized by section, in PKR.",
+    }
+  - { icon: bowl, title: "Recipe pack", body: "20+ tested recipes calibrated to your plan." }
+  - {
+      icon: phone,
+      title: "WhatsApp access",
+      body: "Same-day answers Mon–Fri during the program window.",
+    }
+  - { icon: pencil, title: "Plan revisions", body: "Unlimited tweaks during your active month." }
+  - { icon: notes, title: "Weekly check-in", body: "A 20-minute call to keep the plan honest." }
 howItWorks:
-  - { n: 1, title: "Inquire",       body: "Tell me what you're working on." }
+  - { n: 1, title: "Inquire", body: "Tell me what you're working on." }
   - { n: 2, title: "Intake & labs", body: "We review your blood work, history and routine." }
   - { n: 3, title: "Plan delivered", body: "A four-week plan in your inbox within five days." }
   - { n: 4, title: "Revise & sustain", body: "Weekly check-ins, plan tweaks, sustainable handoff." }
 sampleWeek:
-  - { day: "Monday",    meals: { breakfast: "Oats with banana, walnuts, cinnamon", lunch: "Grilled chicken, brown rice, garden salad", snack: "Dahi with seasonal fruit", dinner: "Daal, roti, sautéed spinach" } }
-  - { day: "Tuesday",   meals: { breakfast: "Vegetable omelette, sourdough toast", lunch: "Chickpea pulao, raita, cucumber", snack: "A handful of almonds, an apple", dinner: "Grilled fish, lemon-roasted vegetables" } }
-  - { day: "Wednesday", meals: { breakfast: "Greek yogurt parfait with seeds", lunch: "Chicken karahi, roti, salad", snack: "Boiled egg, mint chai", dinner: "Lentil soup, whole-grain bread" } }
-  - { day: "Thursday",  meals: { breakfast: "Smoothie: spinach, banana, peanut butter, milk", lunch: "Beef seekh, salad, raita, one roti", snack: "Roasted chana, lemon water", dinner: "Stuffed bell peppers with quinoa" } }
-  - { day: "Friday",    meals: { breakfast: "Egg paratha (whole-wheat) with mint chutney", lunch: "Daal chawal, kachumber salad", snack: "Fruit chaat, no sugar added", dinner: "Grilled chicken kabab, hummus, salad" } }
-  - { day: "Saturday",  meals: { breakfast: "Overnight oats with chia and berries", lunch: "Vegetable biryani, raita", snack: "Carrot sticks with hummus", dinner: "Tandoori fish, sautéed greens" } }
-  - { day: "Sunday",    meals: { breakfast: "Halwa puri (small portion) — flex day", lunch: "Roast chicken, mash, gravy, vegetables", snack: "Dates with milk", dinner: "Light soup and salad" } }
+  - {
+      day: "Monday",
+      meals:
+        {
+          breakfast: "Oats with banana, walnuts, cinnamon",
+          lunch: "Grilled chicken, brown rice, garden salad",
+          snack: "Dahi with seasonal fruit",
+          dinner: "Daal, roti, sautéed spinach",
+        },
+    }
+  - {
+      day: "Tuesday",
+      meals:
+        {
+          breakfast: "Vegetable omelette, sourdough toast",
+          lunch: "Chickpea pulao, raita, cucumber",
+          snack: "A handful of almonds, an apple",
+          dinner: "Grilled fish, lemon-roasted vegetables",
+        },
+    }
+  - {
+      day: "Wednesday",
+      meals:
+        {
+          breakfast: "Greek yogurt parfait with seeds",
+          lunch: "Chicken karahi, roti, salad",
+          snack: "Boiled egg, mint chai",
+          dinner: "Lentil soup, whole-grain bread",
+        },
+    }
+  - {
+      day: "Thursday",
+      meals:
+        {
+          breakfast: "Smoothie: spinach, banana, peanut butter, milk",
+          lunch: "Beef seekh, salad, raita, one roti",
+          snack: "Roasted chana, lemon water",
+          dinner: "Stuffed bell peppers with quinoa",
+        },
+    }
+  - {
+      day: "Friday",
+      meals:
+        {
+          breakfast: "Egg paratha (whole-wheat) with mint chutney",
+          lunch: "Daal chawal, kachumber salad",
+          snack: "Fruit chaat, no sugar added",
+          dinner: "Grilled chicken kabab, hummus, salad",
+        },
+    }
+  - {
+      day: "Saturday",
+      meals:
+        {
+          breakfast: "Overnight oats with chia and berries",
+          lunch: "Vegetable biryani, raita",
+          snack: "Carrot sticks with hummus",
+          dinner: "Tandoori fish, sautéed greens",
+        },
+    }
+  - {
+      day: "Sunday",
+      meals:
+        {
+          breakfast: "Halwa puri (small portion) — flex day",
+          lunch: "Roast chicken, mash, gravy, vegetables",
+          snack: "Dates with milk",
+          dinner: "Light soup and salad",
+        },
+    }
 testimonials:
-  - { quote: "I thought I knew how to eat. After the four weeks I knew how to eat for me — bloating gone, energy steady, my labs in range.", name: "S. A.", context: "Lahore, four-month follow-up" }
-  - { quote: "The plan finally felt like food I'd actually cook on a Tuesday. That's why I stuck with it.", name: "H. M.", context: "PCOS, six months in" }
+  - {
+      quote: "I thought I knew how to eat. After the four weeks I knew how to eat for me — bloating gone, energy steady, my labs in range.",
+      name: "S. A.",
+      context: "Lahore, four-month follow-up",
+    }
+  - {
+      quote: "The plan finally felt like food I'd actually cook on a Tuesday. That's why I stuck with it.",
+      name: "H. M.",
+      context: "PCOS, six months in",
+    }
 pricing:
   headline: "PKR 15,000 / month"
   bullets:
@@ -1000,12 +1085,27 @@ pricing:
   ctaLabel: "Reserve your slot"
   ctaHref: "/contact?topic=diet-planning"
 faq:
-  - { q: "How is the plan delivered?", a: "A PDF in your inbox plus a shared Google Doc you can revise with me through the month." }
-  - { q: "Do you accommodate vegetarian / halal / allergies?", a: "Yes — these are inputs to the plan, not constraints to work around." }
-  - { q: "Can I extend after a month?", a: "Yes — month-by-month, no commitment beyond the active window." }
-  - { q: "What if I travel during the program?", a: "We build a travel-week template into your plan." }
+  - {
+      q: "How is the plan delivered?",
+      a: "A PDF in your inbox plus a shared Google Doc you can revise with me through the month.",
+    }
+  - {
+      q: "Do you accommodate vegetarian / halal / allergies?",
+      a: "Yes — these are inputs to the plan, not constraints to work around.",
+    }
+  - {
+      q: "Can I extend after a month?",
+      a: "Yes — month-by-month, no commitment beyond the active window.",
+    }
+  - {
+      q: "What if I travel during the program?",
+      a: "We build a travel-week template into your plan.",
+    }
   - { q: "How do I pay?", a: "Bank transfer or Easypaisa, in PKR." }
-  - { q: "What happens after the program?", a: "You keep the plan, the recipes and the grocery template. Most clients return for a check-in plan two months later." }
+  - {
+      q: "What happens after the program?",
+      a: "You keep the plan, the recipes and the grocery template. Most clients return for a check-in plan two months later.",
+    }
 ---
 ```
 

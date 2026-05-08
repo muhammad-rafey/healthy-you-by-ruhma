@@ -14,6 +14,7 @@ route (`app/legal/[slug]/page.tsx`) backed by three MDX files
 (`content/legal/{privacy,terms,refunds}.mdx`).
 
 Constraints from master §3.13:
+
 - Inter 17px body, 1.6 line-height, max-width **720px**, single column.
 - Eyebrow ("Legal") + title (Display style) + last-updated caption + body.
 - No images, no botanical SVGs, no pull quotes, no motion.
@@ -21,6 +22,7 @@ Constraints from master §3.13:
   per master typography table).
 
 Functional requirements:
+
 - Each page statically generated at build via `generateStaticParams`.
 - Reuses the `<Prose>` typographic wrapper defined in plan 08 (Focus pages)
   — no duplicate body styling.
@@ -40,12 +42,12 @@ DPA inventory, audit-log of edits.
 
 Must be merged before this plan runs:
 
-| # | Plan | Why we need it |
-|---|---|---|
-| 01 | `01-design-system.md` | Tokens (`--cream`, `--ink`, `--ink-soft`, `--mauve`), Inter via `next/font`, Eyebrow primitive, type scale (Display, Caption). |
-| 02 | `02-layout-shell.md` | `app/layout.tsx`, Nav, Footer (legal links target `/legal/*` from the footer's "Legal" column), 301 redirect `/refund_returns → /legal/refunds`, `/privacy-policy → /legal/privacy`, `/terms-and-conditions → /legal/terms`. |
-| 03 | `03-content-media-migration.md` | The MDX loader pipeline (`next-mdx-remote` v5 + `gray-matter`), the `content/` directory convention, the helper that reads frontmatter + compiles MDX. |
-| 08 | `08-focus.md` | Defines `<Prose>` — the typographic body wrapper (handles `h2/h3/p/ul/ol/blockquote` rhythm at 17px Inter, max-w 720px). We **import**, not redefine. |
+| #   | Plan                            | Why we need it                                                                                                                                                                                                               |
+| --- | ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 01  | `01-design-system.md`           | Tokens (`--cream`, `--ink`, `--ink-soft`, `--mauve`), Inter via `next/font`, Eyebrow primitive, type scale (Display, Caption).                                                                                               |
+| 02  | `02-layout-shell.md`            | `app/layout.tsx`, Nav, Footer (legal links target `/legal/*` from the footer's "Legal" column), 301 redirect `/refund_returns → /legal/refunds`, `/privacy-policy → /legal/privacy`, `/terms-and-conditions → /legal/terms`. |
+| 03  | `03-content-media-migration.md` | The MDX loader pipeline (`next-mdx-remote` v5 + `gray-matter`), the `content/` directory convention, the helper that reads frontmatter + compiles MDX.                                                                       |
+| 08  | `08-focus.md`                   | Defines `<Prose>` — the typographic body wrapper (handles `h2/h3/p/ul/ol/blockquote` rhythm at 17px Inter, max-w 720px). We **import**, not redefine.                                                                        |
 
 If 08 is not yet merged when this plan executes, fall back to inlining a
 minimal Prose shim here — but note that as tech debt and unify on first
@@ -107,10 +109,10 @@ export function LegalPage({ title, lastUpdated, children }: LegalPageProps) {
     <article className="bg-cream text-ink-soft">
       <header className="mx-auto max-w-[720px] px-6 pt-24 pb-10 md:pt-32">
         <Eyebrow>Legal</Eyebrow>
-        <h1 className="font-display mt-6 text-[clamp(40px,6vw,96px)] font-medium leading-[1.05] tracking-[-0.03em] text-ink">
+        <h1 className="font-display text-ink mt-6 text-[clamp(40px,6vw,96px)] leading-[1.05] font-medium tracking-[-0.03em]">
           {title}
         </h1>
-        <p className="mt-6 text-[13px] tracking-[0.04em] text-ink-soft/70">
+        <p className="text-ink-soft/70 mt-6 text-[13px] tracking-[0.04em]">
           Last updated <time dateTime={lastUpdated}>{formatted}</time>
         </p>
       </header>
@@ -124,6 +126,7 @@ export function LegalPage({ title, lastUpdated, children }: LegalPageProps) {
 ```
 
 Notes:
+
 - No motion components. These pages render statically and are fully visible
   on first paint.
 - Date formatter uses `en-GB` so the format reads "4 November 2025" — fits
@@ -168,9 +171,11 @@ export async function generateStaticParams() {
   return VALID_SLUGS.map((slug) => ({ slug }));
 }
 
-export async function generateMetadata(
-  { params }: { params: Promise<{ slug: string }> },
-): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
   const { slug } = await params;
   const data = await loadLegal(slug);
   if (!data) return {};
@@ -184,9 +189,7 @@ export async function generateMetadata(
   };
 }
 
-export default async function LegalRoute(
-  { params }: { params: Promise<{ slug: string }> },
-) {
+export default async function LegalRoute({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const data = await loadLegal(slug);
   if (!data) notFound();
@@ -198,10 +201,7 @@ export default async function LegalRoute(
   });
 
   return (
-    <LegalPage
-      title={data.frontmatter.title}
-      lastUpdated={data.frontmatter.lastUpdated}
-    >
+    <LegalPage title={data.frontmatter.title} lastUpdated={data.frontmatter.lastUpdated}>
       {content}
     </LegalPage>
   );
@@ -211,6 +211,7 @@ export const dynamicParams = false;
 ```
 
 Notes:
+
 - `dynamicParams = false` → unknown slugs 404 at build, not at request time.
 - `generateMetadata` signature uses the Next 15 Promise-based params API.
 - `mdxComponents` is the shared map from plan 03 (typed `h2`, `ul`, etc.,
@@ -234,7 +235,7 @@ when you use this website or our services, how we use it, and your rights.
 
 ## What we collect
 
-…  {/* Body migrated from WP page id 1156. See §5 "extract content" below. */}
+… {/* Body migrated from WP page id 1156. See §5 "extract content" below. */}
 
 ## How we use your information
 
@@ -266,7 +267,7 @@ description: The terms governing your use of the Healthy You By Ruhma website an
 
 ## Acceptance of terms
 
-…  {/* Body migrated from WP page id 1409. */}
+… {/* Body migrated from WP page id 1409. */}
 
 ## Services
 
@@ -304,7 +305,7 @@ description: Refund and cancellation terms for Healthy You By Ruhma programmes a
 
 ## Programmes and consultations
 
-…  {/* Body migrated from WP page id 938. */}
+… {/* Body migrated from WP page id 938. */}
 
 ## Digital guidebooks
 
@@ -358,9 +359,10 @@ done
 ```
 
 The expected slugs from the WP site are:
+
 - 1156 → `privacy-policy`
 - 1409 → `terms-and-conditions`
-- 938 → `refund_returns`  ← this is the underscore-form that 301s to `/legal/refunds` per master §6.
+- 938 → `refund_returns` ← this is the underscore-form that 301s to `/legal/refunds` per master §6.
 
 ### 5.2 Convert HTML → MDX manually
 
@@ -407,7 +409,7 @@ MDX comments** (do not delete; legal copy needs human sign-off):
 - **References to PECA / Pakistan Electronic Crimes Act** — keep if present
   and accurate.
 - **"Last updated 2021"** lines in the body — supersede with `lastUpdated`
-  frontmatter set to today's date *only if* a substantive review actually
+  frontmatter set to today's date _only if_ a substantive review actually
   happened. Otherwise, keep the original year as the frontmatter value
   honestly.
 
@@ -548,13 +550,13 @@ not be added during build without a separate decision:
 
 ## 8. Estimated effort
 
-| Task | Time |
-|---|---|
-| Extract HTML from WP container (5.1) | 10 min |
-| Manual MDX cleanup × 3 files (5.2–5.3) | 60–90 min |
-| Component + route implementation (5.5) | 30 min |
-| Smoke test + sitemap + redirect check (5.6–5.8) | 20 min |
-| **Total** | **~2–3 hours** |
+| Task                                            | Time           |
+| ----------------------------------------------- | -------------- |
+| Extract HTML from WP container (5.1)            | 10 min         |
+| Manual MDX cleanup × 3 files (5.2–5.3)          | 60–90 min      |
+| Component + route implementation (5.5)          | 30 min         |
+| Smoke test + sitemap + redirect check (5.6–5.8) | 20 min         |
+| **Total**                                       | **~2–3 hours** |
 
 This is the smallest of the per-page plans by design. The bulk of the
 real-world time will be the eventual legal-review TODO (§5.4), which is

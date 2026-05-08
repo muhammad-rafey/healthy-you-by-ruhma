@@ -1,0 +1,499 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------
+   Design tokens — master plan §1
+   Single source of truth. Edit here, every utility updates.
+--------------------------------------------------------------- */
+
+@theme {
+  /* Color tokens (master §1 Design tokens table) */
+  --color-cream: #f4f0ee;
+  --color-cream-deep: #e8e1d8;
+  --color-shell: #e7d3cc;
+  --color-ink: #1a1a1a;
+  --color-ink-soft: #3e3e3e;
+  --color-mauve: #895575;
+  --color-mauve-deep: #6e3f5c;
+  --color-moss: #5d6b4e;
+  --color-paper: #ffffff;
+
+  /* shadcn semantic tokens — mapped to our palette so generated primitives
+     (Sheet, Accordion) inherit the brand without further patching. */
+  --color-background: #f4f0ee;
+  --color-foreground: #1a1a1a;
+  --color-popover: #ffffff;
+  --color-popover-foreground: #1a1a1a;
+  --color-muted: #e8e1d8;
+  --color-muted-foreground: #3e3e3e;
+  --color-border: rgba(26, 26, 26, 0.12);
+  --color-input: rgba(26, 26, 26, 0.16);
+  --color-ring: #895575;
+  --color-primary: #1a1a1a;
+  --color-primary-foreground: #f4f0ee;
+  --color-secondary: #e8e1d8;
+  --color-secondary-foreground: #1a1a1a;
+  --color-destructive: #b3261e;
+
+  /* Font families — wired in app/layout.tsx via next/font CSS variables */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-display: var(--font-epilogue), ui-serif, Georgia, serif;
+
+  /* Editorial spacing scale — used by <Container> and section primitives */
+  --spacing-section: clamp(4rem, 8vw, 8rem);
+  --spacing-section-tight: clamp(3rem, 6vw, 5rem);
+
+  /* Motion durations — keep aligned with motion components */
+  --duration-fade: 600ms;
+  --duration-reveal: 1200ms;
+  --duration-stagger: 800ms;
+  --ease-editorial: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-reveal: cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+/* ---------------------------------------------------------------
+   Base — root, body, selection, focus
+--------------------------------------------------------------- */
+
+@layer base {
+  :root {
+    color-scheme: light;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  html {
+    background: var(--color-cream);
+    color: var(--color-ink);
+  }
+
+  body {
+    font-family: var(--font-sans);
+    font-size: 17px; /* master §1 Body */
+    line-height: 1.6;
+    color: var(--color-ink-soft);
+    background: var(--color-cream);
+  }
+
+  ::selection {
+    background: var(--color-shell);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-mauve);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* Headings use display family by default; primitives override per-variant */
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    color: var(--color-ink);
+    font-feature-settings: "ss01", "ss02";
+  }
+
+  /* Honour reduced-motion globally — motion components also short-circuit */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* ---------------------------------------------------------------
+   Type scale utilities — master §1 type table
+   Fluid clamps. Each utility owns size, weight, tracking, family.
+   Consumers compose via <Heading variant="…"> or these classes directly.
+--------------------------------------------------------------- */
+
+@layer components {
+  .type-display-xl {
+    font-family: var(--font-display);
+    font-size: clamp(64px, 12vw, 220px);
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    line-height: 0.92;
+    color: var(--color-ink);
+  }
+
+  .type-display {
+    font-family: var(--font-display);
+    font-size: clamp(40px, 6vw, 96px);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 1.02;
+    color: var(--color-ink);
+  }
+
+  .type-h1 {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 4vw, 56px);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.08;
+    color: var(--color-ink);
+  }
+
+  .type-h2 {
+    font-family: var(--font-sans);
+    font-size: clamp(24px, 2.5vw, 36px);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    color: var(--color-ink);
+  }
+
+  .type-eyebrow {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    line-height: 1;
+    color: var(--color-mauve);
+  }
+
+  .type-body {
+    font-family: var(--font-sans);
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--color-ink-soft);
+  }
+
+  .type-small {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--color-ink-soft);
+  }
+
+  .type-caption {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    line-height: 1.4;
+    color: var(--color-ink-soft);
+    font-style: italic;
+  }
+}
+
+/* ---------------------------------------------------------------
+   Prose — used by <Prose> for MDX rendering (focus pages, journal)
+   Editorial body with drop-caps option, pull-quote treatment.
+--------------------------------------------------------------- */
+
+@layer components {
+  .prose-editorial {
+    max-width: 68ch;
+    color: var(--color-ink-soft);
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.65;
+  }
+
+  .prose-editorial > * + * {
+    margin-top: 1.5em;
+  }
+
+  .prose-editorial h2 {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 3vw, 40px);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    color: var(--color-ink);
+    margin-top: 2.5em;
+  }
+
+  .prose-editorial h3 {
+    font-family: var(--font-display);
+    font-size: clamp(22px, 2vw, 28px);
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    color: var(--color-ink);
+    margin-top: 2em;
+  }
+
+  .prose-editorial blockquote {
+    font-family: var(--font-display);
+    font-size: clamp(24px, 2.5vw, 36px);
+    font-weight: 400;
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+    color: var(--color-ink);
+    border-left: 2px solid var(--color-mauve);
+    padding-left: 1.25rem;
+    margin: 2em 0;
+    font-style: italic;
+  }
+
+  .prose-editorial a {
+    color: var(--color-mauve);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    transition: color 150ms var(--ease-editorial);
+  }
+
+  .prose-editorial a:hover {
+    color: var(--color-mauve-deep);
+  }
+
+  .prose-editorial strong {
+    color: var(--color-ink);
+    font-weight: 600;
+  }
+
+  .prose-editorial ul,
+  .prose-editorial ol {
+    padding-left: 1.5rem;
+  }
+
+  .prose-editorial ul li::marker {
+    color: var(--color-mauve);
+  }
+
+  /* Drop-cap variant — opt-in via .prose-editorial.has-dropcap */
+  .prose-editorial.has-dropcap > p:first-of-type::first-letter {
+    font-family: var(--font-display);
+    float: left;
+    font-size: 5em;
+    line-height: 0.9;
+    font-weight: 500;
+    padding: 0.05em 0.08em 0 0;
+    color: var(--color-ink);
+  }
+
+  .prose-editorial figure figcaption {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-style: italic;
+    color: var(--color-ink-soft);
+    margin-top: 0.5em;
+  }
+
+  /* About bio — long-form editorial prose with drop-cap on first paragraph */
+  .bio-prose {
+    color: var(--color-ink-soft);
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.7;
+    max-width: 68ch;
+  }
+
+  .bio-prose > p + p,
+  .bio-prose > h2 + p {
+    margin-top: 1.4em;
+  }
+
+  .bio-prose > p:first-of-type::first-letter {
+    font-family: var(--font-display);
+    float: left;
+    font-size: 5.25em;
+    line-height: 0.85;
+    font-weight: 500;
+    padding: 0.05em 0.12em 0 0;
+    color: var(--color-mauve);
+    letter-spacing: -0.04em;
+  }
+
+  /* ---------------------------------------------------------------
+     Focus longread — magazine-style article body for /focus/[slug].
+     Single column ≤md (max 720 px). Two balanced columns on lg+,
+     with break-inside:avoid on every block element so headings,
+     blockquotes, lists, and figures never split across the gutter.
+     Drop-cap on first paragraph when .has-dropcap is set.
+  --------------------------------------------------------------- */
+
+  .focus-prose {
+    color: var(--color-ink-soft);
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.65;
+  }
+
+  .focus-prose-body {
+    max-width: 720px;
+    margin-inline: auto;
+  }
+
+  .focus-prose-body > * + * {
+    margin-top: 1.25em;
+  }
+
+  /* Two-column body on lg+ — balanced, with a comfortable gutter. The
+     wider 1040 px wrapper allows ~480 px columns. */
+  @media (min-width: 1024px) {
+    .focus-prose-body {
+      max-width: 100%;
+      column-count: 2;
+      column-gap: 64px;
+      column-fill: balance;
+    }
+  }
+
+  /* Block elements stay whole inside columns. */
+  .focus-prose-body :where(h2, h3, h4, blockquote, figure, ul, ol, hr) {
+    break-inside: avoid;
+  }
+
+  .focus-prose-body :where(figure, .focus-pullquote, .focus-botanical) {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Justify prose paragraphs on lg+ for the magazine-longread feel.
+     Hyphens auto helps avoid awkward gaps in justified columns. */
+  @media (min-width: 1024px) {
+    .focus-prose-body p {
+      text-align: justify;
+      hyphens: auto;
+      -webkit-hyphens: auto;
+    }
+  }
+
+  .focus-prose-body h2 {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 3vw, 40px);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    color: var(--color-ink);
+    margin-top: 2em;
+    margin-bottom: 0.4em;
+  }
+
+  .focus-prose-body h3 {
+    font-family: var(--font-display);
+    font-size: clamp(22px, 2vw, 28px);
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    color: var(--color-ink);
+    margin-top: 1.6em;
+    margin-bottom: 0.4em;
+  }
+
+  .focus-prose-body h4 {
+    font-family: var(--font-sans);
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    color: var(--color-ink);
+    margin-top: 1.4em;
+    margin-bottom: 0.4em;
+  }
+
+  .focus-prose-body p {
+    margin-top: 0;
+    margin-bottom: 1.1em;
+    hanging-punctuation: first last;
+  }
+
+  .focus-prose-body a {
+    color: var(--color-mauve);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    text-decoration-color: color-mix(in oklab, var(--color-mauve) 40%, transparent);
+    transition:
+      color 200ms var(--ease-editorial),
+      text-decoration-color 200ms var(--ease-editorial);
+  }
+
+  .focus-prose-body a:hover {
+    color: var(--color-mauve-deep);
+    text-decoration-color: var(--color-mauve-deep);
+  }
+
+  .focus-prose-body strong {
+    color: var(--color-ink);
+    font-weight: 600;
+  }
+
+  .focus-prose-body em {
+    font-style: italic;
+  }
+
+  .focus-prose-body ul,
+  .focus-prose-body ol {
+    padding-left: 1.4em;
+    margin-top: 1em;
+    margin-bottom: 1.4em;
+  }
+
+  .focus-prose-body ul li {
+    list-style: none;
+    position: relative;
+    padding-left: 1em;
+  }
+
+  .focus-prose-body ul li::before {
+    content: "—";
+    position: absolute;
+    left: -0.2em;
+    color: var(--color-mauve);
+  }
+
+  .focus-prose-body ol {
+    list-style: none;
+    counter-reset: focus-list;
+    padding-left: 1.6em;
+  }
+
+  .focus-prose-body ol > li {
+    counter-increment: focus-list;
+    position: relative;
+    padding-left: 1.8em;
+  }
+
+  .focus-prose-body ol > li::before {
+    content: counter(focus-list, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 0.05em;
+    font-family: var(--font-display);
+    font-feature-settings: "tnum";
+    color: var(--color-mauve);
+    font-size: 0.95em;
+  }
+
+  .focus-prose-body hr {
+    border: 0;
+    height: 1px;
+    background: color-mix(in oklab, var(--color-ink) 12%, transparent);
+    margin: 2.4em auto;
+    width: 64px;
+  }
+
+  /* Drop-cap on the first paragraph when the parent opts in. Handles the
+     case where the first child is a wrapping element (e.g. an MDX-injected
+     <p>) by targeting the first <p> descendant. */
+  .focus-prose-body.has-dropcap > p:first-of-type::first-letter {
+    font-family: var(--font-display);
+    float: left;
+    font-size: 4.6em;
+    line-height: 0.88;
+    font-weight: 500;
+    padding: 0.04em 0.12em 0 0;
+    color: var(--color-ink);
+    letter-spacing: -0.04em;
+  }
+
+  @media (max-width: 640px) {
+    .focus-prose-body.has-dropcap > p:first-of-type::first-letter {
+      font-size: 3.6em;
+    }
+  }
+}

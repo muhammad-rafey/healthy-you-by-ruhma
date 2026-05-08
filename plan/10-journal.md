@@ -8,7 +8,7 @@
 
 ## 1. Goal
 
-Ship a Journal that already feels like a *publication*, not a starter blog
+Ship a Journal that already feels like a _publication_, not a starter blog
 template — even with zero or one real post in it. The two states the section
 must handle gracefully:
 
@@ -43,12 +43,12 @@ This plan does NOT cover pagination, search, or comments — see §7.
 The journal cannot start until these earlier plans have shipped (or at minimum
 their public surface):
 
-| Plan | What we depend on |
-|---|---|
-| **01 — Design system** | `--cream`, `--cream-deep`, `--shell`, `--ink`, `--ink-soft`, `--mauve`, `--mauve-deep`, `--moss`, `--paper` tokens; Inter + Epilogue via `next/font`; `<Eyebrow>`, `<Heading>`, `<Container>`, `<Button>` primitives; `<FadeUp>` and `<LetterStagger>` motion utilities. |
-| **02 — Layout shell** | `app/layout.tsx`, sticky `<Nav>`, `<Footer>` (we reuse footer's newsletter form markup for the empty-state form), redirects, `sitemap.ts` (we'll add journal entries from this plan). |
-| **03 — Content/media migration** | `public/media/` populated with optimized AVIF/WEBP renditions (post cover images live there); `content/` directory convention; the `gray-matter` + `next-mdx-remote` setup decided upstream. |
-| **08 — Focus pages** (partial) | The `<Prose>` component (article-body wrapper that applies type scale, drop-cap support, max-width 680px column, link styling, blockquote treatment, `prose-img` rules) is shared with focus longreads. Journal extends it with article-only MDX components but does NOT redefine it. If 08 is in flight when we start, build a minimum `<Prose>` here and let 08 absorb it; don't fork two copies. |
+| Plan                             | What we depend on                                                                                                                                                                                                                                                                                                                                                                                   |
+| -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **01 — Design system**           | `--cream`, `--cream-deep`, `--shell`, `--ink`, `--ink-soft`, `--mauve`, `--mauve-deep`, `--moss`, `--paper` tokens; Inter + Epilogue via `next/font`; `<Eyebrow>`, `<Heading>`, `<Container>`, `<Button>` primitives; `<FadeUp>` and `<LetterStagger>` motion utilities.                                                                                                                            |
+| **02 — Layout shell**            | `app/layout.tsx`, sticky `<Nav>`, `<Footer>` (we reuse footer's newsletter form markup for the empty-state form), redirects, `sitemap.ts` (we'll add journal entries from this plan).                                                                                                                                                                                                               |
+| **03 — Content/media migration** | `public/media/` populated with optimized AVIF/WEBP renditions (post cover images live there); `content/` directory convention; the `gray-matter` + `next-mdx-remote` setup decided upstream.                                                                                                                                                                                                        |
+| **08 — Focus pages** (partial)   | The `<Prose>` component (article-body wrapper that applies type scale, drop-cap support, max-width 680px column, link styling, blockquote treatment, `prose-img` rules) is shared with focus longreads. Journal extends it with article-only MDX components but does NOT redefine it. If 08 is in flight when we start, build a minimum `<Prose>` here and let 08 absorb it; don't fork two copies. |
 
 If a teammate is mid-flight on 08, **do not duplicate `<Prose>`**. Coordinate
 to land the shared base first, then add journal-specific MDX components on top
@@ -65,11 +65,11 @@ already added in 03):
 // package.json  — new entries only
 {
   "dependencies": {
-    "reading-time": "^1.5.0",        // word-count → read-time, optional but cheap
-    "rehype-slug": "^6.0.0",          // ids on h2/h3 inside posts (used for anchors and related-strip linking later)
+    "reading-time": "^1.5.0", // word-count → read-time, optional but cheap
+    "rehype-slug": "^6.0.0", // ids on h2/h3 inside posts (used for anchors and related-strip linking later)
     "rehype-autolink-headings": "^7.1.0",
-    "remark-smartypants": "^3.0.2"    // curly quotes, em-dashes — editorial polish
-  }
+    "remark-smartypants": "^3.0.2", // curly quotes, em-dashes — editorial polish
+  },
 }
 ```
 
@@ -115,13 +115,13 @@ title: "What I tell every PCOS client first"
 slug: what-i-tell-every-pcos-client-first
 excerpt: "Before macros, before supplements, before the ‘best’ diet —
   there’s a single conversation that changes the next twelve weeks."
-date: 2026-04-12          # ISO 8601, used for sort + RSS pubDate
-category: "PCOS"          # title-case, used for chip + eyebrow + JSON-LD
+date: 2026-04-12 # ISO 8601, used for sort + RSS pubDate
+category: "PCOS" # title-case, used for chip + eyebrow + JSON-LD
 coverImage: /media/journal/pcos-first-conversation-cover.jpg
-ogImage: /media/journal/pcos-first-conversation-og.jpg   # optional, falls back to coverImage
-readTime: 5               # optional minutes — auto-computed from body if missing
-author: "Dr. Ruhma"       # single author for now; see §7
-draft: false              # if true, omitted from index/RSS (still SSG'd in dev)
+ogImage: /media/journal/pcos-first-conversation-og.jpg # optional, falls back to coverImage
+readTime: 5 # optional minutes — auto-computed from body if missing
+author: "Dr. Ruhma" # single author for now; see §7
+draft: false # if true, omitted from index/RSS (still SSG'd in dev)
 ```
 
 Bodies: ~600 words each. Topics:
@@ -137,7 +137,7 @@ time), but the **components used must include at minimum**:
 `<DropCap>` (or `:::dropcap` shortcode) on the opening paragraph,
 `<Pullquote>` once, `<Aside>` once, `<FigureCaption>` around one image.
 
-### 4.2 `lib/journal.ts`  — content loader, sort, dedupe, read-time
+### 4.2 `lib/journal.ts` — content loader, sort, dedupe, read-time
 
 ```ts
 // lib/journal.ts
@@ -153,7 +153,10 @@ const FrontmatterSchema = z.object({
   title: z.string().min(1),
   slug: z.string().regex(/^[a-z0-9-]+$/),
   excerpt: z.string().min(1).max(280),
-  date: z.string().datetime().or(z.string().regex(/^\d{4}-\d{2}-\d{2}$/)),
+  date: z
+    .string()
+    .datetime()
+    .or(z.string().regex(/^\d{4}-\d{2}-\d{2}$/)),
   category: z.string().min(1),
   coverImage: z.string().startsWith("/"),
   ogImage: z.string().startsWith("/").optional(),
@@ -166,8 +169,8 @@ export type JournalFrontmatter = z.infer<typeof FrontmatterSchema>;
 
 export interface JournalPost {
   frontmatter: JournalFrontmatter & { readTime: number; ogImage: string };
-  body: string;        // raw MDX, compiled per-route
-  filepath: string;    // for build error messages
+  body: string; // raw MDX, compiled per-route
+  filepath: string; // for build error messages
 }
 
 const WPM = 220;
@@ -178,9 +181,7 @@ export async function getAllPosts(): Promise<JournalPost[]> {
   if (cache) return cache;
 
   const entries = await fs.readdir(JOURNAL_DIR, { withFileTypes: true });
-  const mdxFiles = entries.filter(
-    (e) => e.isFile() && e.name.endsWith(".mdx"),
-  );
+  const mdxFiles = entries.filter((e) => e.isFile() && e.name.endsWith(".mdx"));
 
   const posts: JournalPost[] = [];
   for (const file of mdxFiles) {
@@ -190,9 +191,7 @@ export async function getAllPosts(): Promise<JournalPost[]> {
 
     const parsed = FrontmatterSchema.safeParse(data);
     if (!parsed.success) {
-      throw new Error(
-        `Invalid frontmatter in ${file.name}:\n${parsed.error.message}`,
-      );
+      throw new Error(`Invalid frontmatter in ${file.name}:\n${parsed.error.message}`);
     }
 
     // Cross-check: slug must match filename (without .mdx).
@@ -221,23 +220,17 @@ export async function getAllPosts(): Promise<JournalPost[]> {
 
   // Drafts hidden in production, surfaced in dev for preview.
   const visible =
-    process.env.NODE_ENV === "production"
-      ? posts.filter((p) => !p.frontmatter.draft)
-      : posts;
+    process.env.NODE_ENV === "production" ? posts.filter((p) => !p.frontmatter.draft) : posts;
 
   visible.sort(
-    (a, b) =>
-      new Date(b.frontmatter.date).valueOf() -
-      new Date(a.frontmatter.date).valueOf(),
+    (a, b) => new Date(b.frontmatter.date).valueOf() - new Date(a.frontmatter.date).valueOf(),
   );
 
   cache = visible;
   return visible;
 }
 
-export async function getPostBySlug(
-  slug: string,
-): Promise<JournalPost | null> {
+export async function getPostBySlug(slug: string): Promise<JournalPost | null> {
   const all = await getAllPosts();
   return all.find((p) => p.frontmatter.slug === slug) ?? null;
 }
@@ -248,23 +241,16 @@ export async function getCategories(): Promise<string[]> {
   return [...set].sort((a, b) => a.localeCompare(b));
 }
 
-export async function getRelatedPosts(
-  slug: string,
-  limit = 3,
-): Promise<JournalPost[]> {
+export async function getRelatedPosts(slug: string, limit = 3): Promise<JournalPost[]> {
   const all = await getAllPosts();
   const current = all.find((p) => p.frontmatter.slug === slug);
   if (!current) return [];
 
   const sameCat = all.filter(
-    (p) =>
-      p.frontmatter.slug !== slug &&
-      p.frontmatter.category === current.frontmatter.category,
+    (p) => p.frontmatter.slug !== slug && p.frontmatter.category === current.frontmatter.category,
   );
   const others = all.filter(
-    (p) =>
-      p.frontmatter.slug !== slug &&
-      p.frontmatter.category !== current.frontmatter.category,
+    (p) => p.frontmatter.slug !== slug && p.frontmatter.category !== current.frontmatter.category,
   );
 
   return [...sameCat, ...others].slice(0, limit);
@@ -275,7 +261,7 @@ Cache notes: the module-scoped `cache` is fine because Next builds run as a
 single process per build and RSC re-renders read fresh from the cache. In dev,
 HMR will reload this module on file change so we don't need invalidation.
 
-### 4.3 `app/journal/page.tsx`  — index, empty-state aware
+### 4.3 `app/journal/page.tsx` — index, empty-state aware
 
 ```tsx
 // app/journal/page.tsx
@@ -352,7 +338,7 @@ featured-card, no chip row, a newsletter form takes over the visual weight.
 Branching here keeps the populated path uncluttered and the empty path
 intentional.
 
-### 4.4 `app/journal/[slug]/page.tsx`  — post route
+### 4.4 `app/journal/[slug]/page.tsx` — post route
 
 ```tsx
 // app/journal/[slug]/page.tsx
@@ -458,15 +444,11 @@ interface Props {
 }
 
 export function FeaturedPost({ post }: Props) {
-  const { slug, title, excerpt, coverImage, category, date, readTime } =
-    post.frontmatter;
+  const { slug, title, excerpt, coverImage, category, date, readTime } = post.frontmatter;
 
   return (
     <FadeUp asChild>
-      <Link
-        href={`/journal/${slug}`}
-        className="group block focus-visible:outline-none"
-      >
+      <Link href={`/journal/${slug}`} className="group block focus-visible:outline-none">
         <div className="relative aspect-[16/9] w-full overflow-hidden rounded-sm bg-[--cream-deep]">
           <Image
             src={coverImage}
@@ -482,7 +464,7 @@ export function FeaturedPost({ post }: Props) {
             <Eyebrow>{category}</Eyebrow>
           </div>
           <div className="md:col-span-7">
-            <h2 className="font-display text-[clamp(36px,5vw,56px)] font-medium leading-[1.05] tracking-[-0.02em] text-[--ink]">
+            <h2 className="font-display text-[clamp(36px,5vw,56px)] leading-[1.05] font-medium tracking-[-0.02em] text-[--ink]">
               {title}
             </h2>
             <p className="mt-6 max-w-prose text-[17px] leading-[1.6] text-[--ink-soft]">
@@ -529,10 +511,7 @@ interface Props {
 
 export function PostGrid({ posts }: Props) {
   return (
-    <ul
-      className="grid grid-cols-1 gap-x-8 gap-y-16 md:grid-cols-12"
-      role="list"
-    >
+    <ul className="grid grid-cols-1 gap-x-8 gap-y-16 md:grid-cols-12" role="list">
       {posts.map((post, i) => {
         // Magazine rhythm: 7-5 / 5-7 / 4-4-4 / repeat
         const cycle = i % 5;
@@ -561,11 +540,11 @@ export function PostGrid({ posts }: Props) {
 Three sizes (`lg` / `md` / `sm`) — same component, different image aspect and
 title scale. Reuse cuts component count.
 
-| Size | Image aspect | Title clamp | Used for |
-|---|---|---|---|
-| `lg` | 4 / 3 | clamp(28px, 3vw, 36px) | First card per cycle |
-| `md` | 3 / 4 | clamp(24px, 2.4vw, 30px) | Portrait-feel card |
-| `sm` | 4 / 3 | clamp(20px, 2vw, 24px) | Triplet row |
+| Size | Image aspect | Title clamp              | Used for             |
+| ---- | ------------ | ------------------------ | -------------------- |
+| `lg` | 4 / 3        | clamp(28px, 3vw, 36px)   | First card per cycle |
+| `md` | 3 / 4        | clamp(24px, 2.4vw, 30px) | Portrait-feel card   |
+| `sm` | 4 / 3        | clamp(20px, 2vw, 24px)   | Triplet row          |
 
 Shared anatomy: image · eyebrow (category) · title · 2-line excerpt clamp ·
 date + read-time row. The whole card is a `<Link>` wrapping. Hover: image
@@ -629,7 +608,7 @@ export function CategoryChips({ categories }: Props) {
 Implementation note on filtering: the simplest wiring is a thin
 `<JournalIndexClient>` wrapper that receives `posts` as a prop, hosts both
 `<CategoryChips>` and `<PostGrid>`, and filters by category in state. The
-index server component passes posts down once. We keep the *featured* card
+index server component passes posts down once. We keep the _featured_ card
 out of the filterable set — it's always the most recent, regardless of chip.
 
 If the team chooses to skip client-side filtering for v1 (acceptable while
@@ -637,7 +616,7 @@ post count is < 12), render the chips as visual eyebrows only and link them
 to `/journal?category=…` for future server filtering. **Document the choice
 in the commit message** so the reader doesn't trip over half-wired UI.
 
-### 4.9 `components/marketing/journal/EmptyState.tsx`  — *full code*
+### 4.9 `components/marketing/journal/EmptyState.tsx` — _full code_
 
 This is one of the most-seen components for the next 6 months. It must not
 look like a fallback — it has to feel like the page was designed to be empty.
@@ -661,15 +640,14 @@ export function EmptyState({ teaser }: Props) {
   return (
     <section className="grid gap-16 md:grid-cols-12 md:gap-x-12">
       <div className="md:col-span-7">
-        <p className="font-display text-[clamp(32px,4vw,48px)] font-medium leading-[1.1] tracking-[-0.02em] text-[--ink]">
+        <p className="font-display text-[clamp(32px,4vw,48px)] leading-[1.1] font-medium tracking-[-0.02em] text-[--ink]">
           New entries coming soon —
           <br />
           sign up for updates.
         </p>
         <p className="mt-6 max-w-prose text-[17px] leading-[1.6] text-[--ink-soft]">
-          Short, useful notes from the clinic — on PCOS, hormonal health,
-          weight management, and the small habits that actually move the
-          needle. One letter, every other Sunday, no spam.
+          Short, useful notes from the clinic — on PCOS, hormonal health, weight management, and the
+          small habits that actually move the needle. One letter, every other Sunday, no spam.
         </p>
 
         <div className="mt-10 max-w-md">
@@ -695,10 +673,7 @@ export function EmptyState({ teaser }: Props) {
       {teaser ? (
         <aside className="md:col-span-5">
           <Eyebrow>Sneak peek</Eyebrow>
-          <Link
-            href={`/journal/${teaser.frontmatter.slug}`}
-            className="group mt-4 block"
-          >
+          <Link href={`/journal/${teaser.frontmatter.slug}`} className="group mt-4 block">
             <div className="relative aspect-[4/5] w-full overflow-hidden rounded-sm bg-[--cream-deep]">
               <Image
                 src={teaser.frontmatter.coverImage}
@@ -708,7 +683,7 @@ export function EmptyState({ teaser }: Props) {
                 className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.02]"
               />
             </div>
-            <h2 className="mt-6 font-display text-[clamp(24px,2.5vw,30px)] font-medium leading-[1.15] tracking-[-0.02em] text-[--ink]">
+            <h2 className="font-display mt-6 text-[clamp(24px,2.5vw,30px)] leading-[1.15] font-medium tracking-[-0.02em] text-[--ink]">
               {teaser.frontmatter.title}
             </h2>
             <p className="mt-3 line-clamp-3 text-[15px] leading-[1.55] text-[--ink-soft]">
@@ -720,7 +695,7 @@ export function EmptyState({ teaser }: Props) {
         <aside className="md:col-span-5">
           <div className="flex aspect-[4/5] w-full flex-col items-center justify-center rounded-sm bg-[--cream-deep] p-12 text-center">
             <Eyebrow>Coming soon</Eyebrow>
-            <p className="mt-6 font-display text-[28px] leading-[1.2] tracking-[-0.02em] text-[--ink-soft]">
+            <p className="font-display mt-6 text-[28px] leading-[1.2] tracking-[-0.02em] text-[--ink-soft]">
               The first entries are being written.
             </p>
           </div>
@@ -752,16 +727,14 @@ export function PostHero({ post }: { post: JournalPost }) {
     <header className="border-b border-[--cream-deep] bg-[--cream]">
       <Container className="py-24 md:py-32">
         <div className="mx-auto max-w-[820px]">
-          <div className="flex items-center gap-3 text-[12px] uppercase tracking-[0.16em] text-[--ink-soft]">
+          <div className="flex items-center gap-3 text-[12px] tracking-[0.16em] text-[--ink-soft] uppercase">
             <Eyebrow as="span">{category}</Eyebrow>
             <span aria-hidden>·</span>
-            <time dateTime={date}>
-              {format(new Date(date), "MMMM d, yyyy")}
-            </time>
+            <time dateTime={date}>{format(new Date(date), "MMMM d, yyyy")}</time>
             <span aria-hidden>·</span>
             <span>{readTime} min read</span>
           </div>
-          <h1 className="mt-8 font-display text-[clamp(40px,6vw,72px)] font-medium leading-[1.05] tracking-[-0.03em] text-[--ink]">
+          <h1 className="font-display mt-8 text-[clamp(40px,6vw,72px)] leading-[1.05] font-medium tracking-[-0.03em] text-[--ink]">
             <LetterStagger text={title} />
           </h1>
         </div>
@@ -771,7 +744,7 @@ export function PostHero({ post }: { post: JournalPost }) {
 }
 ```
 
-### 4.11 `components/marketing/journal/PostBody.tsx`  — *full code*
+### 4.11 `components/marketing/journal/PostBody.tsx` — _full code_
 
 Wraps the shared `<Prose>` (from plan 08) with article-specific MDX
 components.
@@ -823,7 +796,7 @@ export function FigureCaption({
           className="h-auto w-full"
         />
       </div>
-      <figcaption className="mt-3 px-1 text-[13px] italic leading-[1.5] tracking-[0.02em] text-[--ink-soft]">
+      <figcaption className="mt-3 px-1 text-[13px] leading-[1.5] tracking-[0.02em] text-[--ink-soft] italic">
         {caption}
       </figcaption>
     </figure>
@@ -896,10 +869,9 @@ export function AuthorFooter() {
         </div>
         <div className="text-[15px] leading-[1.6] text-[--ink-soft]">
           <p>
-            <span className="font-medium text-[--ink]">Dr. Ruhma</span> is a
-            clinical dietitian based in Lahore. She runs Healthy You By Ruhma —
-            a practice focused on hormonal health, PCOS, and sustainable weight
-            management.{" "}
+            <span className="font-medium text-[--ink]">Dr. Ruhma</span> is a clinical dietitian
+            based in Lahore. She runs Healthy You By Ruhma — a practice focused on hormonal health,
+            PCOS, and sustainable weight management.{" "}
             <Link
               href="/about"
               className="text-[--mauve] underline underline-offset-4 hover:text-[--mauve-deep]"
@@ -953,12 +925,10 @@ export function RelatedPosts({ posts }: { posts: JournalPost[] }) {
 import type { Article, WithContext } from "schema-dts";
 import type { JournalPost } from "@/lib/journal";
 
-const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://dietitianruhma.com";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://dietitianruhma.com";
 
 export function ArticleJsonLd({ post }: { post: JournalPost }) {
-  const { title, slug, excerpt, date, ogImage, category, author, readTime } =
-    post.frontmatter;
+  const { title, slug, excerpt, date, ogImage, category, author, readTime } = post.frontmatter;
 
   const data: WithContext<Article> = {
     "@context": "https://schema.org",
@@ -999,14 +969,13 @@ export function ArticleJsonLd({ post }: { post: JournalPost }) {
 }
 ```
 
-### 4.15 `app/journal/feed.xml/route.ts`  — *full code*
+### 4.15 `app/journal/feed.xml/route.ts` — _full code_
 
 ```ts
 // app/journal/feed.xml/route.ts
 import { getAllPosts } from "@/lib/journal";
 
-const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://dietitianruhma.com";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://dietitianruhma.com";
 
 function escapeXml(s: string): string {
   return s
@@ -1066,13 +1035,13 @@ export const dynamic = "force-static";
 
 ### 4.16 Modifications to existing files
 
-| File | Change |
-|---|---|
-| `app/sitemap.ts` (from plan 02) | After mapping pages, append journal entries: `posts.map(p => ({ url: \`${SITE_URL}/journal/${p.frontmatter.slug}\`, lastModified: p.frontmatter.date }))`. |
-| `app/layout.tsx` (from plan 02) | Add `<link rel="alternate" type="application/rss+xml" title="Journal RSS" href="/journal/feed.xml" />` inside `<head>` so feed readers auto-discover. |
-| `next-sitemap.config.js` (if used) | Include `/journal` and exclude `/journal/feed.xml` from the HTML sitemap. |
-| `tailwind.config.ts` | Ensure `content` glob covers `content/journal/**/*.mdx` so chip-color classes used inside MDX are not purged. |
-| `app/globals.css` | Add `.dropcap::first-letter { … }` rule inside `@layer components` (or inside `<Prose>` styles, decided in 08): float left, Epilogue, ~5 lines tall, mauve accent on hover of the wrapping article. |
+| File                               | Change                                                                                                                                                                                              |
+| ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `app/sitemap.ts` (from plan 02)    | After mapping pages, append journal entries: `posts.map(p => ({ url: \`${SITE_URL}/journal/${p.frontmatter.slug}\`, lastModified: p.frontmatter.date }))`.                                          |
+| `app/layout.tsx` (from plan 02)    | Add `<link rel="alternate" type="application/rss+xml" title="Journal RSS" href="/journal/feed.xml" />` inside `<head>` so feed readers auto-discover.                                               |
+| `next-sitemap.config.js` (if used) | Include `/journal` and exclude `/journal/feed.xml` from the HTML sitemap.                                                                                                                           |
+| `tailwind.config.ts`               | Ensure `content` glob covers `content/journal/**/*.mdx` so chip-color classes used inside MDX are not purged.                                                                                       |
+| `app/globals.css`                  | Add `.dropcap::first-letter { … }` rule inside `@layer components` (or inside `<Prose>` styles, decided in 08): float left, Epilogue, ~5 lines tall, mauve accent on hover of the wrapping article. |
 
 ---
 

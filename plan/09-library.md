@@ -24,11 +24,11 @@ Out-of-scope work — explicitly forbidden in this section — is enumerated in 
 
 This plan assumes the following plans have shipped first:
 
-| # | Plan | What we depend on from it |
-|---|------|---------------------------|
-| 01 | `01-design-system.md` | Tokens (`--cream`, `--cream-deep`, `--ink`, `--ink-soft`, `--mauve`, `--mauve-deep`, `--moss`, `--paper`); Inter + Epilogue via `next/font`; type-scale utilities; `<Container>`, `<Eyebrow>`, `<Heading>`, `<Button>` primitives; the three motion components `<FadeUp>`, `<ImageReveal>`, `<LetterStagger>` |
-| 02 | `02-layout-shell.md` | `app/layout.tsx`, `<Nav>` + `<Footer>`, redirect rules in `next.config.js` (specifically the `/shop → /library` and `/shop/[slug] → /library/[slug]` 301s) |
-| 03 | `03-content-media-migration.md` | The MDX-loading utility (`lib/mdx.ts` exporting `getContent<T>`, `getAllContent<T>`); image migration into `public/media/library/` (covers + spreads); `next-mdx-remote` configured; `gray-matter` configured; `lib/seo.ts` `buildMetadata()`; the `JsonLd` helper component |
+| #   | Plan                            | What we depend on from it                                                                                                                                                                                                                                                                                     |
+| --- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 01  | `01-design-system.md`           | Tokens (`--cream`, `--cream-deep`, `--ink`, `--ink-soft`, `--mauve`, `--mauve-deep`, `--moss`, `--paper`); Inter + Epilogue via `next/font`; type-scale utilities; `<Container>`, `<Eyebrow>`, `<Heading>`, `<Button>` primitives; the three motion components `<FadeUp>`, `<ImageReveal>`, `<LetterStagger>` |
+| 02  | `02-layout-shell.md`            | `app/layout.tsx`, `<Nav>` + `<Footer>`, redirect rules in `next.config.js` (specifically the `/shop → /library` and `/shop/[slug] → /library/[slug]` 301s)                                                                                                                                                    |
+| 03  | `03-content-media-migration.md` | The MDX-loading utility (`lib/mdx.ts` exporting `getContent<T>`, `getAllContent<T>`); image migration into `public/media/library/` (covers + spreads); `next-mdx-remote` configured; `gray-matter` configured; `lib/seo.ts` `buildMetadata()`; the `JsonLd` helper component                                  |
 
 If any of these are missing, **stop and note the gap** rather than re-implementing them in this plan.
 
@@ -53,38 +53,38 @@ All from the master tech stack (§4) — nothing new is introduced by this secti
 
 ### 4.1 Routes
 
-| Path | Type | Purpose |
-|------|------|---------|
-| `app/library/page.tsx` | RSC | `/library` index. Server-loads all three MDX files via `getAllContent<EbookFrontmatter>('library')`, renders `<LibraryGrid>`. |
-| `app/library/[slug]/page.tsx` | RSC | Detail page. Implements `generateStaticParams` + `generateMetadata`. Renders the full editorial layout. |
-| `app/library/[slug]/not-found.tsx` | RSC | Returned via `notFound()` when the slug doesn't match an MDX file. |
+| Path                               | Type | Purpose                                                                                                                       |
+| ---------------------------------- | ---- | ----------------------------------------------------------------------------------------------------------------------------- |
+| `app/library/page.tsx`             | RSC  | `/library` index. Server-loads all three MDX files via `getAllContent<EbookFrontmatter>('library')`, renders `<LibraryGrid>`. |
+| `app/library/[slug]/page.tsx`      | RSC  | Detail page. Implements `generateStaticParams` + `generateMetadata`. Renders the full editorial layout.                       |
+| `app/library/[slug]/not-found.tsx` | RSC  | Returned via `notFound()` when the slug doesn't match an MDX file.                                                            |
 
 ### 4.2 Content
 
-| Path | Purpose |
-|------|---------|
-| `content/library/diabetes-essentials.mdx` | Diabetes Essentials ebook (PKR 1,500). Cover: `/media/library/diabetes-essentials/cover.png` (renamed from existing `Copy-of-ebook1.png` during plan 03 migration). |
-| `content/library/pcos-guidebook.mdx` | PCOS Guidebook (PKR 3,000 → sale 1,500). Cover: `/media/library/pcos-guidebook/cover.jpg` (from `smartmockups_lwwe107j.jpg`). The featured ebook on home + the "savings chip" reference case. |
-| `content/library/skin-secrets.mdx` | Skin Secrets (PKR 2,000). Cover: `/media/library/skin-secrets/cover.jpg` (from `smartmockups_lx5u5k3d.jpg`). |
+| Path                                      | Purpose                                                                                                                                                                                       |
+| ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `content/library/diabetes-essentials.mdx` | Diabetes Essentials ebook (PKR 1,500). Cover: `/media/library/diabetes-essentials/cover.png` (renamed from existing `Copy-of-ebook1.png` during plan 03 migration).                           |
+| `content/library/pcos-guidebook.mdx`      | PCOS Guidebook (PKR 3,000 → sale 1,500). Cover: `/media/library/pcos-guidebook/cover.jpg` (from `smartmockups_lwwe107j.jpg`). The featured ebook on home + the "savings chip" reference case. |
+| `content/library/skin-secrets.mdx`        | Skin Secrets (PKR 2,000). Cover: `/media/library/skin-secrets/cover.jpg` (from `smartmockups_lx5u5k3d.jpg`).                                                                                  |
 
 ### 4.3 Components
 
 All under `components/marketing/library/`:
 
-| File | Description |
-|------|-------------|
-| `LibraryGrid.tsx` | Server component. Alternating editorial cards. Takes `ebooks: EbookFrontmatter[]`. Renders 3 stacked sections, alternating `flex-row` / `flex-row-reverse`. |
-| `EbookHero.tsx` | Client component (uses `useState` for hover rotation + Plausible click). Split hero with 3D cover rotation and the Buy CTA. |
-| `EbookTOC.tsx` | Server component. Numbered editorial list of `toc[]` strings. |
-| `SampleSpreads.tsx` | Server component. 3 image previews. Side-scrolls on mobile (`overflow-x-auto snap-x`), 3-column grid on desktop. |
-| `AuthorCard.tsx` | Server component. Small portrait + 2-paragraph bio + "More about Dr. Ruhma →" link to `/about`. |
-| `RelatedEbooks.tsx` | Server component. Takes `current: string` + `all: EbookFrontmatter[]`, renders the other two as small cards. |
-| `BuyButton.tsx` | Client component. Wraps the anchor for Plausible tracking + label derivation. Used by `EbookHero` and reusable from `LibraryGrid` if a quick-buy is wanted later. |
+| File                | Description                                                                                                                                                       |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `LibraryGrid.tsx`   | Server component. Alternating editorial cards. Takes `ebooks: EbookFrontmatter[]`. Renders 3 stacked sections, alternating `flex-row` / `flex-row-reverse`.       |
+| `EbookHero.tsx`     | Client component (uses `useState` for hover rotation + Plausible click). Split hero with 3D cover rotation and the Buy CTA.                                       |
+| `EbookTOC.tsx`      | Server component. Numbered editorial list of `toc[]` strings.                                                                                                     |
+| `SampleSpreads.tsx` | Server component. 3 image previews. Side-scrolls on mobile (`overflow-x-auto snap-x`), 3-column grid on desktop.                                                  |
+| `AuthorCard.tsx`    | Server component. Small portrait + 2-paragraph bio + "More about Dr. Ruhma →" link to `/about`.                                                                   |
+| `RelatedEbooks.tsx` | Server component. Takes `current: string` + `all: EbookFrontmatter[]`, renders the other two as small cards.                                                      |
+| `BuyButton.tsx`     | Client component. Wraps the anchor for Plausible tracking + label derivation. Used by `EbookHero` and reusable from `LibraryGrid` if a quick-buy is wanted later. |
 
 ### 4.4 Helpers
 
-| File | Description |
-|------|-------------|
+| File             | Description                                                                                                                                                                                                   |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `lib/library.ts` | `EbookFrontmatter` type, `EbookSchema` (Zod), `formatPKR()`, `derivePlatformLabel(buyUrl)`, `computeSavings({price, salePrice})`. Single import surface so both index and detail page reuse the same helpers. |
 
 ### 4.5 Concrete code (reference implementations)
@@ -100,7 +100,7 @@ import { z } from "zod";
 
 export const EbookSchema = z.object({
   title: z.string().min(1),
-  eyebrow: z.string().min(1),                   // e.g. "Guidebook 02"
+  eyebrow: z.string().min(1), // e.g. "Guidebook 02"
   slug: z.string().regex(/^[a-z0-9-]+$/),
   price: z.number().int().positive(),
   salePrice: z.number().int().positive().optional(),
@@ -109,9 +109,9 @@ export const EbookSchema = z.object({
   cover: z.string().startsWith("/media/"),
   sampleSpreads: z.array(z.string().startsWith("/media/")).length(3),
   toc: z.array(z.string().min(1)).min(4).max(12),
-  description: z.string().min(40),              // 3-line index description
+  description: z.string().min(40), // 3-line index description
   pages: z.number().int().positive().optional(),
-  format: z.string().optional(),                // "Digital · PDF"
+  format: z.string().optional(), // "Digital · PDF"
 });
 
 export type EbookFrontmatter = z.infer<typeof EbookSchema>;
@@ -181,15 +181,18 @@ export function EbookHero({ ebook }: Props) {
 
   // 4° max in either axis. Disabled if user prefers reduced motion.
   function onMove(e: React.MouseEvent<HTMLDivElement>) {
-    if (typeof window !== "undefined" &&
-        window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    )
+      return;
     const el = cardRef.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
-    const px = (e.clientX - rect.left) / rect.width;   // 0..1
-    const py = (e.clientY - rect.top) / rect.height;   // 0..1
-    const ry = (px - 0.5) * 8;   // -4..4
-    const rx = -(py - 0.5) * 8;  // -4..4
+    const px = (e.clientX - rect.left) / rect.width; // 0..1
+    const py = (e.clientY - rect.top) / rect.height; // 0..1
+    const ry = (px - 0.5) * 8; // -4..4
+    const rx = -(py - 0.5) * 8; // -4..4
     setTilt({ rx, ry });
   }
   function onLeave() {
@@ -208,10 +211,7 @@ export function EbookHero({ ebook }: Props) {
     <section className="bg-cream py-20 md:py-28">
       <div className="mx-auto grid max-w-[1200px] grid-cols-1 gap-12 px-6 md:grid-cols-2 md:gap-20 md:px-10">
         {/* LEFT: cover with 3D rotation */}
-        <div
-          className="flex items-center justify-center"
-          style={{ perspective: "1400px" }}
-        >
+        <div className="flex items-center justify-center" style={{ perspective: "1400px" }}>
           <div
             ref={cardRef}
             onMouseMove={onMove}
@@ -235,10 +235,10 @@ export function EbookHero({ ebook }: Props) {
 
         {/* RIGHT: copy + price + CTA */}
         <div className="flex flex-col justify-center">
-          <p className="mb-4 text-[12px] font-medium uppercase tracking-[0.16em] text-mauve">
+          <p className="text-mauve mb-4 text-[12px] font-medium tracking-[0.16em] uppercase">
             {eyebrow}
           </p>
-          <h1 className="font-display text-[clamp(40px,5vw,72px)] font-medium leading-[1.05] tracking-[-0.03em] text-ink">
+          <h1 className="font-display text-ink text-[clamp(40px,5vw,72px)] leading-[1.05] font-medium tracking-[-0.03em]">
             {title}
           </h1>
 
@@ -246,20 +246,18 @@ export function EbookHero({ ebook }: Props) {
           <div className="mt-8 flex flex-wrap items-baseline gap-x-4 gap-y-2">
             {salePrice ? (
               <>
-                <span className="font-display text-[32px] font-medium text-ink">
+                <span className="font-display text-ink text-[32px] font-medium">
                   {formatPKR(salePrice)}
                 </span>
-                <span className="text-[18px] text-ink-soft line-through">
-                  {formatPKR(price)}
-                </span>
+                <span className="text-ink-soft text-[18px] line-through">{formatPKR(price)}</span>
               </>
             ) : (
-              <span className="font-display text-[32px] font-medium text-ink">
+              <span className="font-display text-ink text-[32px] font-medium">
                 {formatPKR(price)}
               </span>
             )}
             {savings && (
-              <span className="rounded-full bg-shell px-3 py-1 text-[13px] font-medium text-mauve-deep">
+              <span className="bg-shell text-mauve-deep rounded-full px-3 py-1 text-[13px] font-medium">
                 {savings.label}
               </span>
             )}
@@ -273,21 +271,19 @@ export function EbookHero({ ebook }: Props) {
             onClick={onBuyClick}
             data-plausible-event="Library / Buy"
             data-plausible-event-slug={slug}
-            className="mt-10 inline-flex w-fit items-center gap-3 rounded-full bg-ink px-7 py-4 text-[15px] font-medium text-cream transition-colors hover:bg-mauve-deep focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-mauve"
+            className="bg-ink text-cream hover:bg-mauve-deep focus-visible:outline-mauve mt-10 inline-flex w-fit items-center gap-3 rounded-full px-7 py-4 text-[15px] font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-4"
           >
             <span>{buyLabel}</span>
             <span aria-hidden>→</span>
           </a>
 
-          <p className="mt-4 text-[13px] text-ink-soft/80">
+          <p className="text-ink-soft/80 mt-4 text-[13px]">
             Opens in a new tab. Checkout is handled on the publisher&rsquo;s site.
           </p>
 
           {(format || pages) && (
-            <p className="mt-6 text-[14px] text-ink-soft">
-              {[format, pages ? `~${pages} pages` : null]
-                .filter(Boolean)
-                .join(" · ")}
+            <p className="text-ink-soft mt-6 text-[14px]">
+              {[format, pages ? `~${pages} pages` : null].filter(Boolean).join(" · ")}
               {" · "}Instant delivery
             </p>
           )}
@@ -326,7 +322,7 @@ export function LibraryGrid({ ebooks }: Props) {
         return (
           <article
             key={book.slug}
-            className={`border-t border-ink/10 ${i === ebooks.length - 1 ? "border-b" : ""}`}
+            className={`border-ink/10 border-t ${i === ebooks.length - 1 ? "border-b" : ""}`}
           >
             <div
               className={[
@@ -335,9 +331,7 @@ export function LibraryGrid({ ebooks }: Props) {
               ].join(" ")}
             >
               {/* Cover */}
-              <figure
-                className={`md:col-span-6 ${reverse ? "md:col-start-7" : "md:col-start-1"}`}
-              >
+              <figure className={`md:col-span-6 ${reverse ? "md:col-start-7" : "md:col-start-1"}`}>
                 <div className="relative mx-auto aspect-[3/4] w-full max-w-[460px]">
                   <Image
                     src={book.cover}
@@ -350,36 +344,34 @@ export function LibraryGrid({ ebooks }: Props) {
               </figure>
 
               {/* Copy */}
-              <div
-                className={`md:col-span-5 ${reverse ? "md:col-start-1" : "md:col-start-8"}`}
-              >
-                <p className="mb-4 text-[12px] font-medium uppercase tracking-[0.16em] text-mauve">
+              <div className={`md:col-span-5 ${reverse ? "md:col-start-1" : "md:col-start-8"}`}>
+                <p className="text-mauve mb-4 text-[12px] font-medium tracking-[0.16em] uppercase">
                   {book.eyebrow}
                 </p>
-                <h2 className="font-display text-[clamp(32px,4vw,56px)] font-medium leading-[1.05] tracking-[-0.02em] text-ink">
+                <h2 className="font-display text-ink text-[clamp(32px,4vw,56px)] leading-[1.05] font-medium tracking-[-0.02em]">
                   {book.title}
                 </h2>
-                <p className="mt-6 max-w-[44ch] text-[17px] leading-[1.6] text-ink-soft">
+                <p className="text-ink-soft mt-6 max-w-[44ch] text-[17px] leading-[1.6]">
                   {book.description}
                 </p>
 
                 <div className="mt-8 flex flex-wrap items-baseline gap-x-3 gap-y-2">
                   {book.salePrice ? (
                     <>
-                      <span className="text-[20px] font-medium text-ink">
+                      <span className="text-ink text-[20px] font-medium">
                         {formatPKR(book.salePrice)}
                       </span>
-                      <span className="text-[15px] text-ink-soft line-through">
+                      <span className="text-ink-soft text-[15px] line-through">
                         {formatPKR(book.price)}
                       </span>
                     </>
                   ) : (
-                    <span className="text-[20px] font-medium text-ink">
+                    <span className="text-ink text-[20px] font-medium">
                       {formatPKR(book.price)}
                     </span>
                   )}
                   {savings && (
-                    <span className="rounded-full bg-shell px-2.5 py-0.5 text-[12px] font-medium text-mauve-deep">
+                    <span className="bg-shell text-mauve-deep rounded-full px-2.5 py-0.5 text-[12px] font-medium">
                       {savings.label}
                     </span>
                   )}
@@ -387,7 +379,7 @@ export function LibraryGrid({ ebooks }: Props) {
 
                 <Link
                   href={`/library/${book.slug}`}
-                  className="mt-10 inline-flex items-center gap-2 border-b border-ink/40 pb-1 text-[15px] font-medium text-ink transition-colors hover:border-mauve hover:text-mauve-deep"
+                  className="border-ink/40 text-ink hover:border-mauve hover:text-mauve-deep mt-10 inline-flex items-center gap-2 border-b pb-1 text-[15px] font-medium transition-colors"
                 >
                   Open <span aria-hidden>→</span>
                 </Link>
@@ -414,31 +406,30 @@ export function EbookTOC({ toc, intro }: Props) {
   return (
     <section className="bg-cream-deep py-24 md:py-32">
       <div className="mx-auto max-w-[1080px] px-6 md:px-10">
-        <p className="text-[12px] font-medium uppercase tracking-[0.16em] text-mauve">
-          Inside
-        </p>
-        <h2 className="mt-4 font-display text-[clamp(32px,4vw,56px)] font-medium leading-[1.05] tracking-[-0.02em] text-ink">
+        <p className="text-mauve text-[12px] font-medium tracking-[0.16em] uppercase">Inside</p>
+        <h2 className="font-display text-ink mt-4 text-[clamp(32px,4vw,56px)] leading-[1.05] font-medium tracking-[-0.02em]">
           What you&rsquo;ll find in these pages
         </h2>
 
         {intro && (
-          <div className="prose-editorial mt-8 max-w-[60ch] text-[17px] leading-[1.7] text-ink-soft">
+          <div className="prose-editorial text-ink-soft mt-8 max-w-[60ch] text-[17px] leading-[1.7]">
             {intro}
           </div>
         )}
 
-        <ol className="mt-16 divide-y divide-ink/15 border-y border-ink/15">
+        <ol className="divide-ink/15 border-ink/15 mt-16 divide-y border-y">
           {toc.map((item, i) => (
-            <li key={i} className="grid grid-cols-[80px_1fr] items-baseline gap-6 py-6 md:grid-cols-[120px_1fr] md:py-8">
+            <li
+              key={i}
+              className="grid grid-cols-[80px_1fr] items-baseline gap-6 py-6 md:grid-cols-[120px_1fr] md:py-8"
+            >
               <span
-                className="font-display text-[clamp(40px,5vw,72px)] font-medium leading-none tracking-[-0.04em] text-mauve tabular-nums"
+                className="font-display text-mauve text-[clamp(40px,5vw,72px)] leading-none font-medium tracking-[-0.04em] tabular-nums"
                 aria-hidden
               >
                 {String(i + 1).padStart(2, "0")}
               </span>
-              <span className="text-[18px] leading-[1.4] text-ink md:text-[20px]">
-                {item}
-              </span>
+              <span className="text-ink text-[18px] leading-[1.4] md:text-[20px]">{item}</span>
             </li>
           ))}
         </ol>
@@ -572,15 +563,27 @@ These pages are written for the woman who&rsquo;s tried everything and is
 ready for a calmer, evidence-based path. No fad diets. No shaming. Just
 practical, regionally-relevant guidance from a clinical dietitian.
 
-Each chapter pairs the *why* with a *what to do today* section so you can
+Each chapter pairs the _why_ with a _what to do today_ section so you can
 start small and build a routine that actually fits your life.
 
 <FAQ
   items={[
-    { q: "Is this an eBook or a printed copy?", a: "Digital PDF, delivered instantly after purchase via the publisher&rsquo;s site." },
-    { q: "Do I need a clinical diagnosis to use it?", a: "No — but it&rsquo;s designed to complement, not replace, your doctor's plan. If you&rsquo;re unsure, book a 1:1 consultation." },
-    { q: "Can I get a refund?", a: "Refund policy is set by the platform you buy from (Gumroad, Lemon Squeezy, etc.) and detailed at checkout." },
-    { q: "Will it work for non-Pakistani kitchens?", a: "Yes — the principles travel. Ingredient swaps are noted throughout." }
+    {
+      q: "Is this an eBook or a printed copy?",
+      a: "Digital PDF, delivered instantly after purchase via the publisher&rsquo;s site.",
+    },
+    {
+      q: "Do I need a clinical diagnosis to use it?",
+      a: "No — but it&rsquo;s designed to complement, not replace, your doctor's plan. If you&rsquo;re unsure, book a 1:1 consultation.",
+    },
+    {
+      q: "Can I get a refund?",
+      a: "Refund policy is set by the platform you buy from (Gumroad, Lemon Squeezy, etc.) and detailed at checkout.",
+    },
+    {
+      q: "Will it work for non-Pakistani kitchens?",
+      a: "Yes — the principles travel. Ingredient swaps are noted throughout.",
+    },
   ]}
 />
 ```
@@ -588,6 +591,7 @@ start small and build a routine that actually fits your life.
 The `<FAQ>` component is assumed shipped in plan 04 (programs/focus pages already need it). If not, this plan adds a tiny local fallback in `components/marketing/library/EbookFAQ.tsx`.
 
 > **Content TODO** flagged for Dr. Ruhma in `MIGRATION_NOTES.md`:
+>
 > 1. Replace each `buyUrl` placeholder with the real Gumroad / Lemon Squeezy / Amazon / Stripe payment link **before launch**. The build will not fail with placeholders, but Plausible click-through will track to dead URLs.
 > 2. Provide three real **sample-spread JPG/PNGs** per ebook (interior pages). Until then, plan 03 should generate stub spreads from the cover (or a pale `--cream-deep` placeholder card).
 
@@ -610,8 +614,7 @@ import { FadeUp } from "@/components/motion/FadeUp";
 
 export const metadata: Metadata = {
   title: "The Library — Healthy You By Ruhma",
-  description:
-    "Three guidebooks. Practical, evidence-based, written for women who want answers.",
+  description: "Three guidebooks. Practical, evidence-based, written for women who want answers.",
   openGraph: { title: "The Library — Healthy You By Ruhma" },
 };
 
@@ -624,16 +627,16 @@ export default async function LibraryIndexPage() {
     <main className="bg-cream">
       <header className="pt-28 pb-12 md:pt-40 md:pb-20">
         <Container>
-          <p className="text-[12px] font-medium uppercase tracking-[0.16em] text-mauve">
+          <p className="text-mauve text-[12px] font-medium tracking-[0.16em] uppercase">
             The Library
           </p>
-          <h1 className="mt-4 max-w-[14ch] font-display text-[clamp(48px,7vw,112px)] font-medium leading-[0.95] tracking-[-0.04em] text-ink">
+          <h1 className="font-display text-ink mt-4 max-w-[14ch] text-[clamp(48px,7vw,112px)] leading-[0.95] font-medium tracking-[-0.04em]">
             Three guidebooks.
           </h1>
-          <p className="mt-8 max-w-[52ch] text-[18px] leading-[1.6] text-ink-soft">
-            Practical, evidence-based, written for women who want answers — not
-            another fad. Each one is the distilled version of conversations
-            Dr. Ruhma has had with hundreds of clients.
+          <p className="text-ink-soft mt-8 max-w-[52ch] text-[18px] leading-[1.6]">
+            Practical, evidence-based, written for women who want answers — not another fad. Each
+            one is the distilled version of conversations Dr. Ruhma has had with hundreds of
+            clients.
           </p>
         </Container>
       </header>
@@ -679,9 +682,7 @@ export async function generateStaticParams(): Promise<Params[]> {
   return all.map((e) => ({ slug: e.slug }));
 }
 
-export async function generateMetadata(
-  { params }: { params: Promise<Params> },
-): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
   const { slug } = await params;
   const ebook = await getContent<EbookFrontmatter>("library", slug, EbookSchema);
   if (!ebook) return {};
@@ -700,9 +701,7 @@ export async function generateMetadata(
   };
 }
 
-export default async function EbookDetailPage(
-  { params }: { params: Promise<Params> },
-) {
+export default async function EbookDetailPage({ params }: { params: Promise<Params> }) {
   const { slug } = await params;
   const ebook = await getContent<EbookFrontmatter>("library", slug, EbookSchema);
   if (!ebook) notFound();
@@ -735,10 +734,7 @@ export default async function EbookDetailPage(
       <EbookHero ebook={fm} />
 
       <FadeUp>
-        <EbookTOC
-          toc={fm.toc}
-          intro={<MDXRemote source={ebook.body} />}
-        />
+        <EbookTOC toc={fm.toc} intro={<MDXRemote source={ebook.body} />} />
       </FadeUp>
 
       <FadeUp>

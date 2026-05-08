@@ -189,21 +189,13 @@ export const viewport: Viewport = {
   colorScheme: "light",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html
-      lang="en"
-      className={`${inter.variable} ${epilogue.variable}`}
-      suppressHydrationWarning
-    >
-      <body className="bg-cream text-ink-soft font-sans antialiased min-h-screen flex flex-col">
+    <html lang="en" className={`${inter.variable} ${epilogue.variable}`} suppressHydrationWarning>
+      <body className="bg-cream text-ink-soft flex min-h-screen flex-col font-sans antialiased">
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-md focus:bg-paper focus:px-3 focus:py-2 focus:text-ink focus:shadow"
+          className="focus:bg-paper focus:text-ink sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-md focus:px-3 focus:py-2 focus:shadow"
         >
           Skip to content
         </a>
@@ -281,24 +273,16 @@ export function Nav() {
       animate={{
         paddingTop: condensed ? 10 : 22,
         paddingBottom: condensed ? 10 : 22,
-        backgroundColor: condensed
-          ? "rgba(244, 240, 238, 0.85)"
-          : "rgba(244, 240, 238, 0)",
+        backgroundColor: condensed ? "rgba(244, 240, 238, 0.85)" : "rgba(244, 240, 238, 0)",
         backdropFilter: condensed ? "blur(10px)" : "blur(0px)",
-        borderBottomColor: condensed
-          ? "rgba(26, 26, 26, 0.08)"
-          : "rgba(26, 26, 26, 0)",
+        borderBottomColor: condensed ? "rgba(26, 26, 26, 0.08)" : "rgba(26, 26, 26, 0)",
       }}
       transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
       className="sticky top-0 z-40 border-b"
       data-condensed={condensed}
     >
       <div className="mx-auto flex w-full max-w-[88rem] items-center justify-between px-6 lg:px-10">
-        <Link
-          href="/"
-          aria-label={`${site.name} — home`}
-          className="flex items-center gap-2"
-        >
+        <Link href="/" aria-label={`${site.name} — home`} className="flex items-center gap-2">
           <Image
             src="/wordmark.svg"
             alt={site.name}
@@ -310,10 +294,7 @@ export function Nav() {
         </Link>
 
         {/* Desktop nav */}
-        <nav
-          aria-label="Primary"
-          className="hidden items-center gap-8 md:flex"
-        >
+        <nav aria-label="Primary" className="hidden items-center gap-8 md:flex">
           {site.nav.map((item) => {
             const active = isActiveSection(pathname, item.href);
             if (item.cta) {
@@ -322,7 +303,7 @@ export function Nav() {
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    "rounded-full border border-ink/15 bg-ink px-4 py-2 text-sm font-medium text-cream transition",
+                    "border-ink/15 bg-ink text-cream rounded-full border px-4 py-2 text-sm font-medium transition",
                     "hover:bg-mauve-deep hover:border-mauve-deep",
                   )}
                 >
@@ -336,8 +317,8 @@ export function Nav() {
                 href={item.href}
                 aria-current={active ? "page" : undefined}
                 className={cn(
-                  "relative text-sm tracking-wide text-ink/80 transition hover:text-ink",
-                  "after:absolute after:left-0 after:-bottom-1 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-mauve after:transition-transform",
+                  "text-ink/80 hover:text-ink relative text-sm tracking-wide transition",
+                  "after:bg-mauve after:absolute after:-bottom-1 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:transition-transform",
                   "hover:after:scale-x-100",
                   active && "text-ink after:scale-x-100",
                 )}
@@ -354,24 +335,22 @@ export function Nav() {
             <button
               type="button"
               aria-label="Open menu"
-              className="rounded-md p-2 text-ink md:hidden"
+              className="text-ink rounded-md p-2 md:hidden"
             >
               <Menu className="h-5 w-5" />
             </button>
           </SheetTrigger>
           <SheetContent
             side="right"
-            className="w-[88vw] max-w-sm border-l border-ink/10 bg-cream p-0"
+            className="border-ink/10 bg-cream w-[88vw] max-w-sm border-l p-0"
           >
             <div className="flex items-center justify-between px-6 py-5">
-              <SheetTitle className="font-display text-lg text-ink">
-                Menu
-              </SheetTitle>
+              <SheetTitle className="font-display text-ink text-lg">Menu</SheetTitle>
               <button
                 type="button"
                 aria-label="Close menu"
                 onClick={() => setOpen(false)}
-                className="rounded-md p-2 text-ink"
+                className="text-ink rounded-md p-2"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -385,9 +364,10 @@ export function Nav() {
                     href={item.href}
                     aria-current={active ? "page" : undefined}
                     className={cn(
-                      "border-b border-ink/10 py-4 font-display text-2xl tracking-tight text-ink/80 transition",
+                      "border-ink/10 font-display text-ink/80 border-b py-4 text-2xl tracking-tight transition",
                       active && "text-ink",
-                      item.cta && "mt-6 rounded-full border-0 bg-ink py-3 text-center text-base text-cream",
+                      item.cta &&
+                        "bg-ink text-cream mt-6 rounded-full border-0 py-3 text-center text-base",
                     )}
                   >
                     {item.label}
@@ -433,11 +413,11 @@ function NewsletterForm() {
         required
         autoComplete="email"
         placeholder="you@inbox.com"
-        className="flex-1 rounded-none border-0 border-b border-ink/30 bg-transparent px-0 py-2 text-sm text-ink placeholder:text-ink/40 focus:border-mauve focus:outline-none"
+        className="border-ink/30 text-ink placeholder:text-ink/40 focus:border-mauve flex-1 rounded-none border-0 border-b bg-transparent px-0 py-2 text-sm focus:outline-none"
       />
       <button
         type="submit"
-        className="text-sm font-medium tracking-wide text-mauve underline-offset-4 hover:text-mauve-deep hover:underline"
+        className="text-mauve hover:text-mauve-deep text-sm font-medium tracking-wide underline-offset-4 hover:underline"
       >
         Subscribe →
       </button>
@@ -447,17 +427,17 @@ function NewsletterForm() {
 
 export function Footer() {
   return (
-    <footer className="mt-32 border-t border-ink/10 bg-cream">
+    <footer className="border-ink/10 bg-cream mt-32 border-t">
       <div className="mx-auto w-full max-w-[88rem] px-6 py-20 lg:px-10">
         {/* Tagline */}
-        <p className="font-display text-[28px] leading-tight tracking-tight text-ink md:text-[32px]">
+        <p className="font-display text-ink text-[28px] leading-tight tracking-tight md:text-[32px]">
           {site.tagline}
         </p>
 
         <div className="mt-16 grid grid-cols-2 gap-10 md:grid-cols-4 lg:grid-cols-5 lg:gap-8">
           {site.footerColumns.map((col) => (
             <div key={col.heading}>
-              <h3 className="text-[11px] font-medium uppercase tracking-[0.16em] text-ink/60">
+              <h3 className="text-ink/60 text-[11px] font-medium tracking-[0.16em] uppercase">
                 {col.heading}
               </h3>
               <ul className="mt-5 space-y-3">
@@ -465,10 +445,8 @@ export function Footer() {
                   <li key={item.href}>
                     <Link
                       href={item.href}
-                      {...(item.external
-                        ? { target: "_blank", rel: "noopener noreferrer" }
-                        : {})}
-                      className="text-sm text-ink-soft transition hover:text-mauve"
+                      {...(item.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                      className="text-ink-soft hover:text-mauve text-sm transition"
                     >
                       {item.label}
                     </Link>
@@ -480,10 +458,10 @@ export function Footer() {
 
           {/* Newsletter occupies the 5th column on lg+, full width below */}
           <div className="col-span-2 md:col-span-4 lg:col-span-1">
-            <h3 className="text-[11px] font-medium uppercase tracking-[0.16em] text-ink/60">
+            <h3 className="text-ink/60 text-[11px] font-medium tracking-[0.16em] uppercase">
               Newsletter
             </h3>
-            <p className="mt-5 text-sm text-ink-soft">
+            <p className="text-ink-soft mt-5 text-sm">
               Quiet, occasional dispatches on hormones, food, and the body.
             </p>
             <div className="mt-4">
@@ -493,8 +471,8 @@ export function Footer() {
         </div>
 
         {/* Bottom row */}
-        <div className="mt-16 flex flex-col gap-6 border-t border-ink/10 pt-8 md:flex-row md:items-center md:justify-between">
-          <p className="text-xs text-ink-soft">
+        <div className="border-ink/10 mt-16 flex flex-col gap-6 border-t pt-8 md:flex-row md:items-center md:justify-between">
+          <p className="text-ink-soft text-xs">
             © {new Date().getFullYear()} {site.name}. All rights reserved.
           </p>
           <ul className="flex items-center gap-5">
@@ -504,7 +482,7 @@ export function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`Instagram — @${site.contact.instagram}`}
-                className="text-ink-soft transition hover:text-mauve"
+                className="text-ink-soft hover:text-mauve transition"
               >
                 <Instagram className="h-4 w-4" />
               </a>
@@ -513,7 +491,7 @@ export function Footer() {
               <a
                 href={`mailto:${site.contact.email}`}
                 aria-label={`Email — ${site.contact.email}`}
-                className="text-ink-soft transition hover:text-mauve"
+                className="text-ink-soft hover:text-mauve transition"
               >
                 <Mail className="h-4 w-4" />
               </a>
@@ -524,7 +502,7 @@ export function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`WhatsApp — ${site.contact.whatsappDisplay}`}
-                className="text-ink-soft transition hover:text-mauve"
+                className="text-ink-soft hover:text-mauve transition"
               >
                 <MessageCircle className="h-4 w-4" />
               </a>
@@ -680,9 +658,7 @@ import { site } from "@/content/site";
 export default function robots(): MetadataRoute.Robots {
   const isProd = process.env.VERCEL_ENV === "production";
   return {
-    rules: isProd
-      ? [{ userAgent: "*", allow: "/" }]
-      : [{ userAgent: "*", disallow: "/" }],
+    rules: isProd ? [{ userAgent: "*", allow: "/" }] : [{ userAgent: "*", disallow: "/" }],
     sitemap: isProd ? `${site.url}/sitemap.xml` : undefined,
     host: isProd ? site.url : undefined,
   };
@@ -700,7 +676,11 @@ import fs from "node:fs";
 import path from "node:path";
 import { site } from "@/content/site";
 
-const STATIC_ROUTES: { path: string; priority: number; changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"] }[] = [
+const STATIC_ROUTES: {
+  path: string;
+  priority: number;
+  changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"];
+}[] = [
   { path: "/", priority: 1.0, changeFrequency: "monthly" },
   { path: "/about", priority: 0.9, changeFrequency: "yearly" },
   { path: "/services", priority: 0.9, changeFrequency: "monthly" },
@@ -762,11 +742,11 @@ Minimal, on-brand skeleton. No spinner; subtle pulse on a typographic placeholde
 export default function Loading() {
   return (
     <div className="mx-auto flex min-h-[60vh] w-full max-w-[88rem] flex-col items-start justify-center px-6 lg:px-10">
-      <div className="h-3 w-24 animate-pulse rounded-full bg-ink/10" />
-      <div className="mt-6 h-12 w-3/4 max-w-2xl animate-pulse rounded-md bg-ink/10" />
-      <div className="mt-4 h-12 w-1/2 max-w-xl animate-pulse rounded-md bg-ink/10" />
-      <div className="mt-10 h-4 w-2/3 max-w-lg animate-pulse rounded bg-ink/10" />
-      <div className="mt-2 h-4 w-1/2 max-w-md animate-pulse rounded bg-ink/10" />
+      <div className="bg-ink/10 h-3 w-24 animate-pulse rounded-full" />
+      <div className="bg-ink/10 mt-6 h-12 w-3/4 max-w-2xl animate-pulse rounded-md" />
+      <div className="bg-ink/10 mt-4 h-12 w-1/2 max-w-xl animate-pulse rounded-md" />
+      <div className="bg-ink/10 mt-10 h-4 w-2/3 max-w-lg animate-pulse rounded" />
+      <div className="bg-ink/10 mt-2 h-4 w-1/2 max-w-md animate-pulse rounded" />
       <span className="sr-only">Loading…</span>
     </div>
   );
@@ -801,33 +781,33 @@ export default function Error({
 
   return (
     <section className="mx-auto flex min-h-[70vh] w-full max-w-[88rem] flex-col items-start justify-center px-6 lg:px-10">
-      <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-mauve">
+      <p className="text-mauve text-[11px] font-medium tracking-[0.16em] uppercase">
         Something went sideways
       </p>
-      <h1 className="mt-4 font-display text-[clamp(40px,6vw,96px)] font-medium leading-[0.95] tracking-tight text-ink">
+      <h1 className="font-display text-ink mt-4 text-[clamp(40px,6vw,96px)] leading-[0.95] font-medium tracking-tight">
         A small interruption.
       </h1>
-      <p className="mt-6 max-w-xl text-base text-ink-soft">
-        The page hit an unexpected error. We've logged it. You can try again, or
-        head back to the home page.
+      <p className="text-ink-soft mt-6 max-w-xl text-base">
+        The page hit an unexpected error. We've logged it. You can try again, or head back to the
+        home page.
       </p>
       <div className="mt-10 flex items-center gap-6">
         <button
           type="button"
           onClick={reset}
-          className="rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-cream transition hover:bg-mauve-deep"
+          className="bg-ink text-cream hover:bg-mauve-deep rounded-full px-5 py-2.5 text-sm font-medium transition"
         >
           Try again
         </button>
         <Link
           href="/"
-          className="text-sm tracking-wide text-mauve underline-offset-4 hover:underline"
+          className="text-mauve text-sm tracking-wide underline-offset-4 hover:underline"
         >
           Return home →
         </Link>
       </div>
       {error.digest ? (
-        <p className="mt-12 text-xs text-ink-soft/60">
+        <p className="text-ink-soft/60 mt-12 text-xs">
           Reference: <code className="font-mono">{error.digest}</code>
         </p>
       ) : null}
@@ -845,20 +825,18 @@ import Link from "next/link";
 export default function NotFound() {
   return (
     <section className="mx-auto flex min-h-[70vh] w-full max-w-[88rem] flex-col items-start justify-center px-6 lg:px-10">
-      <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-mauve">
-        404
-      </p>
-      <h1 className="mt-4 font-display text-[clamp(40px,6vw,96px)] font-medium leading-[0.95] tracking-tight text-ink">
+      <p className="text-mauve text-[11px] font-medium tracking-[0.16em] uppercase">404</p>
+      <h1 className="font-display text-ink mt-4 text-[clamp(40px,6vw,96px)] leading-[0.95] font-medium tracking-tight">
         Not on the menu.
       </h1>
-      <p className="mt-6 max-w-xl text-base text-ink-soft">
-        That page doesn't exist — or moved when we rebuilt the site. Try the
-        navigation, or start at the beginning.
+      <p className="text-ink-soft mt-6 max-w-xl text-base">
+        That page doesn't exist — or moved when we rebuilt the site. Try the navigation, or start at
+        the beginning.
       </p>
       <div className="mt-10">
         <Link
           href="/"
-          className="rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-cream transition hover:bg-mauve-deep"
+          className="bg-ink text-cream hover:bg-mauve-deep rounded-full px-5 py-2.5 text-sm font-medium transition"
         >
           Return home
         </Link>

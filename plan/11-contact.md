@@ -53,12 +53,12 @@ Add to `package.json` (if not already present from earlier plans):
 pnpm add react-hook-form @hookform/resolvers zod resend
 ```
 
-| Package                  | Why                                                                           |
-| ------------------------ | ----------------------------------------------------------------------------- |
-| `react-hook-form`        | Client-side form state. Uncontrolled by default, low re-render cost.          |
-| `@hookform/resolvers`    | Bridges Zod into RHF.                                                          |
-| `zod`                    | Single source of truth for the schema; reused on the server.                   |
-| `resend`                 | Transactional email. We send to `CONTACT_TO_EMAIL`, no inbox needed locally. |
+| Package               | Why                                                                          |
+| --------------------- | ---------------------------------------------------------------------------- |
+| `react-hook-form`     | Client-side form state. Uncontrolled by default, low re-render cost.         |
+| `@hookform/resolvers` | Bridges Zod into RHF.                                                        |
+| `zod`                 | Single source of truth for the schema; reused on the server.                 |
+| `resend`              | Transactional email. We send to `CONTACT_TO_EMAIL`, no inbox needed locally. |
 
 We rely on built-ins for everything else:
 
@@ -115,15 +115,15 @@ validation rules cannot drift.
 
 ```ts
 // app/contact/schema.ts
-import { z } from 'zod';
+import { z } from "zod";
 
 export const TOPICS = [
-  'General',
-  'Diet Planning',
-  'Coaching',
-  'Consultation',
-  'Speaking',
-  'Press',
+  "General",
+  "Diet Planning",
+  "Coaching",
+  "Consultation",
+  "Speaking",
+  "Press",
 ] as const;
 
 export type Topic = (typeof TOPICS)[number];
@@ -132,33 +132,29 @@ export const contactSchema = z.object({
   name: z
     .string()
     .trim()
-    .min(2, 'Please share your name.')
-    .max(80, 'That looks too long — keep it under 80 characters.'),
-  email: z
-    .string()
-    .trim()
-    .email('That email does not look right.')
-    .max(160),
+    .min(2, "Please share your name.")
+    .max(80, "That looks too long — keep it under 80 characters."),
+  email: z.string().trim().email("That email does not look right.").max(160),
   topic: z.enum(TOPICS, {
-    errorMap: () => ({ message: 'Pick a topic so we can route this correctly.' }),
+    errorMap: () => ({ message: "Pick a topic so we can route this correctly." }),
   }),
   message: z
     .string()
     .trim()
-    .min(20, 'Tell us a little more — at least 20 characters.')
-    .max(2000, 'Please keep it under 2000 characters.'),
+    .min(20, "Tell us a little more — at least 20 characters.")
+    .max(2000, "Please keep it under 2000 characters."),
   // Honeypot — must be empty. Real users never see this field.
-  website: z.string().max(0).optional().default(''),
+  website: z.string().max(0).optional().default(""),
 });
 
 export type ContactInput = z.infer<typeof contactSchema>;
 
 export type ContactState =
-  | { status: 'idle' }
-  | { status: 'success' }
-  | { status: 'error'; message: string; fieldErrors?: Partial<Record<keyof ContactInput, string>> };
+  | { status: "idle" }
+  | { status: "success" }
+  | { status: "error"; message: string; fieldErrors?: Partial<Record<keyof ContactInput, string>> };
 
-export const initialContactState: ContactState = { status: 'idle' };
+export const initialContactState: ContactState = { status: "idle" };
 ```
 
 ### 5.2 `lib/rate-limit.ts`
@@ -178,7 +174,10 @@ export interface RateLimitOptions {
   windowMs: number;
 }
 
-export function rateLimit(key: string, opts: RateLimitOptions): {
+export function rateLimit(
+  key: string,
+  opts: RateLimitOptions,
+): {
   ok: boolean;
   remaining: number;
   retryAfterMs: number;
@@ -216,23 +215,23 @@ export function pruneExpiredBuckets(): void {
 
 ```ts
 // app/contact/actions.ts
-'use server';
+"use server";
 
-import { headers } from 'next/headers';
-import { Resend } from 'resend';
-import { contactSchema, type ContactState } from './schema';
-import { rateLimit, pruneExpiredBuckets } from '@/lib/rate-limit';
+import { headers } from "next/headers";
+import { Resend } from "resend";
+import { contactSchema, type ContactState } from "./schema";
+import { rateLimit, pruneExpiredBuckets } from "@/lib/rate-limit";
 
 const HOUR_MS = 60 * 60 * 1000;
 const MAX_PER_HOUR = 3;
 
 function getClientIp(headerList: Headers): string {
   // Vercel sets x-forwarded-for as a comma-separated list; take the first.
-  const fwd = headerList.get('x-forwarded-for');
-  if (fwd) return fwd.split(',')[0].trim();
-  const real = headerList.get('x-real-ip');
+  const fwd = headerList.get("x-forwarded-for");
+  if (fwd) return fwd.split(",")[0].trim();
+  const real = headerList.get("x-real-ip");
   if (real) return real;
-  return 'unknown';
+  return "unknown";
 }
 
 export async function submitContact(
@@ -242,11 +241,11 @@ export async function submitContact(
   pruneExpiredBuckets();
 
   const raw = {
-    name: formData.get('name'),
-    email: formData.get('email'),
-    topic: formData.get('topic'),
-    message: formData.get('message'),
-    website: formData.get('website') ?? '',
+    name: formData.get("name"),
+    email: formData.get("email"),
+    topic: formData.get("topic"),
+    message: formData.get("message"),
+    website: formData.get("website") ?? "",
   };
 
   const parsed = contactSchema.safeParse(raw);
@@ -254,14 +253,14 @@ export async function submitContact(
     const fieldErrors: ContactState extends { fieldErrors?: infer F } ? F : never = {};
     for (const issue of parsed.error.issues) {
       const key = issue.path[0];
-      if (typeof key === 'string' && !(key in fieldErrors)) {
+      if (typeof key === "string" && !(key in fieldErrors)) {
         // @ts-expect-error — narrowing handled by Zod's known keys
         fieldErrors[key] = issue.message;
       }
     }
     return {
-      status: 'error',
-      message: 'Please fix the highlighted fields and try again.',
+      status: "error",
+      message: "Please fix the highlighted fields and try again.",
       fieldErrors,
     };
   }
@@ -270,7 +269,7 @@ export async function submitContact(
 
   // Honeypot trip — silently succeed so bots think they got through.
   if (data.website && data.website.length > 0) {
-    return { status: 'success' };
+    return { status: "success" };
   }
 
   const headerList = await headers();
@@ -279,21 +278,22 @@ export async function submitContact(
   if (!limit.ok) {
     const minutes = Math.ceil(limit.retryAfterMs / 60_000);
     return {
-      status: 'error',
+      status: "error",
       message: `You have sent a few messages already. Please try again in about ${minutes} minute${
-        minutes === 1 ? '' : 's'
+        minutes === 1 ? "" : "s"
       }.`,
     };
   }
 
   const apiKey = process.env.RESEND_API_KEY;
-  const to = process.env.CONTACT_TO_EMAIL ?? 'info@dietitianruhma.com';
+  const to = process.env.CONTACT_TO_EMAIL ?? "info@dietitianruhma.com";
 
   if (!apiKey) {
-    console.error('[contact] RESEND_API_KEY is not set.');
+    console.error("[contact] RESEND_API_KEY is not set.");
     return {
-      status: 'error',
-      message: 'The form is temporarily unavailable. Please email us directly at info@dietitianruhma.com.',
+      status: "error",
+      message:
+        "The form is temporarily unavailable. Please email us directly at info@dietitianruhma.com.",
     };
   }
 
@@ -304,7 +304,7 @@ export async function submitContact(
       // `from` must use a domain verified in Resend. Until cutover, use the
       // sandbox onboarding sender — it works in dev but only delivers to the
       // owning Resend account inbox.
-      from: 'Healthy You Contact <contact@mail.dietitianruhma.com>',
+      from: "Healthy You Contact <contact@mail.dietitianruhma.com>",
       to: [to],
       replyTo: data.email,
       subject: `[${data.topic}] ${data.name} via dietitianruhma.com`,
@@ -312,25 +312,26 @@ export async function submitContact(
         `From: ${data.name} <${data.email}>`,
         `Topic: ${data.topic}`,
         `IP: ${ip}`,
-        '',
+        "",
         data.message,
-      ].join('\n'),
+      ].join("\n"),
     });
 
     if (error) {
-      console.error('[contact] resend error:', error);
+      console.error("[contact] resend error:", error);
       return {
-        status: 'error',
-        message: 'Something went wrong sending your message. Please try again or email info@dietitianruhma.com.',
+        status: "error",
+        message:
+          "Something went wrong sending your message. Please try again or email info@dietitianruhma.com.",
       };
     }
 
-    return { status: 'success' };
+    return { status: "success" };
   } catch (err) {
-    console.error('[contact] unexpected error:', err);
+    console.error("[contact] unexpected error:", err);
     return {
-      status: 'error',
-      message: 'Something went wrong. Please try again in a moment.',
+      status: "error",
+      message: "Something went wrong. Please try again in a moment.",
     };
   }
 }
@@ -353,10 +354,10 @@ visual contract.
 
 ```tsx
 // components/marketing/contact/UnderlineField.tsx
-'use client';
+"use client";
 
-import { forwardRef, type InputHTMLAttributes } from 'react';
-import { cn } from '@/lib/cn';
+import { forwardRef, type InputHTMLAttributes } from "react";
+import { cn } from "@/lib/cn";
 
 interface UnderlineFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
@@ -372,15 +373,12 @@ export const UnderlineField = forwardRef<HTMLInputElement, UnderlineFieldProps>(
     if (hidden) {
       // Honeypot: present in the DOM, off-screen, no tab stop.
       return (
-        <div aria-hidden="true" className="absolute left-[-9999px] top-auto h-px w-px overflow-hidden">
+        <div
+          aria-hidden="true"
+          className="absolute top-auto left-[-9999px] h-px w-px overflow-hidden"
+        >
           <label htmlFor={fieldId}>{label}</label>
-          <input
-            ref={ref}
-            id={fieldId}
-            tabIndex={-1}
-            autoComplete="off"
-            {...rest}
-          />
+          <input ref={ref} id={fieldId} tabIndex={-1} autoComplete="off" {...rest} />
         </div>
       );
     }
@@ -389,7 +387,7 @@ export const UnderlineField = forwardRef<HTMLInputElement, UnderlineFieldProps>(
       <div className="flex flex-col gap-2">
         <label
           htmlFor={fieldId}
-          className="font-[family-name:var(--font-inter)] text-sm uppercase tracking-wider text-ink/70"
+          className="text-ink/70 font-[family-name:var(--font-inter)] text-sm tracking-wider uppercase"
         >
           {label}
         </label>
@@ -399,16 +397,16 @@ export const UnderlineField = forwardRef<HTMLInputElement, UnderlineFieldProps>(
           aria-invalid={Boolean(error) || undefined}
           aria-describedby={error ? `${fieldId}-error` : undefined}
           className={cn(
-            'border-0 border-b border-ink bg-transparent py-2 outline-none',
-            'font-[family-name:var(--font-inter)] text-base text-ink placeholder:text-ink/40',
-            'transition-colors focus:border-b-2 focus:border-mauve',
-            error && 'border-b-2 border-rust',
+            "border-ink border-0 border-b bg-transparent py-2 outline-none",
+            "text-ink placeholder:text-ink/40 font-[family-name:var(--font-inter)] text-base",
+            "focus:border-mauve transition-colors focus:border-b-2",
+            error && "border-rust border-b-2",
             className,
           )}
           {...rest}
         />
         {error ? (
-          <p id={`${fieldId}-error`} className="text-sm text-rust">
+          <p id={`${fieldId}-error`} className="text-rust text-sm">
             {error}
           </p>
         ) : null}
@@ -422,11 +420,11 @@ export const UnderlineField = forwardRef<HTMLInputElement, UnderlineFieldProps>(
 
 ```tsx
 // components/marketing/contact/UnderlineSelect.tsx
-'use client';
+"use client";
 
-import { forwardRef, type SelectHTMLAttributes } from 'react';
-import { cn } from '@/lib/cn';
-import { TOPICS } from '@/app/contact/schema';
+import { forwardRef, type SelectHTMLAttributes } from "react";
+import { cn } from "@/lib/cn";
+import { TOPICS } from "@/app/contact/schema";
 
 interface UnderlineSelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   label: string;
@@ -440,7 +438,7 @@ export const UnderlineSelect = forwardRef<HTMLSelectElement, UnderlineSelectProp
       <div className="flex flex-col gap-2">
         <label
           htmlFor={fieldId}
-          className="font-[family-name:var(--font-inter)] text-sm uppercase tracking-wider text-ink/70"
+          className="text-ink/70 font-[family-name:var(--font-inter)] text-sm tracking-wider uppercase"
         >
           {label}
         </label>
@@ -450,12 +448,12 @@ export const UnderlineSelect = forwardRef<HTMLSelectElement, UnderlineSelectProp
           aria-invalid={Boolean(error) || undefined}
           aria-describedby={error ? `${fieldId}-error` : undefined}
           className={cn(
-            'appearance-none border-0 border-b border-ink bg-transparent py-2 pr-6 outline-none',
-            'font-[family-name:var(--font-inter)] text-base text-ink',
-            'transition-colors focus:border-b-2 focus:border-mauve',
+            "border-ink appearance-none border-0 border-b bg-transparent py-2 pr-6 outline-none",
+            "text-ink font-[family-name:var(--font-inter)] text-base",
+            "focus:border-mauve transition-colors focus:border-b-2",
             // Custom caret using a background-image arrow so we don't reintroduce a box.
-            "bg-[length:12px] bg-[right_2px_center] bg-no-repeat bg-[url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath fill='%231a1a1a' d='M2 4l4 4 4-4z'/%3E%3C/svg%3E\")]",
-            error && 'border-b-2 border-rust',
+            "bg-[url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath fill='%231a1a1a' d='M2 4l4 4 4-4z'/%3E%3C/svg%3E")] bg-[length:12px] bg-[right_2px_center] bg-no-repeat",
+            error && "border-rust border-b-2",
             className,
           )}
           {...rest}
@@ -467,7 +465,7 @@ export const UnderlineSelect = forwardRef<HTMLSelectElement, UnderlineSelectProp
           ))}
         </select>
         {error ? (
-          <p id={`${fieldId}-error`} className="text-sm text-rust">
+          <p id={`${fieldId}-error`} className="text-rust text-sm">
             {error}
           </p>
         ) : null}
@@ -481,10 +479,10 @@ export const UnderlineSelect = forwardRef<HTMLSelectElement, UnderlineSelectProp
 
 ```tsx
 // components/marketing/contact/UnderlineTextarea.tsx
-'use client';
+"use client";
 
-import { forwardRef, type TextareaHTMLAttributes } from 'react';
-import { cn } from '@/lib/cn';
+import { forwardRef, type TextareaHTMLAttributes } from "react";
+import { cn } from "@/lib/cn";
 
 interface UnderlineTextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   label: string;
@@ -498,7 +496,7 @@ export const UnderlineTextarea = forwardRef<HTMLTextAreaElement, UnderlineTextar
       <div className="flex flex-col gap-2">
         <label
           htmlFor={fieldId}
-          className="font-[family-name:var(--font-inter)] text-sm uppercase tracking-wider text-ink/70"
+          className="text-ink/70 font-[family-name:var(--font-inter)] text-sm tracking-wider uppercase"
         >
           {label}
         </label>
@@ -509,16 +507,16 @@ export const UnderlineTextarea = forwardRef<HTMLTextAreaElement, UnderlineTextar
           aria-invalid={Boolean(error) || undefined}
           aria-describedby={error ? `${fieldId}-error` : undefined}
           className={cn(
-            'resize-y border-0 border-b border-ink bg-transparent py-2 outline-none',
-            'font-[family-name:var(--font-inter)] text-base text-ink placeholder:text-ink/40',
-            'transition-colors focus:border-b-2 focus:border-mauve',
-            error && 'border-b-2 border-rust',
+            "border-ink resize-y border-0 border-b bg-transparent py-2 outline-none",
+            "text-ink placeholder:text-ink/40 font-[family-name:var(--font-inter)] text-base",
+            "focus:border-mauve transition-colors focus:border-b-2",
+            error && "border-rust border-b-2",
             className,
           )}
           {...rest}
         />
         {error ? (
-          <p id={`${fieldId}-error`} className="text-sm text-rust">
+          <p id={`${fieldId}-error`} className="text-rust text-sm">
             {error}
           </p>
         ) : null}
@@ -532,24 +530,24 @@ export const UnderlineTextarea = forwardRef<HTMLTextAreaElement, UnderlineTextar
 
 ```tsx
 // components/marketing/contact/ContactForm.tsx
-'use client';
+"use client";
 
-import { useActionState, useEffect, useRef } from 'react';
-import { useFormStatus } from 'react-dom';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import Link from 'next/link';
-import { submitContact } from '@/app/contact/actions';
+import { useActionState, useEffect, useRef } from "react";
+import { useFormStatus } from "react-dom";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
+import { submitContact } from "@/app/contact/actions";
 import {
   contactSchema,
   initialContactState,
   type ContactInput,
   type ContactState,
-} from '@/app/contact/schema';
-import { UnderlineField } from './UnderlineField';
-import { UnderlineSelect } from './UnderlineSelect';
-import { UnderlineTextarea } from './UnderlineTextarea';
-import { cn } from '@/lib/cn';
+} from "@/app/contact/schema";
+import { UnderlineField } from "./UnderlineField";
+import { UnderlineSelect } from "./UnderlineSelect";
+import { UnderlineTextarea } from "./UnderlineTextarea";
+import { cn } from "@/lib/cn";
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -558,12 +556,12 @@ function SubmitButton() {
       type="submit"
       disabled={pending}
       className={cn(
-        'mt-2 w-full bg-mauve px-8 py-3 text-paper transition-opacity sm:w-auto',
-        'font-[family-name:var(--font-inter)] text-sm uppercase tracking-wider',
-        'disabled:cursor-not-allowed disabled:opacity-60',
+        "bg-mauve text-paper mt-2 w-full px-8 py-3 transition-opacity sm:w-auto",
+        "font-[family-name:var(--font-inter)] text-sm tracking-wider uppercase",
+        "disabled:cursor-not-allowed disabled:opacity-60",
       )}
     >
-      {pending ? 'Sending…' : 'Send message'}
+      {pending ? "Sending…" : "Send message"}
     </button>
   );
 }
@@ -582,36 +580,35 @@ export function ContactForm() {
     reset,
   } = useForm<ContactInput>({
     resolver: zodResolver(contactSchema),
-    mode: 'onBlur',
+    mode: "onBlur",
     defaultValues: {
-      name: '',
-      email: '',
-      topic: 'General',
-      message: '',
-      website: '',
+      name: "",
+      email: "",
+      topic: "General",
+      message: "",
+      website: "",
     },
   });
 
   // After a successful server response, reset the RHF state so a "Send another"
   // click returns the form to a clean state.
   useEffect(() => {
-    if (state.status === 'success') {
+    if (state.status === "success") {
       reset();
     }
   }, [state.status, reset]);
 
   // Server-returned per-field errors trump client errors (the server is canonical).
   const fieldError = (name: keyof ContactInput) =>
-    (state.status === 'error' && state.fieldErrors?.[name]) ||
-    errors[name]?.message;
+    (state.status === "error" && state.fieldErrors?.[name]) || errors[name]?.message;
 
-  if (state.status === 'success') {
+  if (state.status === "success") {
     return (
       <div className="flex flex-col gap-6">
-        <h2 className="font-[family-name:var(--font-epilogue)] text-3xl text-ink sm:text-4xl">
+        <h2 className="text-ink font-[family-name:var(--font-epilogue)] text-3xl sm:text-4xl">
           Thank you. Your message is on its way.
         </h2>
-        <p className="max-w-md font-[family-name:var(--font-inter)] text-base text-ink/80">
+        <p className="text-ink/80 max-w-md font-[family-name:var(--font-inter)] text-base">
           We read every note personally. You will hear back within 1–2 business days.
         </p>
         <button
@@ -623,14 +620,14 @@ export function ContactForm() {
             formRef.current?.reset();
             // Force the action state back to idle by re-submitting an empty
             // form? Better: a Link-style refresh. Use Next router refresh:
-            window.location.assign('/contact');
+            window.location.assign("/contact");
           }}
-          className="self-start font-[family-name:var(--font-inter)] text-sm uppercase tracking-wider text-mauve underline-offset-4 hover:underline"
+          className="text-mauve self-start font-[family-name:var(--font-inter)] text-sm tracking-wider uppercase underline-offset-4 hover:underline"
         >
           Send another →
         </button>
-        <p className="font-[family-name:var(--font-inter)] text-sm text-ink/60">
-          Or head back to the{' '}
+        <p className="text-ink/60 font-[family-name:var(--font-inter)] text-sm">
+          Or head back to the{" "}
           <Link href="/" className="underline-offset-4 hover:underline">
             home page
           </Link>
@@ -646,8 +643,8 @@ export function ContactForm() {
         label="Name"
         autoComplete="name"
         required
-        error={fieldError('name')}
-        {...register('name')}
+        error={fieldError("name")}
+        {...register("name")}
       />
 
       <UnderlineField
@@ -655,19 +652,19 @@ export function ContactForm() {
         type="email"
         autoComplete="email"
         required
-        error={fieldError('email')}
-        {...register('email')}
+        error={fieldError("email")}
+        {...register("email")}
       />
 
-      <UnderlineSelect label="Topic" error={fieldError('topic')} {...register('topic')} />
+      <UnderlineSelect label="Topic" error={fieldError("topic")} {...register("topic")} />
 
       <UnderlineTextarea
         label="Message"
         required
         minLength={20}
         maxLength={2000}
-        error={fieldError('message')}
-        {...register('message')}
+        error={fieldError("message")}
+        {...register("message")}
       />
 
       {/* Honeypot — visually hidden, must remain empty. */}
@@ -676,13 +673,13 @@ export function ContactForm() {
         hidden
         autoComplete="off"
         tabIndex={-1}
-        {...register('website')}
+        {...register("website")}
       />
 
       <div className="flex flex-col gap-3">
         <SubmitButton />
-        {state.status === 'error' ? (
-          <p role="alert" className="font-[family-name:var(--font-inter)] text-sm text-rust">
+        {state.status === "error" ? (
+          <p role="alert" className="text-rust font-[family-name:var(--font-inter)] text-sm">
             {state.message}
           </p>
         ) : null}
@@ -696,34 +693,34 @@ export function ContactForm() {
 
 ```tsx
 // components/marketing/contact/ContactDetails.tsx
-import Link from 'next/link';
+import Link from "next/link";
 
 // TODO(content): replace placeholders before launch.
-const WHATSAPP_DIGITS = '00000000000'; // wa.me/<digits>
-const INSTAGRAM_HANDLE = 'dietitianruhma'; // TBD — confirm with Ruhma
+const WHATSAPP_DIGITS = "00000000000"; // wa.me/<digits>
+const INSTAGRAM_HANDLE = "dietitianruhma"; // TBD — confirm with Ruhma
 
 export function ContactDetails() {
   return (
     <aside className="flex flex-col gap-10">
       <div className="flex flex-col gap-2">
-        <p className="font-[family-name:var(--font-inter)] text-xs uppercase tracking-wider text-ink/60">
+        <p className="text-ink/60 font-[family-name:var(--font-inter)] text-xs tracking-wider uppercase">
           Email
         </p>
         <Link
           href="mailto:info@dietitianruhma.com"
-          className="font-[family-name:var(--font-epilogue)] text-2xl text-ink underline-offset-4 hover:underline"
+          className="text-ink font-[family-name:var(--font-epilogue)] text-2xl underline-offset-4 hover:underline"
         >
           info@dietitianruhma.com
         </Link>
       </div>
 
       <div className="flex flex-col gap-2">
-        <p className="font-[family-name:var(--font-inter)] text-xs uppercase tracking-wider text-ink/60">
+        <p className="text-ink/60 font-[family-name:var(--font-inter)] text-xs tracking-wider uppercase">
           WhatsApp
         </p>
         <Link
           href={`https://wa.me/${WHATSAPP_DIGITS}`}
-          className="font-[family-name:var(--font-epilogue)] text-2xl text-ink underline-offset-4 hover:underline"
+          className="text-ink font-[family-name:var(--font-epilogue)] text-2xl underline-offset-4 hover:underline"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -732,12 +729,12 @@ export function ContactDetails() {
       </div>
 
       <div className="flex flex-col gap-2">
-        <p className="font-[family-name:var(--font-inter)] text-xs uppercase tracking-wider text-ink/60">
+        <p className="text-ink/60 font-[family-name:var(--font-inter)] text-xs tracking-wider uppercase">
           Instagram
         </p>
         <Link
           href={`https://instagram.com/${INSTAGRAM_HANDLE}`}
-          className="font-[family-name:var(--font-epilogue)] text-2xl text-ink underline-offset-4 hover:underline"
+          className="text-ink font-[family-name:var(--font-epilogue)] text-2xl underline-offset-4 hover:underline"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -745,9 +742,8 @@ export function ContactDetails() {
         </Link>
       </div>
 
-      <p className="max-w-sm font-[family-name:var(--font-inter)] text-sm leading-relaxed text-ink/70">
-        Within 1–2 business days. For urgent dietary questions, please book a
-        consultation.
+      <p className="text-ink/70 max-w-sm font-[family-name:var(--font-inter)] text-sm leading-relaxed">
+        Within 1–2 business days. For urgent dietary questions, please book a consultation.
       </p>
     </aside>
   );
@@ -763,16 +759,16 @@ component dep — the design is typographic anyway.
 // components/marketing/contact/ContactFAQ.tsx
 const FAQ = [
   {
-    q: 'How quickly will I hear back?',
-    a: 'Within 1–2 business days. If the topic is urgent or clinical, please book a consultation directly — the inbox is not monitored on weekends.',
+    q: "How quickly will I hear back?",
+    a: "Within 1–2 business days. If the topic is urgent or clinical, please book a consultation directly — the inbox is not monitored on weekends.",
   },
   {
-    q: 'What should I include in my message?',
-    a: 'A short note about your goal, any conditions or restrictions, and what kind of support you are looking for. The more concrete, the better the first reply.',
+    q: "What should I include in my message?",
+    a: "A short note about your goal, any conditions or restrictions, and what kind of support you are looking for. The more concrete, the better the first reply.",
   },
   {
-    q: 'When should I book a consultation instead?',
-    a: 'If you need a tailored plan, are managing a specific condition (PCOS, diabetes, post-partum, etc.), or want recurring coaching. The contact form is best for general questions and partnerships.',
+    q: "When should I book a consultation instead?",
+    a: "If you need a tailored plan, are managing a specific condition (PCOS, diabetes, post-partum, etc.), or want recurring coaching. The contact form is best for general questions and partnerships.",
   },
 ];
 
@@ -781,21 +777,21 @@ export function ContactFAQ() {
     <section aria-labelledby="contact-faq-title" className="flex flex-col gap-8">
       <h2
         id="contact-faq-title"
-        className="font-[family-name:var(--font-epilogue)] text-3xl text-ink sm:text-4xl"
+        className="text-ink font-[family-name:var(--font-epilogue)] text-3xl sm:text-4xl"
       >
         Before you write
       </h2>
-      <ul className="flex flex-col divide-y divide-ink/15 border-y border-ink/15">
+      <ul className="divide-ink/15 border-ink/15 flex flex-col divide-y border-y">
         {FAQ.map((item) => (
           <li key={item.q}>
             <details className="group py-5">
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-6 font-[family-name:var(--font-inter)] text-base text-ink">
+              <summary className="text-ink flex cursor-pointer list-none items-center justify-between gap-6 font-[family-name:var(--font-inter)] text-base">
                 {item.q}
                 <span aria-hidden className="text-ink/50 transition-transform group-open:rotate-45">
                   +
                 </span>
               </summary>
-              <p className="mt-3 max-w-prose font-[family-name:var(--font-inter)] text-sm leading-relaxed text-ink/75">
+              <p className="text-ink/75 mt-3 max-w-prose font-[family-name:var(--font-inter)] text-sm leading-relaxed">
                 {item.a}
               </p>
             </details>
@@ -811,38 +807,37 @@ export function ContactFAQ() {
 
 ```tsx
 // app/contact/page.tsx
-import type { Metadata } from 'next';
-import { Container } from '@/components/layout/Container';
-import { ContactForm } from '@/components/marketing/contact/ContactForm';
-import { ContactDetails } from '@/components/marketing/contact/ContactDetails';
-import { ContactFAQ } from '@/components/marketing/contact/ContactFAQ';
+import type { Metadata } from "next";
+import { Container } from "@/components/layout/Container";
+import { ContactForm } from "@/components/marketing/contact/ContactForm";
+import { ContactDetails } from "@/components/marketing/contact/ContactDetails";
+import { ContactFAQ } from "@/components/marketing/contact/ContactFAQ";
 
 export const metadata: Metadata = {
-  title: 'Contact — Healthy You by Ruhma',
+  title: "Contact — Healthy You by Ruhma",
   description:
-    'Get in touch about diet planning, coaching, consultations, speaking, or press. Replies within 1–2 business days.',
-  alternates: { canonical: '/contact' },
+    "Get in touch about diet planning, coaching, consultations, speaking, or press. Replies within 1–2 business days.",
+  alternates: { canonical: "/contact" },
   openGraph: {
     title: "Let's talk — Healthy You by Ruhma",
-    description:
-      'Get in touch about diet planning, coaching, consultations, speaking, or press.',
-    url: '/contact',
-    type: 'website',
+    description: "Get in touch about diet planning, coaching, consultations, speaking, or press.",
+    url: "/contact",
+    type: "website",
   },
 };
 
 const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'ContactPage',
-  name: 'Contact — Healthy You by Ruhma',
-  url: 'https://dietitianruhma.com/contact',
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  name: "Contact — Healthy You by Ruhma",
+  url: "https://dietitianruhma.com/contact",
   description:
-    'Contact form and details for Healthy You by Ruhma. Topics include diet planning, coaching, consultations, speaking, and press.',
+    "Contact form and details for Healthy You by Ruhma. Topics include diet planning, coaching, consultations, speaking, and press.",
   mainEntity: {
-    '@type': 'Organization',
-    name: 'Healthy You by Ruhma',
-    email: 'info@dietitianruhma.com',
-    url: 'https://dietitianruhma.com',
+    "@type": "Organization",
+    name: "Healthy You by Ruhma",
+    email: "info@dietitianruhma.com",
+    url: "https://dietitianruhma.com",
   },
 };
 
@@ -857,15 +852,15 @@ export default function ContactPage() {
 
       <Container className="py-20 sm:py-28">
         <header className="mb-16 max-w-2xl">
-          <p className="font-[family-name:var(--font-inter)] text-xs uppercase tracking-[0.2em] text-ink/60">
+          <p className="text-ink/60 font-[family-name:var(--font-inter)] text-xs tracking-[0.2em] uppercase">
             Contact
           </p>
-          <h1 className="mt-4 font-[family-name:var(--font-epilogue)] text-5xl leading-tight text-ink sm:text-6xl">
+          <h1 className="text-ink mt-4 font-[family-name:var(--font-epilogue)] text-5xl leading-tight sm:text-6xl">
             Let&rsquo;s talk.
           </h1>
-          <p className="mt-6 max-w-xl font-[family-name:var(--font-inter)] text-base leading-relaxed text-ink/75">
-            Tell us a little about what you&rsquo;re working on and we&rsquo;ll
-            reply with the right next step.
+          <p className="text-ink/75 mt-6 max-w-xl font-[family-name:var(--font-inter)] text-base leading-relaxed">
+            Tell us a little about what you&rsquo;re working on and we&rsquo;ll reply with the right
+            next step.
           </p>
         </header>
 
@@ -885,8 +880,8 @@ export default function ContactPage() {
 
 ### 5.11 Map (optional, deferred)
 
-The master plan says: *"Embedded map (optional — only if there's a real practice
-address)."* Skip it. Do not add a Google Maps embed unless Ruhma confirms a
+The master plan says: _"Embedded map (optional — only if there's a real practice
+address)."_ Skip it. Do not add a Google Maps embed unless Ruhma confirms a
 public practice address. Tracking-heavy embeds violate the page's quiet tone
 and add a privacy footnote we don't want. If/when an address is confirmed, add
 a `<MapEmbed />` block between `<ContactDetails />` and `<ContactFAQ />` using
@@ -992,7 +987,7 @@ The following are **explicitly not** part of this plan:
 - **Production-grade rate limiting** — the in-memory `Map` limiter is
   intentionally simple. Before scaling beyond a single Vercel region, swap
   `lib/rate-limit.ts` for an Upstash Redis–backed limiter (`@upstash/ratelimit`
-  + `@upstash/redis`). Same interface, drop-in replacement.
+  - `@upstash/redis`). Same interface, drop-in replacement.
 - **Internationalization** — single-locale (en) for now.
 - **Captcha** (hCaptcha, Turnstile) — honeypot + rate-limit are sufficient at
   this volume. Revisit if spam becomes an issue.

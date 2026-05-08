@@ -1,6 +1,7 @@
 # Plan 08 — Focus Pages (Hormonal Health, Weight Management)
 
 > Files in scope:
+>
 > - `app/focus/[slug]/page.tsx`
 > - `content/focus/hormonal-health.mdx`
 > - `content/focus/weight-management.mdx`
@@ -41,11 +42,11 @@ Out of bounds: the journal post template (which is a single-column long-read wit
 
 This plan assumes the following plans are merged and live in the codebase before this one starts:
 
-| Plan | What it provides that we depend on |
-|---|---|
-| **01 — Design system** | Tokens (`--cream`, `--cream-deep`, `--ink`, `--ink-soft`, `--mauve`, `--mauve-deep`, `--moss`, `--paper`), Inter + Epilogue via `next/font`, `<Container>`, `<Eyebrow>`, `<Heading>`, the 5–8 botanical SVGs in `public/illustrations/{fennel,mint,citrus,fenugreek,seed,…}.svg`, the 3 motion utilities `<FadeUp>`, `<ImageReveal>`, `<LetterStagger>`. |
-| **02 — Layout shell** | `app/layout.tsx`, `<Nav>`, `<Footer>`, global `<CtaBand>` component (the cream-deep "Ready when you are." band reused on most pages), redirects in `next.config.js` (`/hormonal-health` → `/focus/hormonal-health`, `/weight-management` → `/focus/weight-management`). |
-| **03 — Content & media migration** | `lib/mdx.ts` with `getMdxBySlug(dir, slug)` and `getAllMdxSlugs(dir)`, `lib/seo.ts` with `articleJsonLd(...)`, MDX pipeline wired to `next-mdx-remote` v5, `gray-matter` frontmatter parser, the `<DropCap>` component from plan 05 reachable as `@/components/marketing/DropCap`, and the optimized media set under `public/media/`. |
+| Plan                               | What it provides that we depend on                                                                                                                                                                                                                                                                                                                       |
+| ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **01 — Design system**             | Tokens (`--cream`, `--cream-deep`, `--ink`, `--ink-soft`, `--mauve`, `--mauve-deep`, `--moss`, `--paper`), Inter + Epilogue via `next/font`, `<Container>`, `<Eyebrow>`, `<Heading>`, the 5–8 botanical SVGs in `public/illustrations/{fennel,mint,citrus,fenugreek,seed,…}.svg`, the 3 motion utilities `<FadeUp>`, `<ImageReveal>`, `<LetterStagger>`. |
+| **02 — Layout shell**              | `app/layout.tsx`, `<Nav>`, `<Footer>`, global `<CtaBand>` component (the cream-deep "Ready when you are." band reused on most pages), redirects in `next.config.js` (`/hormonal-health` → `/focus/hormonal-health`, `/weight-management` → `/focus/weight-management`).                                                                                  |
+| **03 — Content & media migration** | `lib/mdx.ts` with `getMdxBySlug(dir, slug)` and `getAllMdxSlugs(dir)`, `lib/seo.ts` with `articleJsonLd(...)`, MDX pipeline wired to `next-mdx-remote` v5, `gray-matter` frontmatter parser, the `<DropCap>` component from plan 05 reachable as `@/components/marketing/DropCap`, and the optimized media set under `public/media/`.                    |
 
 If any of those are missing, **do not** stub them here — block on the prereq plan landing first. We will not duplicate the MDX pipeline or the CTA band.
 
@@ -75,15 +76,15 @@ import { getAllMdxSlugs, getMdxBySlug } from "@/lib/mdx";
 
 export type FocusFrontmatter = {
   title: string;
-  eyebrow: string;            // always "Focus area" but kept in frontmatter for parity with other templates
+  eyebrow: string; // always "Focus area" but kept in frontmatter for parity with other templates
   slug: "hormonal-health" | "weight-management";
-  description: string;        // 140–160 chars, used for <meta> and the subhead
-  subhead: string;             // 2-line editorial subhead, NOT the meta description
-  ogImage?: string;           // optional, /api/og fallback otherwise
-  dropCap?: boolean;           // opt-in, default true
-  conditions: Array<{ title: string; summary: string }>;   // exactly 3
-  related: Array<{ type: "program" | "library" | "focus"; slug: string; label: string }>;  // 2–3
-  publishedAt?: string;        // ISO, optional, used for Article JSON-LD if present
+  description: string; // 140–160 chars, used for <meta> and the subhead
+  subhead: string; // 2-line editorial subhead, NOT the meta description
+  ogImage?: string; // optional, /api/og fallback otherwise
+  dropCap?: boolean; // opt-in, default true
+  conditions: Array<{ title: string; summary: string }>; // exactly 3
+  related: Array<{ type: "program" | "library" | "focus"; slug: string; label: string }>; // 2–3
+  publishedAt?: string; // ISO, optional, used for Article JSON-LD if present
   updatedAt?: string;
 };
 
@@ -131,7 +132,7 @@ export function Prose({ children, variant = "single", className }: Props) {
           // 2-col on lg+ only when variant=longread; column-fill: balance keeps both columns equal,
           // break-inside-avoid on h2/h3/blockquote/figure/pullquote prevents them from snapping across columns.
           variant === "longread" &&
-            "lg:[column-count:2] lg:[column-gap:64px] lg:[column-fill:balance] lg:[column-rule:0]",
+            "lg:[column-gap:64px] lg:[column-count:2] lg:[column-fill:balance] lg:[column-rule:0]",
         )}
       >
         {children}
@@ -154,7 +155,9 @@ The matching CSS lives in `app/globals.css` (added by this plan, scoped under `.
 }
 
 /* All block elements inside Prose: keep them out of column splits. */
-.prose-editorial .prose-body :where(h2, h3, h4, blockquote, figure, ul, ol, .pullquote, .illustration) {
+.prose-editorial
+  .prose-body
+  :where(h2, h3, h4, blockquote, figure, ul, ol, .pullquote, .illustration) {
   break-inside: avoid;
 }
 
@@ -199,7 +202,9 @@ The matching CSS lives in `app/globals.css` (added by this plan, scoped under `.
   text-decoration-thickness: 1px;
   text-underline-offset: 3px;
   text-decoration-color: color-mix(in oklab, var(--mauve) 40%, transparent);
-  transition: text-decoration-color 200ms ease, color 200ms ease;
+  transition:
+    text-decoration-color 200ms ease,
+    color 200ms ease;
 }
 .prose-editorial a:hover {
   color: var(--mauve-deep);
@@ -214,15 +219,24 @@ The matching CSS lives in `app/globals.css` (added by this plan, scoped under `.
   color: var(--ink);
   font-style: italic;
 }
-.prose-editorial blockquote p { margin-bottom: 0.5em; }
+.prose-editorial blockquote p {
+  margin-bottom: 0.5em;
+}
 
 /* Lists */
-.prose-editorial ul, .prose-editorial ol {
+.prose-editorial ul,
+.prose-editorial ol {
   margin: 1em 0 1.4em;
   padding-left: 1.4em;
 }
-.prose-editorial ul li::marker { color: var(--mauve); content: "— "; }
-.prose-editorial ol { list-style: none; counter-reset: editorial; }
+.prose-editorial ul li::marker {
+  color: var(--mauve);
+  content: "— ";
+}
+.prose-editorial ol {
+  list-style: none;
+  counter-reset: editorial;
+}
 .prose-editorial ol > li {
   counter-increment: editorial;
   position: relative;
@@ -262,7 +276,10 @@ The matching CSS lives in `app/globals.css` (added by this plan, scoped under `.
 
 /* Reduced motion: nothing here animates, but be defensive when Prose is wrapped in <FadeUp>. */
 @media (prefers-reduced-motion: reduce) {
-  .prose-editorial * { animation: none !important; transition: none !important; }
+  .prose-editorial * {
+    animation: none !important;
+    transition: none !important;
+  }
 }
 ```
 
@@ -286,7 +303,7 @@ type Props = {
 
 export function Pullquote({ children, attribution }: Props) {
   return (
-    <figure className="pullquote my-12 mx-auto" style={{ maxWidth: 600 }}>
+    <figure className="pullquote mx-auto my-12" style={{ maxWidth: 600 }}>
       <blockquote
         className="m-0 p-0"
         style={{
@@ -331,14 +348,23 @@ A thin lookup over the SVG set commissioned in plan 01. Inline render so we can 
 // components/marketing/Illustration.tsx
 import Image from "next/image";
 
-const ALLOWED = ["fennel", "mint", "citrus", "fenugreek", "seed", "leaf", "anise", "carrot"] as const;
+const ALLOWED = [
+  "fennel",
+  "mint",
+  "citrus",
+  "fenugreek",
+  "seed",
+  "leaf",
+  "anise",
+  "carrot",
+] as const;
 export type IllustrationName = (typeof ALLOWED)[number];
 
 type Props = {
   name: IllustrationName;
-  size?: number;     // px; capped at 80 per master §1
+  size?: number; // px; capped at 80 per master §1
   align?: "left" | "center" | "right";
-  alt?: string;      // empty by default — these are decorative
+  alt?: string; // empty by default — these are decorative
 };
 
 export function Illustration({ name, size = 80, align = "center", alt = "" }: Props) {
@@ -383,9 +409,9 @@ import { Eyebrow } from "@/components/ui/Eyebrow";
 import { LetterStagger } from "@/components/motion/LetterStagger";
 
 type Props = {
-  eyebrow: string;        // always "Focus area" for these pages
+  eyebrow: string; // always "Focus area" for these pages
   title: string;
-  subhead: string;        // already pre-broken into 2 lines via a soft \n if desired
+  subhead: string; // already pre-broken into 2 lines via a soft \n if desired
 };
 
 export function FocusHero({ eyebrow, title, subhead }: Props) {
@@ -436,7 +462,7 @@ import { Eyebrow } from "@/components/ui/Eyebrow";
 
 type Props = {
   conditions: Array<{ title: string; summary: string }>;
-  heading?: string;       // defaults to "Where this shows up"
+  heading?: string; // defaults to "Where this shows up"
 };
 
 export function ConditionsList({ conditions, heading = "Where this shows up" }: Props) {
@@ -526,13 +552,13 @@ type Item = { type: "program" | "library" | "focus"; slug: string; label: string
 const HREF: Record<Item["type"], (slug: string) => string> = {
   program: (s) => `/programs/${s}`,
   library: (s) => `/library/${s}`,
-  focus:   (s) => `/focus/${s}`,
+  focus: (s) => `/focus/${s}`,
 };
 
 const TYPE_LABEL: Record<Item["type"], string> = {
   program: "Program",
   library: "Guidebook",
-  focus:   "Focus area",
+  focus: "Focus area",
 };
 
 export function RelatedCards({ items }: { items: Item[] }) {
@@ -554,12 +580,15 @@ export function RelatedCards({ items }: { items: Item[] }) {
           Where to go next.
         </h2>
 
-        <ul className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3" style={{ listStyle: "none", padding: 0 }}>
+        <ul
+          className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3"
+          style={{ listStyle: "none", padding: 0 }}
+        >
           {items.map((item) => (
             <li key={`${item.type}/${item.slug}`}>
               <Link
                 href={HREF[item.type](item.slug)}
-                className="group block bg-paper p-8 transition-colors duration-200 hover:bg-shell"
+                className="group bg-paper hover:bg-shell block p-8 transition-colors duration-200"
                 style={{ borderRadius: 0 }}
               >
                 <Eyebrow>{TYPE_LABEL[item.type]}</Eyebrow>
@@ -577,7 +606,7 @@ export function RelatedCards({ items }: { items: Item[] }) {
                   {item.label}
                 </span>
                 <span
-                  className="mt-6 inline-flex items-center gap-2 text-mauve transition-colors group-hover:text-mauve-deep"
+                  className="text-mauve group-hover:text-mauve-deep mt-6 inline-flex items-center gap-2 transition-colors"
                   style={{ fontFamily: "var(--font-inter)", fontSize: 14, letterSpacing: "0.02em" }}
                 >
                   Open <span aria-hidden>→</span>
@@ -627,9 +656,11 @@ export async function generateStaticParams() {
   return slugs.map((slug) => ({ slug }));
 }
 
-export async function generateMetadata(
-  { params }: { params: Promise<{ slug: string }> },
-): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
   const { slug } = await params;
   const entry = await getFocusEntry(slug);
   if (!entry) return {};
@@ -649,9 +680,7 @@ export async function generateMetadata(
   };
 }
 
-export default async function FocusPage(
-  { params }: { params: Promise<{ slug: string }> },
-) {
+export default async function FocusPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const entry = await getFocusEntry(slug);
   if (!entry) notFound();
@@ -737,7 +766,7 @@ conditions:
 related:
   - { type: "library", slug: "pcos-guidebook", label: "The PCOS Guidebook" }
   - { type: "program", slug: "coaching", label: "8-week Coaching Program" }
-  - { type: "focus",   slug: "weight-management", label: "Weight Management" }
+  - { type: "focus", slug: "weight-management", label: "Weight Management" }
 ---
 
 Hormones do not make their case loudly. They do their work in the small print of how a morning starts, whether a craving lands at 3 p.m. or 9, whether sleep arrives easily or by negotiation. Most of the women who walk into my practice describe symptoms — irregular cycles, weight that won't shift, skin that flares without warning — long before anyone names a hormone. The naming, when it happens, is almost a relief.
@@ -767,13 +796,13 @@ Insulin is the one most directly dietary. Every meal with carbohydrate raises bl
   I'm not eating that much, but the weight won't move.
 </Pullquote>
 
-Cortisol is the second. It is not the villain it's marketed as. Cortisol is what gets you out of bed; it follows a curve through the day, peaks in the morning, and falls before sleep. Trouble starts when the curve flattens — when stress is constant, when sleep is short, when meals are skipped, when training is heavy and food is scarce. A flattened cortisol curve looks, from the inside, like *tired but wired*.
+Cortisol is the second. It is not the villain it's marketed as. Cortisol is what gets you out of bed; it follows a curve through the day, peaks in the morning, and falls before sleep. Trouble starts when the curve flattens — when stress is constant, when sleep is short, when meals are skipped, when training is heavy and food is scarce. A flattened cortisol curve looks, from the inside, like _tired but wired_.
 
 The thyroid pair sets metabolic tempo: how warm you are, how fast your heart beats, how often your bowel moves, how patient you can stand to be. Iodine, selenium, iron, and adequate calories are the dietary inputs that matter most. Chronic under-eating is a thyroid stressor; women routinely don't believe me about this until their period goes.
 
 Oestrogen, progesterone, and testosterone are the cycle hormones. They respond to body composition (fat tissue makes oestrogen), to stress (cortisol "steals" from progesterone in the production line), and to insulin (high insulin lifts androgens, which is most of the PCOS picture). They are not, on the whole, things you eat your way directly to — but the conditions you build with diet are the conditions they operate under.
 
-Leptin and ghrelin are the appetite pair. Leptin says *I've had enough*; ghrelin says *feed me*. Sleep loss flips both in the wrong direction within two nights. This is why a tired week feels like a hungry week.
+Leptin and ghrelin are the appetite pair. Leptin says _I've had enough_; ghrelin says _feed me_. Sleep loss flips both in the wrong direction within two nights. This is why a tired week feels like a hungry week.
 
 ## What food actually moves
 
@@ -804,9 +833,7 @@ If you are trying to figure out where your particular bottleneck is, the order I
 
 With those four artifacts, the picture is usually clear within a single appointment. Without them, we're guessing.
 
-<Pullquote>
-  The endocrine system has a long memory. So does the kitchen.
-</Pullquote>
+<Pullquote>The endocrine system has a long memory. So does the kitchen.</Pullquote>
 
 The work is not glamorous. Hormonal health, in practice, looks like a regular breakfast, a fibre-shaped lunch, a strength session twice a week, and a bedtime that holds. It is the opposite of a cleanse and the opposite of a hack. It is the part of nutrition I am most certain of and most reluctant to oversell.
 
@@ -843,7 +870,7 @@ conditions:
 related:
   - { type: "program", slug: "diet-planning", label: "Diet Planning Program" }
   - { type: "program", slug: "coaching", label: "8-week Coaching Program" }
-  - { type: "focus",   slug: "hormonal-health", label: "Hormonal Health" }
+  - { type: "focus", slug: "hormonal-health", label: "Hormonal Health" }
 ---
 
 Most of what is written about weight management is written by people who have either never lost weight, or lost it once and have been monetising the story since. The version I have to give as a clinical dietitian is duller, slower, and considerably more honest. It also works.
@@ -858,7 +885,7 @@ I lead with that because half the work in my practice is helping a client decide
 
 ## What actually causes weight loss
 
-Sustained, modest energy deficit, over time. That is the entire mechanism, in one sentence. Every regime that produces weight loss does it through that lever, regardless of whether it is marketed as keto, intermittent fasting, low-carb, plant-based, or "clean eating." The differences between regimes are how easy each one is to stick to for *you*, in *your* life.
+Sustained, modest energy deficit, over time. That is the entire mechanism, in one sentence. Every regime that produces weight loss does it through that lever, regardless of whether it is marketed as keto, intermittent fasting, low-carb, plant-based, or "clean eating." The differences between regimes are how easy each one is to stick to for _you_, in _your_ life.
 
 What this means in practice: there is no metabolic trick. There is no fat-burning food. There is no magic combination of nutrients that lets a body lose weight while in energy balance. The mechanism is energy in versus energy out, and everything else is logistics.
 
@@ -886,7 +913,7 @@ A short list, since the long list is most of the internet:
 
 ## The protein floor
 
-The single most reliable lever I see. A weight-loss diet without adequate protein loses muscle, lowers metabolic rate, and leaves the dieter in a worse position than they started. The minimum I work with is 1.6 g of protein per kg of *target* body weight per day, distributed across three to four meals. For most women that lands between 90 and 130 grams a day, and for most women it is significantly more protein than they were eating before.
+The single most reliable lever I see. A weight-loss diet without adequate protein loses muscle, lowers metabolic rate, and leaves the dieter in a worse position than they started. The minimum I work with is 1.6 g of protein per kg of _target_ body weight per day, distributed across three to four meals. For most women that lands between 90 and 130 grams a day, and for most women it is significantly more protein than they were eating before.
 
 This is not optional. It is the single intervention that distinguishes a weight loss that holds from one that doesn't. Everything else in this article is downstream of this.
 
@@ -904,7 +931,7 @@ Underslept dieters lose more muscle and less fat at the same calorie deficit tha
 
 ## The plateau
 
-Every weight-loss regime plateaus. The body is well-engineered for this and does not consult the dieter. When loss stalls, the question is not *why has the body betrayed me* but *what has adapted, and what can I move next*. The usual answers, in order:
+Every weight-loss regime plateaus. The body is well-engineered for this and does not consult the dieter. When loss stalls, the question is not _why has the body betrayed me_ but _what has adapted, and what can I move next_. The usual answers, in order:
 
 1. **Adherence has drifted.** Most plateaus are not metabolic; they are arithmetic. A weekend of unmeasured food adds up. A food log for a week usually finds the deficit has quietly closed.
 2. **Adaptive thermogenesis.** Real, but smaller than dieters fear. A diet break — two weeks at maintenance — often resets the system better than cutting further.

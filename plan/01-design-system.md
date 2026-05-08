@@ -116,7 +116,10 @@ Replace the scaffold-generated `app/globals.css` entirely with:
   }
 
   /* Headings use display family by default; primitives override per-variant */
-  h1, h2, h3, h4 {
+  h1,
+  h2,
+  h3,
+  h4 {
     font-family: var(--font-display);
     color: var(--color-ink);
     font-feature-settings: "ss01", "ss02";
@@ -124,7 +127,9 @@ Replace the scaffold-generated `app/globals.css` entirely with:
 
   /* Honour reduced-motion globally — motion components also short-circuit */
   @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
+    *,
+    *::before,
+    *::after {
       animation-duration: 0ms !important;
       animation-iteration-count: 1 !important;
       transition-duration: 0ms !important;
@@ -318,11 +323,7 @@ Tailwind v4 reads tokens from `@theme` in CSS, not from this file. We keep it on
 import type { Config } from "tailwindcss";
 
 const config: Config = {
-  content: [
-    "./app/**/*.{ts,tsx,mdx}",
-    "./components/**/*.{ts,tsx}",
-    "./content/**/*.mdx",
-  ],
+  content: ["./app/**/*.{ts,tsx,mdx}", "./components/**/*.{ts,tsx}", "./content/**/*.mdx"],
 };
 
 export default config;
@@ -360,11 +361,7 @@ export const metadata: Metadata = {
     "Nourishing you inside out for healthy you throughout. Clinical dietitian Dr. Ruhma — Lahore, Pakistan.",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable} ${epilogue.variable}`}>
       <body className="bg-cream text-ink-soft antialiased">{children}</body>
@@ -403,12 +400,7 @@ interface EyebrowProps extends React.HTMLAttributes<HTMLSpanElement> {
   as?: "span" | "p" | "div";
 }
 
-export function Eyebrow({
-  as: Tag = "span",
-  className,
-  children,
-  ...rest
-}: EyebrowProps) {
+export function Eyebrow({ as: Tag = "span", className, children, ...rest }: EyebrowProps) {
   return (
     <Tag className={cn("type-eyebrow", className)} {...rest}>
       {children}
@@ -455,7 +447,8 @@ const headingVariants = cva("", {
 type HeadingTag = "h1" | "h2" | "h3" | "h4" | "p" | "span" | "div";
 
 interface HeadingProps
-  extends Omit<React.HTMLAttributes<HTMLHeadingElement>, "color">,
+  extends
+    Omit<React.HTMLAttributes<HTMLHeadingElement>, "color">,
     VariantProps<typeof headingVariants> {
   as?: HeadingTag;
 }
@@ -467,21 +460,10 @@ const variantToTag: Record<NonNullable<HeadingProps["variant"]>, HeadingTag> = {
   h2: "h2",
 };
 
-export function Heading({
-  as,
-  variant,
-  tone,
-  align,
-  className,
-  children,
-  ...rest
-}: HeadingProps) {
+export function Heading({ as, variant, tone, align, className, children, ...rest }: HeadingProps) {
   const Tag = (as ?? variantToTag[variant ?? "h1"]) as HeadingTag;
   return (
-    <Tag
-      className={cn(headingVariants({ variant, tone, align }), className)}
-      {...rest}
-    >
+    <Tag className={cn(headingVariants({ variant, tone, align }), className)} {...rest}>
       {children}
     </Tag>
   );
@@ -504,26 +486,22 @@ Three widths cover all editorial layouts. Master plan repeatedly references max-
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/cn";
 
-const containerVariants = cva(
-  "mx-auto w-full px-6 sm:px-8 lg:px-12",
-  {
-    variants: {
-      width: {
-        narrow: "max-w-[720px]",        // longread / legal / about mission
-        default: "max-w-[1200px]",      // standard sections
-        wide: "max-w-[1440px]",         // hero, library editorial spreads
-        full: "max-w-none px-0 sm:px-0 lg:px-0", // image full-bleed
-      },
+const containerVariants = cva("mx-auto w-full px-6 sm:px-8 lg:px-12", {
+  variants: {
+    width: {
+      narrow: "max-w-[720px]", // longread / legal / about mission
+      default: "max-w-[1200px]", // standard sections
+      wide: "max-w-[1440px]", // hero, library editorial spreads
+      full: "max-w-none px-0 sm:px-0 lg:px-0", // image full-bleed
     },
-    defaultVariants: {
-      width: "default",
-    },
-  }
-);
+  },
+  defaultVariants: {
+    width: "default",
+  },
+});
 
 interface ContainerProps
-  extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof containerVariants> {
+  extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof containerVariants> {
   as?: "div" | "section" | "article" | "main";
 }
 
@@ -562,14 +540,7 @@ export function Prose({
   ...rest
 }: ProseProps) {
   return (
-    <Tag
-      className={cn(
-        "prose-editorial",
-        dropcap && "has-dropcap",
-        className
-      )}
-      {...rest}
-    >
+    <Tag className={cn("prose-editorial", dropcap && "has-dropcap", className)} {...rest}>
       {children}
     </Tag>
   );
@@ -588,10 +559,10 @@ import { type ReactNode } from "react";
 
 interface FadeUpProps {
   children: ReactNode;
-  delay?: number;        // seconds
+  delay?: number; // seconds
   className?: string;
   as?: "div" | "section" | "article" | "li";
-  amount?: number;       // viewport intersection threshold 0..1
+  amount?: number; // viewport intersection threshold 0..1
   once?: boolean;
 }
 
@@ -645,13 +616,16 @@ interface ImageRevealProps {
   delay?: number;
 }
 
-const clipFor: Record<NonNullable<ImageRevealProps["direction"]>, {
-  initial: string;
-  animate: string;
-}> = {
-  up:    { initial: "inset(100% 0% 0% 0%)", animate: "inset(0% 0% 0% 0%)" },
-  down:  { initial: "inset(0% 0% 100% 0%)", animate: "inset(0% 0% 0% 0%)" },
-  left:  { initial: "inset(0% 0% 0% 100%)", animate: "inset(0% 0% 0% 0%)" },
+const clipFor: Record<
+  NonNullable<ImageRevealProps["direction"]>,
+  {
+    initial: string;
+    animate: string;
+  }
+> = {
+  up: { initial: "inset(100% 0% 0% 0%)", animate: "inset(0% 0% 0% 0%)" },
+  down: { initial: "inset(0% 0% 100% 0%)", animate: "inset(0% 0% 0% 0%)" },
+  left: { initial: "inset(0% 0% 0% 100%)", animate: "inset(0% 0% 0% 0%)" },
   right: { initial: "inset(0% 100% 0% 0%)", animate: "inset(0% 0% 0% 0%)" },
 };
 
@@ -702,17 +676,16 @@ interface LetterStaggerProps {
   delay?: number;
 }
 
-export function LetterStagger({
-  text,
-  className,
-  as = "span",
-  delay = 0,
-}: LetterStaggerProps) {
+export function LetterStagger({ text, className, as = "span", delay = 0 }: LetterStaggerProps) {
   const reduce = useReducedMotion();
   const Tag = motion[as];
 
   if (reduce) {
-    return <Tag className={className} aria-label={text}>{text}</Tag>;
+    return (
+      <Tag className={className} aria-label={text}>
+        {text}
+      </Tag>
+    );
   }
 
   // Spread by Unicode codepoint to handle composed characters safely.
@@ -834,36 +807,36 @@ const TOKENS = [
   { name: "paper", value: "#FFFFFF", className: "bg-paper" },
 ];
 
-const ILLUSTRATIONS = [
-  "fennel", "mint", "citrus", "leaf", "root", "sprig", "seed", "pestle",
-];
+const ILLUSTRATIONS = ["fennel", "mint", "citrus", "leaf", "root", "sprig", "seed", "pestle"];
 
 export default function KitPage() {
   return (
-    <main className="min-h-screen bg-cream text-ink-soft pb-32">
-      <Container width="default" className="py-16 space-y-24">
+    <main className="bg-cream text-ink-soft min-h-screen pb-32">
+      <Container width="default" className="space-y-24 py-16">
         {/* Page header */}
-        <header className="space-y-4 border-b border-ink/10 pb-10">
+        <header className="border-ink/10 space-y-4 border-b pb-10">
           <Eyebrow>Internal · Visual QA</Eyebrow>
-          <Heading variant="display" as="h1">Design system kit</Heading>
+          <Heading variant="display" as="h1">
+            Design system kit
+          </Heading>
           <p className="type-body max-w-[60ch]">
-            Every token, type style, primitive, and motion in one scrollable
-            page. If something here looks wrong, the whole site looks wrong.
+            Every token, type style, primitive, and motion in one scrollable page. If something here
+            looks wrong, the whole site looks wrong.
           </p>
         </header>
 
         {/* 1. Color tokens */}
         <section className="space-y-6">
           <Eyebrow>01 — Color tokens</Eyebrow>
-          <Heading variant="h2" as="h2">Palette</Heading>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+          <Heading variant="h2" as="h2">
+            Palette
+          </Heading>
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
             {TOKENS.map((t) => (
               <div key={t.name} className="space-y-2">
-                <div
-                  className={`${t.className} h-24 w-full rounded-sm border border-ink/10`}
-                />
+                <div className={`${t.className} border-ink/10 h-24 w-full rounded-sm border`} />
                 <div className="space-y-0.5">
-                  <p className="type-small font-medium text-ink">{t.name}</p>
+                  <p className="type-small text-ink font-medium">{t.name}</p>
                   <p className="type-caption">{t.value}</p>
                 </div>
               </div>
@@ -874,7 +847,9 @@ export default function KitPage() {
         {/* 2. Type scale */}
         <section className="space-y-8">
           <Eyebrow>02 — Type scale</Eyebrow>
-          <Heading variant="h2" as="h2">Editorial typography</Heading>
+          <Heading variant="h2" as="h2">
+            Editorial typography
+          </Heading>
 
           <div className="space-y-10">
             <div className="space-y-2">
@@ -905,9 +880,9 @@ export default function KitPage() {
             <div className="space-y-2">
               <Eyebrow>Body · Inter · 400 · 1.6 line-height · 17px</Eyebrow>
               <p className="type-body max-w-[60ch]">
-                Nourishing you inside out for healthy you throughout. The body
-                copy reads at 17px with generous line-height — editorial weight
-                for long-form content like the focus pages and journal posts.
+                Nourishing you inside out for healthy you throughout. The body copy reads at 17px
+                with generous line-height — editorial weight for long-form content like the focus
+                pages and journal posts.
               </p>
             </div>
 
@@ -926,7 +901,9 @@ export default function KitPage() {
         {/* 3. Primitives */}
         <section className="space-y-8">
           <Eyebrow>03 — Primitives</Eyebrow>
-          <Heading variant="h2" as="h2">Composable building blocks</Heading>
+          <Heading variant="h2" as="h2">
+            Composable building blocks
+          </Heading>
 
           <div className="space-y-6">
             <div className="space-y-2">
@@ -935,42 +912,51 @@ export default function KitPage() {
               <Heading variant="display">Page title</Heading>
               <Heading variant="h1">Section heading</Heading>
               <Heading variant="h2">Subsection</Heading>
-              <Heading variant="h1" tone="mauve">Mauve tone</Heading>
-              <Heading variant="h1" tone="moss">Moss tone</Heading>
+              <Heading variant="h1" tone="mauve">
+                Mauve tone
+              </Heading>
+              <Heading variant="h1" tone="moss">
+                Moss tone
+              </Heading>
             </div>
 
-            <div className="space-y-2 border-t border-ink/10 pt-6">
+            <div className="border-ink/10 space-y-2 border-t pt-6">
               <Eyebrow>&lt;Container&gt; widths</Eyebrow>
               <div className="bg-cream-deep p-4">
-                <Container width="narrow" className="bg-paper p-4">narrow (720)</Container>
+                <Container width="narrow" className="bg-paper p-4">
+                  narrow (720)
+                </Container>
               </div>
               <div className="bg-cream-deep p-4">
-                <Container width="default" className="bg-paper p-4">default (1200)</Container>
+                <Container width="default" className="bg-paper p-4">
+                  default (1200)
+                </Container>
               </div>
               <div className="bg-cream-deep p-4">
-                <Container width="wide" className="bg-paper p-4">wide (1440)</Container>
+                <Container width="wide" className="bg-paper p-4">
+                  wide (1440)
+                </Container>
               </div>
             </div>
 
-            <div className="space-y-2 border-t border-ink/10 pt-6">
+            <div className="border-ink/10 space-y-2 border-t pt-6">
               <Eyebrow>&lt;Prose&gt; with drop-cap</Eyebrow>
               <Prose dropcap>
                 <p>
-                  Hormonal health is not one switch. The body runs on a network
-                  of signals — cortisol when stressed, insulin after a meal,
-                  estrogen and progesterone on a monthly rhythm — and each one
-                  affects the others. When clients tell me "my hormones are off,"
-                  the work is to figure out <em>which one, when, and why</em>.
+                  Hormonal health is not one switch. The body runs on a network of signals —
+                  cortisol when stressed, insulin after a meal, estrogen and progesterone on a
+                  monthly rhythm — and each one affects the others. When clients tell me "my
+                  hormones are off," the work is to figure out <em>which one, when, and why</em>.
                 </p>
                 <h2>Where this shows up</h2>
                 <p>
-                  In practice, hormonal imbalance arrives wearing three masks.
-                  Sometimes it's PCOS. Sometimes it's thyroid. Sometimes it's
-                  cortisol you didn't realise was running the show.
+                  In practice, hormonal imbalance arrives wearing three masks. Sometimes it's PCOS.
+                  Sometimes it's thyroid. Sometimes it's cortisol you didn't realise was running the
+                  show.
                 </p>
                 <blockquote>
-                  The body is patient. It will wait years for you to listen
-                  before it raises its voice.
+                  The body is patient. It will wait years for you to listen before it raises its
+                  voice.
                 </blockquote>
                 <p>
                   <a href="#">Read more on the journal →</a>
@@ -983,36 +969,34 @@ export default function KitPage() {
         {/* 4. Motion */}
         <section className="space-y-8">
           <Eyebrow>04 — Motion (3 only)</Eyebrow>
-          <Heading variant="h2" as="h2">Master §1 motion components</Heading>
+          <Heading variant="h2" as="h2">
+            Master §1 motion components
+          </Heading>
 
           <div className="space-y-12">
             <div className="space-y-3">
               <Eyebrow>&lt;FadeUp&gt; · 600ms · ease-out · on scroll</Eyebrow>
               {[0, 1, 2].map((i) => (
                 <FadeUp key={i} delay={i * 0.1}>
-                  <div className="bg-paper p-6 border border-ink/10 type-body">
+                  <div className="bg-paper border-ink/10 type-body border p-6">
                     Block {i + 1} fades up when scrolled into view (16px → 0).
                   </div>
                 </FadeUp>
               ))}
             </div>
 
-            <div className="space-y-3 border-t border-ink/10 pt-8">
+            <div className="border-ink/10 space-y-3 border-t pt-8">
               <Eyebrow>&lt;ImageReveal&gt; · 1.2s · clip-path wipe · on mount</Eyebrow>
               <ImageReveal direction="up" className="aspect-[4/3] w-full max-w-2xl">
-                <div className="h-full w-full bg-shell flex items-center justify-center">
+                <div className="bg-shell flex h-full w-full items-center justify-center">
                   <span className="type-display text-mauve-deep">photo</span>
                 </div>
               </ImageReveal>
             </div>
 
-            <div className="space-y-3 border-t border-ink/10 pt-8">
+            <div className="border-ink/10 space-y-3 border-t pt-8">
               <Eyebrow>&lt;LetterStagger&gt; · 800ms · on mount</Eyebrow>
-              <LetterStagger
-                text="nourish"
-                as="h1"
-                className="type-display-xl"
-              />
+              <LetterStagger text="nourish" as="h1" className="type-display-xl" />
             </div>
           </div>
         </section>
@@ -1020,17 +1004,19 @@ export default function KitPage() {
         {/* 5. Botanical illustrations */}
         <section className="space-y-6">
           <Eyebrow>05 — Botanical SVG set</Eyebrow>
-          <Heading variant="h2" as="h2">Section anchors</Heading>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
+          <Heading variant="h2" as="h2">
+            Section anchors
+          </Heading>
+          <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
             {ILLUSTRATIONS.map((name) => (
               <figure key={name} className="space-y-2">
-                <div className="aspect-square bg-paper border border-ink/10 flex items-center justify-center text-ink">
+                <div className="bg-paper border-ink/10 text-ink flex aspect-square items-center justify-center border">
                   <Image
                     src={`/illustrations/${name}.svg`}
                     alt=""
                     width={80}
                     height={80}
-                    className="w-20 h-20"
+                    className="h-20 w-20"
                     aria-hidden
                   />
                 </div>
@@ -1041,13 +1027,13 @@ export default function KitPage() {
         </section>
 
         {/* 6. Reduced motion check */}
-        <section className="space-y-4 border-t border-ink/10 pt-10">
+        <section className="border-ink/10 space-y-4 border-t pt-10">
           <Eyebrow>06 — Reduced motion</Eyebrow>
           <p className="type-body max-w-[60ch]">
             Toggle <code className="bg-cream-deep px-1">prefers-reduced-motion: reduce</code>
-            in DevTools (Rendering tab → Emulate CSS media feature). All three
-            motion components above should render their final state with no
-            animation. The global CSS rule also kills any stray transitions.
+            in DevTools (Rendering tab → Emulate CSS media feature). All three motion components
+            above should render their final state with no animation. The global CSS rule also kills
+            any stray transitions.
           </p>
         </section>
       </Container>
@@ -1100,20 +1086,15 @@ That writes `components/ui/button.tsx`, `components/ui/sheet.tsx`, `components/u
 
 ```ts
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mauve focus-visible:ring-offset-2 focus-visible:ring-offset-cream disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "focus-visible:ring-mauve focus-visible:ring-offset-cream inline-flex items-center justify-center gap-2 rounded-full font-medium whitespace-nowrap transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
-        default:
-          "bg-ink text-cream hover:bg-ink/90",
-        mauve:
-          "bg-mauve text-cream hover:bg-mauve-deep",
-        outline:
-          "border border-ink/20 bg-transparent text-ink hover:bg-ink/5",
-        ghost:
-          "bg-transparent text-ink hover:bg-ink/5",
-        link:
-          "text-mauve underline-offset-4 hover:underline hover:text-mauve-deep",
+        default: "bg-ink text-cream hover:bg-ink/90",
+        mauve: "bg-mauve text-cream hover:bg-mauve-deep",
+        outline: "border-ink/20 text-ink hover:bg-ink/5 border bg-transparent",
+        ghost: "text-ink hover:bg-ink/5 bg-transparent",
+        link: "text-mauve hover:text-mauve-deep underline-offset-4 hover:underline",
       },
       size: {
         default: "h-11 px-6 text-[15px]",
@@ -1126,7 +1107,7 @@ const buttonVariants = cva(
       variant: "default",
       size: "default",
     },
-  }
+  },
 );
 ```
 
@@ -1157,7 +1138,6 @@ Execute in this exact order. Each step is independently committable.
    Commit: `feat(design): load Inter + Epilogue via next/font, drop La Belle Aurore`.
 
 6. **Create primitives** in this order (each is small):
-
    - `components/ui/eyebrow.tsx` (§4.5)
    - `components/ui/heading.tsx` (§4.6)
    - `components/ui/container.tsx` (§4.7)
@@ -1166,7 +1146,6 @@ Execute in this exact order. Each step is independently committable.
    Run `pnpm tsc --noEmit` after each. Commit batch: `feat(ui): Eyebrow, Heading, Container, Prose primitives`.
 
 7. **Create motion components**:
-
    - `components/motion/fade-up.tsx` (§4.9)
    - `components/motion/image-reveal.tsx` (§4.10)
    - `components/motion/letter-stagger.tsx` (§4.11)

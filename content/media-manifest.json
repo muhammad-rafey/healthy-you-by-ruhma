@@ -1,0 +1,642 @@
+{
+  "home/hero-portrait": {
+    "category": "home",
+    "slug": "hero-portrait",
+    "alt": "Dr. Ruhma, clinical dietitian, in studio portrait.",
+    "widths": [
+      400,
+      800,
+      1080
+    ],
+    "avif": [
+      "/media/home/hero-portrait-400.avif",
+      "/media/home/hero-portrait-800.avif",
+      "/media/home/hero-portrait-1080.avif"
+    ],
+    "webp": [
+      "/media/home/hero-portrait-400.webp",
+      "/media/home/hero-portrait-800.webp",
+      "/media/home/hero-portrait-1080.webp"
+    ]
+  },
+  "home/about-teaser": {
+    "category": "home",
+    "slug": "about-teaser",
+    "alt": "Dr. Ruhma at her practice in Lahore.",
+    "widths": [
+      400,
+      800,
+      1001
+    ],
+    "avif": [
+      "/media/home/about-teaser-400.avif",
+      "/media/home/about-teaser-800.avif",
+      "/media/home/about-teaser-1001.avif"
+    ],
+    "webp": [
+      "/media/home/about-teaser-400.webp",
+      "/media/home/about-teaser-800.webp",
+      "/media/home/about-teaser-1001.webp"
+    ]
+  },
+  "home/pillar-hormonal": {
+    "category": "home",
+    "slug": "pillar-hormonal",
+    "alt": "Considered ingredients for hormonal-supportive cooking.",
+    "widths": [
+      327
+    ],
+    "avif": [
+      "/media/home/pillar-hormonal-327.avif"
+    ],
+    "webp": [
+      "/media/home/pillar-hormonal-327.webp"
+    ]
+  },
+  "home/pillar-weight": {
+    "category": "home",
+    "slug": "pillar-weight",
+    "alt": "Whole grains and seasonal produce on a wooden surface.",
+    "widths": [
+      327
+    ],
+    "avif": [
+      "/media/home/pillar-weight-327.avif"
+    ],
+    "webp": [
+      "/media/home/pillar-weight-327.webp"
+    ]
+  },
+  "home/pillar-diet": {
+    "category": "home",
+    "slug": "pillar-diet",
+    "alt": "Plated meal showing the macronutrient balance Ruhma recommends.",
+    "widths": [
+      327
+    ],
+    "avif": [
+      "/media/home/pillar-diet-327.avif"
+    ],
+    "webp": [
+      "/media/home/pillar-diet-327.webp"
+    ]
+  },
+  "home/lifestyle-1": {
+    "category": "home",
+    "slug": "lifestyle-1",
+    "alt": "Cooking notes and a glass of water on a kitchen counter.",
+    "widths": [
+      400,
+      482
+    ],
+    "avif": [
+      "/media/home/lifestyle-1-400.avif",
+      "/media/home/lifestyle-1-482.avif"
+    ],
+    "webp": [
+      "/media/home/lifestyle-1-400.webp",
+      "/media/home/lifestyle-1-482.webp"
+    ]
+  },
+  "home/lifestyle-2": {
+    "category": "home",
+    "slug": "lifestyle-2",
+    "alt": "A plated breakfast in soft morning light.",
+    "widths": [
+      400,
+      482
+    ],
+    "avif": [
+      "/media/home/lifestyle-2-400.avif",
+      "/media/home/lifestyle-2-482.avif"
+    ],
+    "webp": [
+      "/media/home/lifestyle-2-400.webp",
+      "/media/home/lifestyle-2-482.webp"
+    ]
+  },
+  "home/lifestyle-3": {
+    "category": "home",
+    "slug": "lifestyle-3",
+    "alt": "Fresh herbs and lemons on a stone surface.",
+    "widths": [
+      400,
+      482
+    ],
+    "avif": [
+      "/media/home/lifestyle-3-400.avif",
+      "/media/home/lifestyle-3-482.avif"
+    ],
+    "webp": [
+      "/media/home/lifestyle-3-400.webp",
+      "/media/home/lifestyle-3-482.webp"
+    ]
+  },
+  "home/lifestyle-4": {
+    "category": "home",
+    "slug": "lifestyle-4",
+    "alt": "A vegetable bowl with grains and roasted vegetables.",
+    "widths": [
+      400,
+      482
+    ],
+    "avif": [
+      "/media/home/lifestyle-4-400.avif",
+      "/media/home/lifestyle-4-482.avif"
+    ],
+    "webp": [
+      "/media/home/lifestyle-4-400.webp",
+      "/media/home/lifestyle-4-482.webp"
+    ]
+  },
+  "about/hero": {
+    "category": "about",
+    "slug": "hero",
+    "alt": "Dr. Ruhma in her clinic, consulting at her desk.",
+    "widths": [
+      400,
+      750
+    ],
+    "avif": [
+      "/media/about/hero-400.avif",
+      "/media/about/hero-750.avif"
+    ],
+    "webp": [
+      "/media/about/hero-400.webp",
+      "/media/about/hero-750.webp"
+    ]
+  },
+  "about/secondary": {
+    "category": "about",
+    "slug": "secondary",
+    "alt": "Dr. Ruhma reviewing a patient's notes.",
+    "widths": [
+      400,
+      800,
+      1001
+    ],
+    "avif": [
+      "/media/about/secondary-400.avif",
+      "/media/about/secondary-800.avif",
+      "/media/about/secondary-1001.avif"
+    ],
+    "webp": [
+      "/media/about/secondary-400.webp",
+      "/media/about/secondary-800.webp",
+      "/media/about/secondary-1001.webp"
+    ]
+  },
+  "about/portrait-secondary": {
+    "category": "about",
+    "slug": "portrait-secondary",
+    "alt": "Dr. Ruhma on a consultation call.",
+    "widths": [
+      400,
+      800,
+      1080
+    ],
+    "avif": [
+      "/media/about/portrait-secondary-400.avif",
+      "/media/about/portrait-secondary-800.avif",
+      "/media/about/portrait-secondary-1080.avif"
+    ],
+    "webp": [
+      "/media/about/portrait-secondary-400.webp",
+      "/media/about/portrait-secondary-800.webp",
+      "/media/about/portrait-secondary-1080.webp"
+    ]
+  },
+  "programs/diet-planning-hero": {
+    "category": "programs",
+    "slug": "diet-planning-hero",
+    "alt": "Sample weekly meal plan laid out on a wooden table.",
+    "widths": [
+      400,
+      750
+    ],
+    "avif": [
+      "/media/programs/diet-planning-hero-400.avif",
+      "/media/programs/diet-planning-hero-750.avif"
+    ],
+    "webp": [
+      "/media/programs/diet-planning-hero-400.webp",
+      "/media/programs/diet-planning-hero-750.webp"
+    ]
+  },
+  "programs/coaching-hero": {
+    "category": "programs",
+    "slug": "coaching-hero",
+    "alt": "Dr. Ruhma walking with a client during a coaching session.",
+    "widths": [
+      400,
+      800,
+      1001
+    ],
+    "avif": [
+      "/media/programs/coaching-hero-400.avif",
+      "/media/programs/coaching-hero-800.avif",
+      "/media/programs/coaching-hero-1001.avif"
+    ],
+    "webp": [
+      "/media/programs/coaching-hero-400.webp",
+      "/media/programs/coaching-hero-800.webp",
+      "/media/programs/coaching-hero-1001.webp"
+    ]
+  },
+  "programs/consultation-hero": {
+    "category": "programs",
+    "slug": "consultation-hero",
+    "alt": "Dr. Ruhma on a video consultation call.",
+    "widths": [
+      400,
+      800,
+      1080
+    ],
+    "avif": [
+      "/media/programs/consultation-hero-400.avif",
+      "/media/programs/consultation-hero-800.avif",
+      "/media/programs/consultation-hero-1080.avif"
+    ],
+    "webp": [
+      "/media/programs/consultation-hero-400.webp",
+      "/media/programs/consultation-hero-800.webp",
+      "/media/programs/consultation-hero-1080.webp"
+    ]
+  },
+  "programs/diet-planning-sample": {
+    "category": "programs",
+    "slug": "diet-planning-sample",
+    "alt": "A balanced plate showing macronutrient distribution.",
+    "widths": [
+      400,
+      482
+    ],
+    "avif": [
+      "/media/programs/diet-planning-sample-400.avif",
+      "/media/programs/diet-planning-sample-482.avif"
+    ],
+    "webp": [
+      "/media/programs/diet-planning-sample-400.webp",
+      "/media/programs/diet-planning-sample-482.webp"
+    ]
+  },
+  "programs/coaching-sample": {
+    "category": "programs",
+    "slug": "coaching-sample",
+    "alt": "A printed coaching workbook open on a desk.",
+    "widths": [
+      400,
+      482
+    ],
+    "avif": [
+      "/media/programs/coaching-sample-400.avif",
+      "/media/programs/coaching-sample-482.avif"
+    ],
+    "webp": [
+      "/media/programs/coaching-sample-400.webp",
+      "/media/programs/coaching-sample-482.webp"
+    ]
+  },
+  "focus/hormonal-health-hero": {
+    "category": "focus",
+    "slug": "hormonal-health-hero",
+    "alt": "Herbs and citrus arranged for a hormone-supportive meal.",
+    "widths": [
+      400,
+      800,
+      1200,
+      1600,
+      1920
+    ],
+    "avif": [
+      "/media/focus/hormonal-health-hero-400.avif",
+      "/media/focus/hormonal-health-hero-800.avif",
+      "/media/focus/hormonal-health-hero-1200.avif",
+      "/media/focus/hormonal-health-hero-1600.avif",
+      "/media/focus/hormonal-health-hero-1920.avif"
+    ],
+    "webp": [
+      "/media/focus/hormonal-health-hero-400.webp",
+      "/media/focus/hormonal-health-hero-800.webp",
+      "/media/focus/hormonal-health-hero-1200.webp",
+      "/media/focus/hormonal-health-hero-1600.webp",
+      "/media/focus/hormonal-health-hero-1920.webp"
+    ]
+  },
+  "focus/weight-management-hero": {
+    "category": "focus",
+    "slug": "weight-management-hero",
+    "alt": "A measured plate of whole grains, vegetables and lean protein.",
+    "widths": [
+      400,
+      800,
+      1200,
+      1280
+    ],
+    "avif": [
+      "/media/focus/weight-management-hero-400.avif",
+      "/media/focus/weight-management-hero-800.avif",
+      "/media/focus/weight-management-hero-1200.avif",
+      "/media/focus/weight-management-hero-1280.avif"
+    ],
+    "webp": [
+      "/media/focus/weight-management-hero-400.webp",
+      "/media/focus/weight-management-hero-800.webp",
+      "/media/focus/weight-management-hero-1200.webp",
+      "/media/focus/weight-management-hero-1280.webp"
+    ]
+  },
+  "library/diabetes-cover": {
+    "category": "library",
+    "slug": "diabetes-cover",
+    "alt": "Diabetes Essentials ebook cover.",
+    "widths": [
+      400,
+      800,
+      1080
+    ],
+    "avif": [
+      "/media/library/diabetes-cover-400.avif",
+      "/media/library/diabetes-cover-800.avif",
+      "/media/library/diabetes-cover-1080.avif"
+    ],
+    "webp": [
+      "/media/library/diabetes-cover-400.webp",
+      "/media/library/diabetes-cover-800.webp",
+      "/media/library/diabetes-cover-1080.webp"
+    ]
+  },
+  "library/diabetes-sample-1": {
+    "category": "library",
+    "slug": "diabetes-sample-1",
+    "alt": "Sample spread from the Diabetes Essentials ebook.",
+    "widths": [
+      400,
+      800,
+      1200,
+      1600,
+      2400
+    ],
+    "avif": [
+      "/media/library/diabetes-sample-1-400.avif",
+      "/media/library/diabetes-sample-1-800.avif",
+      "/media/library/diabetes-sample-1-1200.avif",
+      "/media/library/diabetes-sample-1-1600.avif",
+      "/media/library/diabetes-sample-1-2400.avif"
+    ],
+    "webp": [
+      "/media/library/diabetes-sample-1-400.webp",
+      "/media/library/diabetes-sample-1-800.webp",
+      "/media/library/diabetes-sample-1-1200.webp",
+      "/media/library/diabetes-sample-1-1600.webp",
+      "/media/library/diabetes-sample-1-2400.webp"
+    ]
+  },
+  "library/diabetes-sample-2": {
+    "category": "library",
+    "slug": "diabetes-sample-2",
+    "alt": "Sample spread showing diabetes-friendly meal ideas.",
+    "widths": [
+      400,
+      800,
+      1200,
+      1600,
+      2400
+    ],
+    "avif": [
+      "/media/library/diabetes-sample-2-400.avif",
+      "/media/library/diabetes-sample-2-800.avif",
+      "/media/library/diabetes-sample-2-1200.avif",
+      "/media/library/diabetes-sample-2-1600.avif",
+      "/media/library/diabetes-sample-2-2400.avif"
+    ],
+    "webp": [
+      "/media/library/diabetes-sample-2-400.webp",
+      "/media/library/diabetes-sample-2-800.webp",
+      "/media/library/diabetes-sample-2-1200.webp",
+      "/media/library/diabetes-sample-2-1600.webp",
+      "/media/library/diabetes-sample-2-2400.webp"
+    ]
+  },
+  "library/diabetes-sample-3": {
+    "category": "library",
+    "slug": "diabetes-sample-3",
+    "alt": "Sample spread covering diabetes lifestyle modifications.",
+    "widths": [
+      400,
+      800,
+      1200,
+      1414
+    ],
+    "avif": [
+      "/media/library/diabetes-sample-3-400.avif",
+      "/media/library/diabetes-sample-3-800.avif",
+      "/media/library/diabetes-sample-3-1200.avif",
+      "/media/library/diabetes-sample-3-1414.avif"
+    ],
+    "webp": [
+      "/media/library/diabetes-sample-3-400.webp",
+      "/media/library/diabetes-sample-3-800.webp",
+      "/media/library/diabetes-sample-3-1200.webp",
+      "/media/library/diabetes-sample-3-1414.webp"
+    ]
+  },
+  "library/pcos-cover": {
+    "category": "library",
+    "slug": "pcos-cover",
+    "alt": "PCOS Guidebook cover.",
+    "widths": [
+      400,
+      800,
+      1200,
+      1600,
+      1920
+    ],
+    "avif": [
+      "/media/library/pcos-cover-400.avif",
+      "/media/library/pcos-cover-800.avif",
+      "/media/library/pcos-cover-1200.avif",
+      "/media/library/pcos-cover-1600.avif",
+      "/media/library/pcos-cover-1920.avif"
+    ],
+    "webp": [
+      "/media/library/pcos-cover-400.webp",
+      "/media/library/pcos-cover-800.webp",
+      "/media/library/pcos-cover-1200.webp",
+      "/media/library/pcos-cover-1600.webp",
+      "/media/library/pcos-cover-1920.webp"
+    ]
+  },
+  "library/pcos-sample-1": {
+    "category": "library",
+    "slug": "pcos-sample-1",
+    "alt": "Sample spread from the PCOS Guidebook.",
+    "widths": [
+      400,
+      800,
+      1200,
+      1280
+    ],
+    "avif": [
+      "/media/library/pcos-sample-1-400.avif",
+      "/media/library/pcos-sample-1-800.avif",
+      "/media/library/pcos-sample-1-1200.avif",
+      "/media/library/pcos-sample-1-1280.avif"
+    ],
+    "webp": [
+      "/media/library/pcos-sample-1-400.webp",
+      "/media/library/pcos-sample-1-800.webp",
+      "/media/library/pcos-sample-1-1200.webp",
+      "/media/library/pcos-sample-1-1280.webp"
+    ]
+  },
+  "library/pcos-sample-2": {
+    "category": "library",
+    "slug": "pcos-sample-2",
+    "alt": "PCOS Guidebook sample showing meal-planning principles.",
+    "widths": [
+      400,
+      800,
+      1200,
+      1280
+    ],
+    "avif": [
+      "/media/library/pcos-sample-2-400.avif",
+      "/media/library/pcos-sample-2-800.avif",
+      "/media/library/pcos-sample-2-1200.avif",
+      "/media/library/pcos-sample-2-1280.avif"
+    ],
+    "webp": [
+      "/media/library/pcos-sample-2-400.webp",
+      "/media/library/pcos-sample-2-800.webp",
+      "/media/library/pcos-sample-2-1200.webp",
+      "/media/library/pcos-sample-2-1280.webp"
+    ]
+  },
+  "library/pcos-sample-3": {
+    "category": "library",
+    "slug": "pcos-sample-3",
+    "alt": "PCOS Guidebook sample on lifestyle and supplements.",
+    "widths": [
+      400,
+      800,
+      1200,
+      1280
+    ],
+    "avif": [
+      "/media/library/pcos-sample-3-400.avif",
+      "/media/library/pcos-sample-3-800.avif",
+      "/media/library/pcos-sample-3-1200.avif",
+      "/media/library/pcos-sample-3-1280.avif"
+    ],
+    "webp": [
+      "/media/library/pcos-sample-3-400.webp",
+      "/media/library/pcos-sample-3-800.webp",
+      "/media/library/pcos-sample-3-1200.webp",
+      "/media/library/pcos-sample-3-1280.webp"
+    ]
+  },
+  "library/skin-cover": {
+    "category": "library",
+    "slug": "skin-cover",
+    "alt": "Skin Secrets ebook cover.",
+    "widths": [
+      400,
+      800,
+      1200,
+      1280
+    ],
+    "avif": [
+      "/media/library/skin-cover-400.avif",
+      "/media/library/skin-cover-800.avif",
+      "/media/library/skin-cover-1200.avif",
+      "/media/library/skin-cover-1280.avif"
+    ],
+    "webp": [
+      "/media/library/skin-cover-400.webp",
+      "/media/library/skin-cover-800.webp",
+      "/media/library/skin-cover-1200.webp",
+      "/media/library/skin-cover-1280.webp"
+    ]
+  },
+  "library/skin-sample-1": {
+    "category": "library",
+    "slug": "skin-sample-1",
+    "alt": "Sample spread from the Skin Secrets ebook.",
+    "widths": [
+      400,
+      800,
+      1200,
+      1280
+    ],
+    "avif": [
+      "/media/library/skin-sample-1-400.avif",
+      "/media/library/skin-sample-1-800.avif",
+      "/media/library/skin-sample-1-1200.avif",
+      "/media/library/skin-sample-1-1280.avif"
+    ],
+    "webp": [
+      "/media/library/skin-sample-1-400.webp",
+      "/media/library/skin-sample-1-800.webp",
+      "/media/library/skin-sample-1-1200.webp",
+      "/media/library/skin-sample-1-1280.webp"
+    ]
+  },
+  "library/skin-sample-2": {
+    "category": "library",
+    "slug": "skin-sample-2",
+    "alt": "Skin Secrets sample showing the food-skin connection.",
+    "widths": [
+      400,
+      512
+    ],
+    "avif": [
+      "/media/library/skin-sample-2-400.avif",
+      "/media/library/skin-sample-2-512.avif"
+    ],
+    "webp": [
+      "/media/library/skin-sample-2-400.webp",
+      "/media/library/skin-sample-2-512.webp"
+    ]
+  },
+  "library/skin-sample-3": {
+    "category": "library",
+    "slug": "skin-sample-3",
+    "alt": "Skin Secrets sample on hormonal acne strategies.",
+    "widths": [
+      400,
+      800,
+      1080
+    ],
+    "avif": [
+      "/media/library/skin-sample-3-400.avif",
+      "/media/library/skin-sample-3-800.avif",
+      "/media/library/skin-sample-3-1080.avif"
+    ],
+    "webp": [
+      "/media/library/skin-sample-3-400.webp",
+      "/media/library/skin-sample-3-800.webp",
+      "/media/library/skin-sample-3-1080.webp"
+    ]
+  },
+  "journal/welcome-hero": {
+    "category": "journal",
+    "slug": "welcome-hero",
+    "alt": "An open notebook beside a glass of water and seasonal fruit.",
+    "widths": [
+      400,
+      800,
+      905
+    ],
+    "avif": [
+      "/media/journal/welcome-hero-400.avif",
+      "/media/journal/welcome-hero-800.avif",
+      "/media/journal/welcome-hero-905.avif"
+    ],
+    "webp": [
+      "/media/journal/welcome-hero-400.webp",
+      "/media/journal/welcome-hero-800.webp",
+      "/media/journal/welcome-hero-905.webp"
+    ]
+  }
+}

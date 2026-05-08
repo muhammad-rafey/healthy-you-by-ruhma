@@ -39,10 +39,10 @@ documenting any sections from the old site that were intentionally dropped
 
 ## 2. Pre-requisites
 
-| Plan | Why it must run first |
-|------|------------------------|
-| `00-setup` | We need pnpm, the Next.js scaffold, `tsx`, and `package.json`/`tsconfig.json` to add scripts and install deps. |
-| `01-design-system` (soft dep, not blocking) | The MDX files import design-system MDX components (`<PullQuote />`, `<NumberedList />`, `<SampleWeekCard />`, `<Eyebrow />`, …). If 01 is not yet done, the MDX files can be authored against the eventual component names — they don't *render* until pages are built (plans 04–12), so the import paths can be stubbed (`// @ts-expect-error pending plan 01`) and resolved later. Recommended order: 01 then 03. |
+| Plan                                        | Why it must run first                                                                                                                                                                                                                                                                                                                                                                                               |
+| ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `00-setup`                                  | We need pnpm, the Next.js scaffold, `tsx`, and `package.json`/`tsconfig.json` to add scripts and install deps.                                                                                                                                                                                                                                                                                                      |
+| `01-design-system` (soft dep, not blocking) | The MDX files import design-system MDX components (`<PullQuote />`, `<NumberedList />`, `<SampleWeekCard />`, `<Eyebrow />`, …). If 01 is not yet done, the MDX files can be authored against the eventual component names — they don't _render_ until pages are built (plans 04–12), so the import paths can be stubbed (`// @ts-expect-error pending plan 01`) and resolved later. Recommended order: 01 then 03. |
 
 The local WordPress stack must be running (per `CLAUDE.md`):
 
@@ -60,14 +60,14 @@ back to it.
 
 Add to `package.json` `devDependencies`:
 
-| Package | Version | Why |
-|---------|---------|-----|
-| `sharp` | ^0.33 | AVIF / WEBP encoding + resize for the media pipeline |
-| `gray-matter` | ^4.0 | Frontmatter parsing in `content:check` |
-| `tsx` | ^4.19 | Run `scripts/migrate-media.ts` and `scripts/check-content.ts` directly |
-| `svgo` | ^3.3 | Minify the wordmark SVG |
-| `zod` | ^3.23 | Frontmatter schema validation in `lib/content/types.ts` |
-| `glob` | ^10.4 | Walk MDX files in the check script |
+| Package       | Version | Why                                                                    |
+| ------------- | ------- | ---------------------------------------------------------------------- |
+| `sharp`       | ^0.33   | AVIF / WEBP encoding + resize for the media pipeline                   |
+| `gray-matter` | ^4.0    | Frontmatter parsing in `content:check`                                 |
+| `tsx`         | ^4.19   | Run `scripts/migrate-media.ts` and `scripts/check-content.ts` directly |
+| `svgo`        | ^3.3    | Minify the wordmark SVG                                                |
+| `zod`         | ^3.23   | Frontmatter schema validation in `lib/content/types.ts`                |
+| `glob`        | ^10.4   | Walk MDX files in the check script                                     |
 
 ```bash
 pnpm add -D sharp gray-matter tsx svgo zod glob
@@ -173,33 +173,33 @@ before deciding to drop).
 
 The full mapping table (16 pages — every page from the existing WP):
 
-| WP ID | Old slug | Old URL | Approx chars | Target | New path |
-|-------|----------|---------|--------------|--------|----------|
-| 57 | `home` | `/` | ~6,000 | **inline** | `app/page.tsx` (no MDX, copy hard-coded into the section components since the home page is bespoke) |
-| 19 | `about-me` | `/about-me` | ~10,000 | **MDX** (long-form bio only) + inline | `content/about.mdx` (bio paragraphs) — surrounding chrome lives in `app/about/page.tsx` |
-| 23 | `services` | `/services` | ~3,500 | **inline** | `app/services/page.tsx` (FAQ + card descriptions hard-coded; the 3 cards reference the `programs/*.mdx` frontmatter for title + price) |
-| 25 | `diet-plannig-program` | `/diet-plannig-program` | 19,637 | **MDX** | `content/programs/diet-planning.mdx` (note: typo `plannig`→`planning` fixed in slug + content) |
-| 27 | `coaching-program` | `/coaching-program` | ~23,000 | **MDX** | `content/programs/coaching.mdx` |
-| 29 | `conultation-call` | `/conultation-call` | ~4,500 | **MDX** | `content/programs/consultation.mdx` (typo `conultation`→`consultation`) |
-| 31 | `hormonal-health` | `/hormonal-health` | ~12,000 | **MDX** | `content/focus/hormonal-health.mdx` (typo `harmone`→`hormone` throughout body) |
-| 33 | `weight-management` | `/weight-management` | ~10,000 | **MDX** | `content/focus/weight-management.mdx` |
-| 35 | `shop` | `/shop` | WooCommerce shortcode | **inline** | `app/library/page.tsx` (the index reads the 3 `library/*.mdx` files; no MDX for the index itself) |
-| 37 | `cart` | `/cart` | shortcode | **drop** | redirected → `/library` |
-| 39 | `checkout` | `/checkout` | shortcode | **drop** | redirected → `/library` |
-| 41 | `my-account` | `/my-account` | shortcode | **drop** | redirected → `/library` |
-| 43 | `contact-me` | `/contact-me` | ~2,000 | **inline** | `app/contact/page.tsx` (form + details hard-coded; FAQ inline) |
-| 45 | `refund_returns` | `/refund_returns` | ~3,500 | **MDX** | `content/legal/refunds.mdx` |
-| 47 | `privacy-policy` | `/privacy-policy` | ~6,000 | **MDX** | `content/legal/privacy.mdx` |
-| 49 | `terms-and-conditions` | `/terms-and-conditions` | ~7,500 | **MDX** | `content/legal/terms.mdx` |
+| WP ID | Old slug               | Old URL                 | Approx chars          | Target                                | New path                                                                                                                               |
+| ----- | ---------------------- | ----------------------- | --------------------- | ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| 57    | `home`                 | `/`                     | ~6,000                | **inline**                            | `app/page.tsx` (no MDX, copy hard-coded into the section components since the home page is bespoke)                                    |
+| 19    | `about-me`             | `/about-me`             | ~10,000               | **MDX** (long-form bio only) + inline | `content/about.mdx` (bio paragraphs) — surrounding chrome lives in `app/about/page.tsx`                                                |
+| 23    | `services`             | `/services`             | ~3,500                | **inline**                            | `app/services/page.tsx` (FAQ + card descriptions hard-coded; the 3 cards reference the `programs/*.mdx` frontmatter for title + price) |
+| 25    | `diet-plannig-program` | `/diet-plannig-program` | 19,637                | **MDX**                               | `content/programs/diet-planning.mdx` (note: typo `plannig`→`planning` fixed in slug + content)                                         |
+| 27    | `coaching-program`     | `/coaching-program`     | ~23,000               | **MDX**                               | `content/programs/coaching.mdx`                                                                                                        |
+| 29    | `conultation-call`     | `/conultation-call`     | ~4,500                | **MDX**                               | `content/programs/consultation.mdx` (typo `conultation`→`consultation`)                                                                |
+| 31    | `hormonal-health`      | `/hormonal-health`      | ~12,000               | **MDX**                               | `content/focus/hormonal-health.mdx` (typo `harmone`→`hormone` throughout body)                                                         |
+| 33    | `weight-management`    | `/weight-management`    | ~10,000               | **MDX**                               | `content/focus/weight-management.mdx`                                                                                                  |
+| 35    | `shop`                 | `/shop`                 | WooCommerce shortcode | **inline**                            | `app/library/page.tsx` (the index reads the 3 `library/*.mdx` files; no MDX for the index itself)                                      |
+| 37    | `cart`                 | `/cart`                 | shortcode             | **drop**                              | redirected → `/library`                                                                                                                |
+| 39    | `checkout`             | `/checkout`             | shortcode             | **drop**                              | redirected → `/library`                                                                                                                |
+| 41    | `my-account`           | `/my-account`           | shortcode             | **drop**                              | redirected → `/library`                                                                                                                |
+| 43    | `contact-me`           | `/contact-me`           | ~2,000                | **inline**                            | `app/contact/page.tsx` (form + details hard-coded; FAQ inline)                                                                         |
+| 45    | `refund_returns`       | `/refund_returns`       | ~3,500                | **MDX**                               | `content/legal/refunds.mdx`                                                                                                            |
+| 47    | `privacy-policy`       | `/privacy-policy`       | ~6,000                | **MDX**                               | `content/legal/privacy.mdx`                                                                                                            |
+| 49    | `terms-and-conditions` | `/terms-and-conditions` | ~7,500                | **MDX**                               | `content/legal/terms.mdx`                                                                                                              |
 
 Plus the three WooCommerce **products** (which are WP `post_type=product`,
 not pages — surface separately):
 
-| Product ID | Product slug | Target |
-|------------|--------------|--------|
+| Product ID                                   | Product slug          | Target                                    |
+| -------------------------------------------- | --------------------- | ----------------------------------------- |
 | (TBD via `wp post list --post_type=product`) | `diabetes-essentials` | `content/library/diabetes-essentials.mdx` |
-| (TBD) | `pcos-guidebook` | `content/library/pcos-guidebook.mdx` |
-| (TBD) | `skin-secrets` | `content/library/skin-secrets.mdx` |
+| (TBD)                                        | `pcos-guidebook`      | `content/library/pcos-guidebook.mdx`      |
+| (TBD)                                        | `skin-secrets`        | `content/library/skin-secrets.mdx`        |
 
 > **IDs above are conventional placeholders** (the running site's actual
 > auto-increment IDs may differ). Verify once at the start of the migration
@@ -295,21 +295,21 @@ The fixed conversion pass per page:
 
 > **Rule of thumb**: if a hand-pass takes longer than 30 minutes for one
 > page, you're trying to preserve too much. Strip more. The brief is to
-> *evolve* the content, not photocopy it.
+> _evolve_ the content, not photocopy it.
 
 ### 5.4 Typo fixes (per master §6)
 
 Apply these substitutions during the hand-pass. They're case-preserving
 search-and-replace, but be careful not to break URLs (the old slug
 `diet-plannig-program` stays in the redirect map in plan 02 — only the
-*new* slug and the *body copy* get the fix).
+_new_ slug and the _body copy_ get the fix).
 
-| Wrong | Right | Where |
-|-------|-------|-------|
-| `harmone`, `harmones`, `harmonal` | `hormone`, `hormones`, `hormonal` | Body of `focus/hormonal-health.mdx`, anywhere else it appears |
-| `manue` | `menu` | Anywhere (likely `programs/diet-planning.mdx`) |
-| `plannig` | `planning` | Body of `programs/diet-planning.mdx`, the new slug, frontmatter `title` |
-| `conultation` | `consultation` | Body of `programs/consultation.mdx`, the new slug |
+| Wrong                             | Right                             | Where                                                                   |
+| --------------------------------- | --------------------------------- | ----------------------------------------------------------------------- |
+| `harmone`, `harmones`, `harmonal` | `hormone`, `hormones`, `hormonal` | Body of `focus/hormonal-health.mdx`, anywhere else it appears           |
+| `manue`                           | `menu`                            | Anywhere (likely `programs/diet-planning.mdx`)                          |
+| `plannig`                         | `planning`                        | Body of `programs/diet-planning.mdx`, the new slug, frontmatter `title` |
+| `conultation`                     | `consultation`                    | Body of `programs/consultation.mdx`, the new slug                       |
 
 Old slugs remain in `next.config.js` redirects (`/diet-plannig-program`
 → `/programs/diet-planning`) for SEO continuity; only **new** slugs get
@@ -334,26 +334,36 @@ const mediaPath = z.string().regex(/^\/media\/.+\.(avif|webp|png|jpg|svg)$/);
 // ───────────────────────── programs/*.mdx
 export const ProgramFrontmatter = z.object({
   type: z.literal("program"),
-  slug,                                // e.g. "diet-planning"
-  title: z.string(),                   // "Diet Planning Program"
-  eyebrow: z.string(),                 // "Program 01"
-  description: z.string().max(180),    // meta + share blurb
-  heroImage: mediaPath,                // /media/programs/diet-planning-hero.avif
+  slug, // e.g. "diet-planning"
+  title: z.string(), // "Diet Planning Program"
+  eyebrow: z.string(), // "Program 01"
+  description: z.string().max(180), // meta + share blurb
+  heroImage: mediaPath, // /media/programs/diet-planning-hero.avif
   ogImage: mediaPath.optional(),
   priceFrom: z.number().int().positive(), // PKR
   currency: z.literal("PKR"),
   ctaLabel: z.string().default("Book your slot"),
   ctaHref: z.string().url().or(z.string().startsWith("/")),
   // section-specific extras consumed by the program page template:
-  whatsIncluded: z.array(z.object({
-    icon: z.enum(["fennel", "mint", "citrus", "leaf", "drop", "spiral"]),
-    label: z.string(),
-  })).min(3).max(8).optional(),
-  steps: z.array(z.object({
-    n: z.string().regex(/^\d{2}$/),    // "01"
-    title: z.string(),
-    body: z.string(),
-  })).optional(),
+  whatsIncluded: z
+    .array(
+      z.object({
+        icon: z.enum(["fennel", "mint", "citrus", "leaf", "drop", "spiral"]),
+        label: z.string(),
+      }),
+    )
+    .min(3)
+    .max(8)
+    .optional(),
+  steps: z
+    .array(
+      z.object({
+        n: z.string().regex(/^\d{2}$/), // "01"
+        title: z.string(),
+        body: z.string(),
+      }),
+    )
+    .optional(),
 });
 export type ProgramFrontmatter = z.infer<typeof ProgramFrontmatter>;
 
@@ -364,36 +374,39 @@ export const FocusFrontmatter = z.object({
   title: z.string(),
   eyebrow: z.literal("Focus area"),
   description: z.string().max(180),
-  heroImage: mediaPath.optional(),     // type-driven hero, image optional
+  heroImage: mediaPath.optional(), // type-driven hero, image optional
   ogImage: mediaPath.optional(),
-  related: z.object({
-    program: slug.optional(),          // e.g. "coaching"
-    library: slug.optional(),          // e.g. "pcos-guidebook"
-  }).optional(),
+  related: z
+    .object({
+      program: slug.optional(), // e.g. "coaching"
+      library: slug.optional(), // e.g. "pcos-guidebook"
+    })
+    .optional(),
 });
 export type FocusFrontmatter = z.infer<typeof FocusFrontmatter>;
 
 // ───────────────────────── library/*.mdx (master §3.10 contract)
-export const LibraryFrontmatter = z.object({
-  type: z.literal("library"),
-  slug,
-  title: z.string(),
-  eyebrow: z.string(),                 // "Guidebook 02"
-  description: z.string().max(220),
-  price: z.number().int().positive(),  // regular price, PKR
-  salePrice: z.number().int().positive().optional(),
-  currency: z.literal("PKR"),
-  buyUrl: z.string().url(),            // EXTERNAL — Gumroad/LemonSqueezy/Amazon/etc.
-  cover: mediaPath,
-  ogImage: mediaPath.optional(),
-  format: z.string().default("Digital · PDF"),
-  pages: z.number().int().positive().optional(),
-  sampleSpreads: z.array(mediaPath).min(1).max(5),
-  toc: z.array(z.string()).min(3).max(20),
-}).refine(
-  d => d.salePrice === undefined || d.salePrice < d.price,
-  { message: "salePrice must be less than price" }
-);
+export const LibraryFrontmatter = z
+  .object({
+    type: z.literal("library"),
+    slug,
+    title: z.string(),
+    eyebrow: z.string(), // "Guidebook 02"
+    description: z.string().max(220),
+    price: z.number().int().positive(), // regular price, PKR
+    salePrice: z.number().int().positive().optional(),
+    currency: z.literal("PKR"),
+    buyUrl: z.string().url(), // EXTERNAL — Gumroad/LemonSqueezy/Amazon/etc.
+    cover: mediaPath,
+    ogImage: mediaPath.optional(),
+    format: z.string().default("Digital · PDF"),
+    pages: z.number().int().positive().optional(),
+    sampleSpreads: z.array(mediaPath).min(1).max(5),
+    toc: z.array(z.string()).min(3).max(20),
+  })
+  .refine((d) => d.salePrice === undefined || d.salePrice < d.price, {
+    message: "salePrice must be less than price",
+  });
 export type LibraryFrontmatter = z.infer<typeof LibraryFrontmatter>;
 
 // ───────────────────────── journal/*.mdx
@@ -404,7 +417,10 @@ export const JournalFrontmatter = z.object({
   description: z.string().max(220),
   category: z.enum(["nutrition", "hormones", "lifestyle", "recipes", "case-notes"]),
   publishedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
-  updatedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
+  updatedAt: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/)
+    .optional(),
   readingTime: z.number().int().positive(), // minutes; computed by hand or script
   heroImage: mediaPath.optional(),
   ogImage: mediaPath.optional(),
@@ -475,7 +491,7 @@ and add the real URL to the launch checklist.
 The 1,555-file `uploads/` tree is mostly auto-generated thumbnails
 (WordPress generates 5–10 sizes per upload; Elementor adds more). The
 real source-image count is closer to ~250. Of those, ~80–120 are
-*actually used in published content*. The rest are leftovers from
+_actually used in published content_. The rest are leftovers from
 template imports, replaced versions, and Elementor temp files.
 
 #### Pass A — find what WP says is used (DB queries)
@@ -595,13 +611,7 @@ hand-edited during pass B and committed alongside the script.
 // re-run the script — it's idempotent and only re-encodes when the source
 // is newer than the output.
 
-export type MediaCategory =
-  | "home"
-  | "about"
-  | "programs"
-  | "focus"
-  | "library"
-  | "journal";
+export type MediaCategory = "home" | "about" | "programs" | "focus" | "library" | "journal";
 
 export interface MediaEntry {
   /** Absolute path under the WP backup. */
@@ -704,11 +714,7 @@ async function planFor(entry: MediaEntry): Promise<EncodePlan[]> {
         entry,
         width,
         format,
-        outPath: path.join(
-          PUBLIC_MEDIA,
-          entry.category,
-          `${entry.slug}-${width}.${format}`,
-        ),
+        outPath: path.join(PUBLIC_MEDIA, entry.category, `${entry.slug}-${width}.${format}`),
       });
     }
   }
@@ -740,9 +746,7 @@ async function main(): Promise<void> {
     totalEncoded += encoded;
     totalSkipped += skipped;
     totalBytes += bytes;
-    console.log(
-      `  ${entry.category}/${entry.slug}: ${encoded} encoded, ${skipped} cached`,
-    );
+    console.log(`  ${entry.category}/${entry.slug}: ${encoded} encoded, ${skipped} cached`);
   }
 
   const elapsed = ((Date.now() - start) / 1000).toFixed(1);
@@ -817,8 +821,8 @@ script — sharp is for raster, svgo for vector.
 
 > **Duplication note**: this overlaps with **plan 02 (design system)**,
 > which renders the wordmark inside `<Nav />` and `<Footer />`. That
-> plan owns the *consumption* of `public/wordmark.svg`. This plan owns
-> the *production* of it. Whichever plan runs first writes the file;
+> plan owns the _consumption_ of `public/wordmark.svg`. This plan owns
+> the _production_ of it. Whichever plan runs first writes the file;
 > the other should skip if it already exists. Coordinate in the team
 > chat — but at minimum, neither plan should overwrite the other's
 > output without a reason.
@@ -851,7 +855,7 @@ async function main(): Promise<void> {
           },
         },
       },
-      "removeDimensions",          // prefer viewBox over fixed width/height
+      "removeDimensions", // prefer viewBox over fixed width/height
       "sortAttrs",
     ],
   });
@@ -917,7 +921,10 @@ async function main(): Promise<void> {
     const fm = parsed.data as { type?: keyof typeof FrontmatterByType };
 
     if (!fm.type || !(fm.type in FrontmatterByType)) {
-      findings.push({ file: rel, message: `frontmatter.type missing or unknown: ${String(fm.type)}` });
+      findings.push({
+        file: rel,
+        message: `frontmatter.type missing or unknown: ${String(fm.type)}`,
+      });
       continue;
     }
 
@@ -1152,19 +1159,19 @@ Explicitly **not** in this plan — handled elsewhere:
 
 For one developer, working from a clean repo with plans 00–02 done:
 
-| Step | Time |
-|------|------|
-| Set up scratch dir + dump WP HTML | 30 min |
-| `lib/content/types.ts` zod schemas | 1 hr |
-| `scripts/check-content.ts` | 1 hr |
-| `scripts/migrate-media.ts` + manifest scaffolding | 1.5 hrs |
-| `scripts/optimize-wordmark.ts` + run | 30 min |
-| Image pass A (DB queries + extract IDs) | 1 hr |
-| Image pass B (hand-curate, populate manifest) | 3–4 hrs |
-| Run `pnpm media:migrate`, verify weight | 30 min |
-| Hand-pass conversion of 13 MDX files (avg 30 min each) | 6.5 hrs |
-| `MIGRATION_NOTES.md` running log | (woven in, ~30 min total) |
-| Final `content:check` run + fix-ups | 1 hr |
+| Step                                                   | Time                      |
+| ------------------------------------------------------ | ------------------------- |
+| Set up scratch dir + dump WP HTML                      | 30 min                    |
+| `lib/content/types.ts` zod schemas                     | 1 hr                      |
+| `scripts/check-content.ts`                             | 1 hr                      |
+| `scripts/migrate-media.ts` + manifest scaffolding      | 1.5 hrs                   |
+| `scripts/optimize-wordmark.ts` + run                   | 30 min                    |
+| Image pass A (DB queries + extract IDs)                | 1 hr                      |
+| Image pass B (hand-curate, populate manifest)          | 3–4 hrs                   |
+| Run `pnpm media:migrate`, verify weight                | 30 min                    |
+| Hand-pass conversion of 13 MDX files (avg 30 min each) | 6.5 hrs                   |
+| `MIGRATION_NOTES.md` running log                       | (woven in, ~30 min total) |
+| Final `content:check` run + fix-ups                    | 1 hr                      |
 
 Total: **~16–18 hours** = ~2 working days. Fits the 2–3 day "asset
 migration" slot implied by master §8 phasing.

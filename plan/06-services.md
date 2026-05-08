@@ -191,10 +191,9 @@ export function ServiceHeader() {
           <LetterStagger text="Three ways to work together." />
         </Heading>
         <FadeUp delay={0.2}>
-          <p className="mt-8 max-w-[52ch] text-ink-soft text-[17px] leading-[1.6]">
-            From a one-time consultation to an eight-week coaching engagement,
-            each program is built around one idea: nutrition that fits the life
-            you actually live.
+          <p className="text-ink-soft mt-8 max-w-[52ch] text-[17px] leading-[1.6]">
+            From a one-time consultation to an eight-week coaching engagement, each program is built
+            around one idea: nutrition that fits the life you actually live.
           </p>
         </FadeUp>
       </Container>
@@ -204,6 +203,7 @@ export function ServiceHeader() {
 ```
 
 Notes:
+
 - `<LetterStagger>` is the per-letter opacity 0→1 stagger from plan 01 (one of the three motions). The H1 here is one of the rare places it's used — once per page max.
 - `max-w-[14ch]` keeps the title ragging across two lines on the design (~ "Three ways to / work together.").
 - The eyebrow uses `text-mauve` to anchor the page to the accent color before any image lands.
@@ -252,7 +252,7 @@ export function ServiceCard({ service, index }: ServiceCardProps) {
             imageOnLeft ? "md:order-1" : "md:order-2",
           )}
         >
-          <div className="relative aspect-[4/5] w-full overflow-hidden bg-cream-deep">
+          <div className="bg-cream-deep relative aspect-[4/5] w-full overflow-hidden">
             <Image
               src={service.image.src}
               alt={service.image.alt}
@@ -295,7 +295,7 @@ export function ServiceCard({ service, index }: ServiceCardProps) {
             </Link>
           </Heading>
 
-          <p className="mt-5 max-w-[40ch] text-ink-soft text-[17px] leading-[1.6]">
+          <p className="text-ink-soft mt-5 max-w-[40ch] text-[17px] leading-[1.6]">
             {service.description}
           </p>
 
@@ -305,7 +305,7 @@ export function ServiceCard({ service, index }: ServiceCardProps) {
               className={cn(
                 "inline-flex items-center rounded-full",
                 "bg-shell px-4 py-1.5",
-                "text-[12px] font-medium uppercase tracking-[0.16em] text-mauve-deep",
+                "text-mauve-deep text-[12px] font-medium tracking-[0.16em] uppercase",
               )}
             >
               {service.priceFrom}
@@ -317,7 +317,7 @@ export function ServiceCard({ service, index }: ServiceCardProps) {
             href={service.href}
             className={cn(
               "mt-8 inline-flex items-center gap-2 self-start",
-              "text-[14px] font-medium text-ink",
+              "text-ink text-[14px] font-medium",
               "border-b border-transparent pb-1",
               "transition-colors duration-300 ease-out",
               "hover:border-mauve hover:text-mauve-deep",
@@ -341,6 +341,7 @@ export function ServiceCard({ service, index }: ServiceCardProps) {
 ```
 
 Design notes that implementers should not negotiate away:
+
 - The **whole card is a `group`**; both the image link and the title link share hover state with the explore arrow. Hovering anywhere on the card animates the image scale, draws the title underline, and slides the arrow right.
 - **The mauve underline on the title is implemented via `bg-[length]` animation, not `text-decoration`** — it animates from 0% → 100% width left-to-right, which `text-decoration` cannot do smoothly. The same trick is used on the FAQ trigger.
 - **Two separate `<Link>` elements** (image + title both link to the same href) is intentional. Screen readers announce the title link; the image link is labelled with `aria-label`. We accept the duplicate `<a>` because it gives keyboard users two natural focus stops and matches the editorial pattern (the photo and the headline are equally clickable).
@@ -376,19 +377,12 @@ export function FAQ() {
         <div className="md:col-span-4">
           <FadeUp>
             <Eyebrow className="text-mauve">Common questions</Eyebrow>
-            <Heading
-              level={2}
-              id="services-faq-heading"
-              className="mt-4 max-w-[14ch]"
-            >
+            <Heading level={2} id="services-faq-heading" className="mt-4 max-w-[14ch]">
               Before you book.
             </Heading>
-            <p className="mt-6 max-w-[36ch] text-ink-soft text-[17px] leading-[1.6]">
+            <p className="text-ink-soft mt-6 max-w-[36ch] text-[17px] leading-[1.6]">
               The questions that come up most. If yours isn't here,{" "}
-              <a
-                href="/contact"
-                className="text-mauve underline-offset-4 hover:underline"
-              >
+              <a href="/contact" className="text-mauve underline-offset-4 hover:underline">
                 send a note
               </a>
               .
@@ -399,21 +393,13 @@ export function FAQ() {
         {/* Right rail — accordion */}
         <div className="md:col-span-8">
           <FadeUp delay={0.15}>
-            <Accordion
-              type="single"
-              collapsible
-              className="border-t border-ink/10"
-            >
+            <Accordion type="single" collapsible className="border-ink/10 border-t">
               {SERVICES_FAQ.map(({ q, a }, i) => (
-                <AccordionItem
-                  key={q}
-                  value={`item-${i}`}
-                  className="border-b border-ink/10"
-                >
+                <AccordionItem key={q} value={`item-${i}`} className="border-ink/10 border-b">
                   <AccordionTrigger
                     className={cn(
                       "group/trigger w-full py-6 text-left",
-                      "text-[20px] font-medium leading-snug text-ink",
+                      "text-ink text-[20px] leading-snug font-medium",
                       "transition-colors duration-300 ease-out",
                       "hover:text-mauve-deep",
                       // Mauve underline-on-hover, matching the ServiceCard title trick.
@@ -431,7 +417,7 @@ export function FAQ() {
                   >
                     <span>{q}</span>
                   </AccordionTrigger>
-                  <AccordionContent className="pb-6 pr-8 text-[17px] leading-[1.6] text-ink-soft">
+                  <AccordionContent className="text-ink-soft pr-8 pb-6 text-[17px] leading-[1.6]">
                     {a}
                   </AccordionContent>
                 </AccordionItem>
@@ -446,6 +432,7 @@ export function FAQ() {
 ```
 
 Notes:
+
 - **Sticky two-column layout** (4-cols heading + 8-cols accordion on desktop). The heading does NOT need `position: sticky` — the section is short enough that it reads as a single editorial unit.
 - The mauve-underline-on-hover works on the inner `<span>` because shadcn's `AccordionTrigger` wraps the trigger contents in a flex row that already contains the chevron icon. Underlining the whole trigger would also underline the chevron — we don't want that. Wrapping the question text in a `<span>` and targeting it via `[&>span]` is the cleanest way to scope the underline to the words.
 - The accordion is `type="single" collapsible` — only one open at a time, and clicking the open item closes it. This is the right default for FAQs (vs. `type="multiple"`, which would let users open all six and then read them as a wall of text).
@@ -473,8 +460,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/services" },
   openGraph: {
     title: "Services — Healthy You By Ruhma",
-    description:
-      "Three ways to work together: Diet Planning, Coaching, and Consultation.",
+    description: "Three ways to work together: Diet Planning, Coaching, and Consultation.",
     url: `${siteConfig.url}/services`,
     type: "website",
   },
@@ -483,43 +469,38 @@ export const metadata: Metadata = {
 export default function ServicesPage() {
   // One Service JSON-LD per program. Embedded inline for simplicity; for
   // pages with many entities we'd factor this into lib/seo.ts.
-  const serviceSchemas: WithContext<SchemaService>[] = SERVICES.map(
-    (service) => ({
-      "@context": "https://schema.org",
-      "@type": "Service",
-      name: service.title,
-      description: service.description,
+  const serviceSchemas: WithContext<SchemaService>[] = SERVICES.map((service) => ({
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: service.title,
+    description: service.description,
+    url: `${siteConfig.url}${service.href}`,
+    provider: {
+      "@type": "Person",
+      name: "Dr. Ruhma",
+      url: `${siteConfig.url}/about`,
+    },
+    areaServed: { "@type": "Country", name: "Pakistan" },
+    offers: {
+      "@type": "Offer",
+      priceCurrency: "PKR",
+      // priceFrom is "From PKR 8,000" — strip everything but digits for the
+      // schema. Floor price; detail pages carry the full pricing schema.
+      price: service.priceFrom.replace(/[^\d]/g, ""),
+      availability: "https://schema.org/InStock",
       url: `${siteConfig.url}${service.href}`,
-      provider: {
-        "@type": "Person",
-        name: "Dr. Ruhma",
-        url: `${siteConfig.url}/about`,
-      },
-      areaServed: { "@type": "Country", name: "Pakistan" },
-      offers: {
-        "@type": "Offer",
-        priceCurrency: "PKR",
-        // priceFrom is "From PKR 8,000" — strip everything but digits for the
-        // schema. Floor price; detail pages carry the full pricing schema.
-        price: service.priceFrom.replace(/[^\d]/g, ""),
-        availability: "https://schema.org/InStock",
-        url: `${siteConfig.url}${service.href}`,
-      },
-    }),
-  );
+    },
+  }));
 
   return (
     <>
       <ServiceHeader />
 
-      <section
-        aria-label="Our programs"
-        className="bg-cream pb-12 md:pb-20"
-      >
+      <section aria-label="Our programs" className="bg-cream pb-12 md:pb-20">
         <Container>
           {/* Divider above the first card — gives the cards a sense of
               starting after the header rather than continuing it. */}
-          <div className="border-t border-ink/10" />
+          <div className="border-ink/10 border-t" />
           {SERVICES.map((service, i) => (
             <ServiceCard key={service.slug} service={service} index={i} />
           ))}
@@ -550,6 +531,7 @@ export default function ServicesPage() {
 ```
 
 Notes:
+
 - The page is a Server Component (no `"use client"`). Motion primitives mark themselves client-side internally; the page composition stays on the server, so JSON-LD is rendered statically and indexable on first byte.
 - `siteConfig.url` is the canonical site URL (e.g. `https://dietitianruhma.com`), defined in `content/site.ts` from plan 02.
 - `<CtaBand>` props are the contract from plan 02/04. If plan 02 names the props differently, conform to that — don't introduce a new prop shape.

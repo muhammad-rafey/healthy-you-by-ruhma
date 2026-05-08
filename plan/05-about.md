@@ -85,8 +85,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/about" },
   openGraph: {
     title: "About Dr. Ruhma",
-    description:
-      "Clinical dietitian, Lahore. Hormonal health, PCOS, weight management.",
+    description: "Clinical dietitian, Lahore. Hormonal health, PCOS, weight management.",
     url: "/about",
     type: "profile",
     images: [{ url: "/media/about/AboutPage-Hero-1.jpg", width: 1600, height: 2000 }],
@@ -122,8 +121,7 @@ export default async function AboutPage() {
     "@type": "Person",
     name: "Dr. Ruhma",
     jobTitle: "Clinical Dietitian",
-    description:
-      "Clinical dietitian specializing in hormonal health, PCOS, and weight management.",
+    description: "Clinical dietitian specializing in hormonal health, PCOS, and weight management.",
     url: `${siteConfig.url}/about`,
     image: `${siteConfig.url}/media/about/AboutPage-Hero-1.jpg`,
     worksFor: {
@@ -180,13 +178,8 @@ export default async function AboutPage() {
             PullQuote,
             MissionStatement,
             Credentials,
-            p: (props) => <p className="mb-6 text-body text-ink-soft" {...props} />,
-            h2: (props) => (
-              <h2
-                className="mt-12 mb-4 font-display text-h1 text-ink"
-                {...props}
-              />
-            ),
+            p: (props) => <p className="text-body text-ink-soft mb-6" {...props} />,
+            h2: (props) => <h2 className="font-display text-h1 text-ink mt-12 mb-4" {...props} />,
           }}
         />
       </Bio>
@@ -215,6 +208,7 @@ export default async function AboutPage() {
 ```
 
 Notes:
+
 - The Philosophy principles are hard-coded in the page file (not MDX) because they are the signature visual moment and should never accidentally drift to 3 or 5 entries via a content edit. If a copy edit is needed, change the array here in a typed file with a known shape.
 - `PHILOSOPHY_PRINCIPLES` is `as const` so the `Philosophy` component can guard `principles.length === 4` at runtime in dev with a `console.warn`.
 - The MDX `components` map intentionally re-exposes only the editorial primitives Dr. Ruhma might reach for in copy. No raw `<div>` or layout escape hatches.
@@ -235,11 +229,15 @@ missionExcerpt: "I see nutrition as the quiet, daily practice of caring for the 
 pullQuote: "Health is a relationship, not a transaction."
 ---
 
-<DropCap>I</DropCap> grew up in a household where food was the centre of every conversation — the room where worry, celebration, and care all arrived in the form of a meal. My mother managed three households on a single calendar of seasonal cooking; my grandmother could read a person's energy by the colour under their eyes. Long before I had the vocabulary for it, I understood that eating was rarely just eating.
+<DropCap>I</DropCap> grew up in a household where food was the centre of every conversation — the
+room where worry, celebration, and care all arrived in the form of a meal. My mother managed three
+households on a single calendar of seasonal cooking; my grandmother could read a person's energy by
+the colour under their eyes. Long before I had the vocabulary for it, I understood that eating was
+rarely just eating.
 
 I trained as a clinical dietitian because I wanted to give that intuitive knowledge a structure — to learn what the science could confirm, complicate, or correct. After my MSc in Clinical Nutrition and several years on hospital wards in Lahore, I noticed the same pattern over and over: women arriving with PCOS, thyroid imbalance, exhaustion, "stubborn" weight — and being handed the same generic calorie sheet that had failed them three times before.
 
-That's the gap this practice was built to fill. *Healthy You By Ruhma* is a clinical practice for women who want answers that match their bodies, not a printout. Most of my work centres on **hormonal health**, **PCOS**, and **sustainable weight management** — three areas where the standard advice tends to be loudest and least useful.
+That's the gap this practice was built to fill. _Healthy You By Ruhma_ is a clinical practice for women who want answers that match their bodies, not a printout. Most of my work centres on **hormonal health**, **PCOS**, and **sustainable weight management** — three areas where the standard advice tends to be loudest and least useful.
 
 What I offer is closer to a partnership than a prescription. We start with what your body is actually doing — bloodwork, cycle history, sleep, stress, the meals you genuinely eat on a Tuesday — and design a plan around that. Plans are revisited. Goals shift. Real life happens. The work is to keep the plan honest.
 
@@ -269,10 +267,7 @@ interface AboutHeroProps {
 
 export function AboutHero({ eyebrow, title, image }: AboutHeroProps) {
   return (
-    <section
-      aria-label="About hero"
-      className="relative isolate overflow-hidden bg-ink"
-    >
+    <section aria-label="About hero" className="bg-ink relative isolate overflow-hidden">
       <ImageReveal className="relative aspect-[4/5] w-full md:aspect-[3/4] lg:aspect-[16/10]">
         <Image
           src={image.src}
@@ -284,13 +279,13 @@ export function AboutHero({ eyebrow, title, image }: AboutHeroProps) {
         />
         <div
           aria-hidden
-          className="absolute inset-0 bg-gradient-to-t from-ink/60 via-ink/10 to-transparent"
+          className="from-ink/60 via-ink/10 absolute inset-0 bg-gradient-to-t to-transparent"
         />
       </ImageReveal>
 
       <Container className="absolute inset-x-0 bottom-0 pb-12 md:pb-16 lg:pb-20">
         <Eyebrow className="text-cream/85">{eyebrow}</Eyebrow>
-        <h1 className="mt-3 font-display text-display text-cream">
+        <h1 className="font-display text-display text-cream mt-3">
           <LetterStagger>{title}</LetterStagger>
         </h1>
       </Container>
@@ -300,6 +295,7 @@ export function AboutHero({ eyebrow, title, image }: AboutHeroProps) {
 ```
 
 Notes:
+
 - Aspect ratio steps from `4/5` (mobile portrait) → `3/4` (tablet) → `16/10` (desktop) so the portrait stays a portrait on phones (where it should dominate) and crops to landscape on desktop (where vertical space is constrained).
 - `object-[center_30%]` biases the crop toward the face. Adjust per actual image during QA.
 - The gradient sits at `from-ink/60 via-ink/10 to-transparent` so the title has WCAG AA contrast against the image regardless of crop.
@@ -319,19 +315,16 @@ interface MissionStatementProps {
 
 export function MissionStatement({ statement, excerpt }: MissionStatementProps) {
   return (
-    <section
-      aria-label="Mission statement"
-      className="bg-cream py-24 md:py-32 lg:py-40"
-    >
+    <section aria-label="Mission statement" className="bg-cream py-24 md:py-32 lg:py-40">
       <Container className="max-w-[720px] text-center">
         <FadeUp>
-          <p className="font-display text-h1 leading-[1.1] tracking-[-0.02em] text-ink md:text-[clamp(2.5rem,4vw,3.5rem)]">
+          <p className="font-display text-h1 text-ink leading-[1.1] tracking-[-0.02em] md:text-[clamp(2.5rem,4vw,3.5rem)]">
             {statement}
           </p>
         </FadeUp>
         {excerpt ? (
           <FadeUp delay={0.1}>
-            <p className="mt-8 font-body text-[18px] italic leading-[1.6] text-ink-soft">
+            <p className="font-body text-ink-soft mt-8 text-[18px] leading-[1.6] italic">
               {excerpt}
             </p>
           </FadeUp>
@@ -365,20 +358,15 @@ interface BioProps {
 
 export function Bio({ children, portrait, pullQuote, credentials }: BioProps) {
   return (
-    <section
-      aria-label="Biography"
-      className="bg-cream py-24 md:py-28 lg:py-32"
-    >
+    <section aria-label="Biography" className="bg-cream py-24 md:py-28 lg:py-32">
       <Container>
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
-          <FadeUp className="bio-prose lg:col-span-7 lg:col-start-1">
-            {children}
-          </FadeUp>
+          <FadeUp className="bio-prose lg:col-span-7 lg:col-start-1">{children}</FadeUp>
 
           <aside className="lg:col-span-4 lg:col-start-9">
-            <div className="lg:sticky lg:top-32 space-y-10">
+            <div className="space-y-10 lg:sticky lg:top-32">
               <FadeUp delay={0.1}>
-                <div className="relative aspect-[4/5] w-full overflow-hidden rounded-sm bg-shell">
+                <div className="bg-shell relative aspect-[4/5] w-full overflow-hidden rounded-sm">
                   <Image
                     src={portrait.src}
                     alt={portrait.alt}
@@ -424,23 +412,15 @@ export function Philosophy({ principles }: PhilosophyProps) {
   if (process.env.NODE_ENV !== "production" && principles.length !== 4) {
     // The signature visual is built around four numerals — guard against drift.
     // eslint-disable-next-line no-console
-    console.warn(
-      `[Philosophy] Expected exactly 4 principles, received ${principles.length}.`,
-    );
+    console.warn(`[Philosophy] Expected exactly 4 principles, received ${principles.length}.`);
   }
 
   return (
-    <section
-      aria-labelledby="philosophy-heading"
-      className="bg-cream-deep py-28 md:py-32 lg:py-40"
-    >
+    <section aria-labelledby="philosophy-heading" className="bg-cream-deep py-28 md:py-32 lg:py-40">
       <Container>
         <div className="mb-16 max-w-[640px] md:mb-20 lg:mb-24">
           <Eyebrow>Philosophy</Eyebrow>
-          <h2
-            id="philosophy-heading"
-            className="mt-4 font-display text-h1 text-ink"
-          >
+          <h2 id="philosophy-heading" className="font-display text-h1 text-ink mt-4">
             Four ideas the practice runs on.
           </h2>
         </div>
@@ -458,33 +438,12 @@ export function Philosophy({ principles }: PhilosophyProps) {
                 >
                   <span
                     aria-hidden
-                    className="
-                      col-span-3 md:col-span-2
-                      font-display
-                      text-[clamp(56px,9vw,96px)]
-                      font-medium
-                      leading-[0.9]
-                      tracking-[-0.04em]
-                      tabular-nums
-                      text-mauve
-                      transition-colors
-                      group-hover:text-mauve-deep
-                    "
+                    className="font-display text-mauve group-hover:text-mauve-deep col-span-3 text-[clamp(56px,9vw,96px)] leading-[0.9] font-medium tracking-[-0.04em] tabular-nums transition-colors md:col-span-2"
                   >
                     {numeral}
                   </span>
 
-                  <p
-                    className="
-                      col-span-9 md:col-span-9 lg:col-span-8
-                      font-body
-                      text-[clamp(18px,1.4vw,22px)]
-                      leading-[1.45]
-                      tracking-[-0.005em]
-                      text-ink
-                      max-w-[60ch]
-                    "
-                  >
+                  <p className="font-body text-ink col-span-9 max-w-[60ch] text-[clamp(18px,1.4vw,22px)] leading-[1.45] tracking-[-0.005em] md:col-span-9 lg:col-span-8">
                     {principle}
                   </p>
                 </li>
@@ -541,13 +500,7 @@ export function PressStrip({ logos, heading = "Featured in" }: PressStripProps) 
       <Container>
         <FadeUp>
           <Eyebrow className="text-center">{heading}</Eyebrow>
-          <ul
-            className="
-              mt-10 flex flex-wrap items-center justify-center
-              gap-x-12 gap-y-8 md:gap-x-16
-              opacity-70 grayscale transition-opacity hover:opacity-100
-            "
-          >
+          <ul className="mt-10 flex flex-wrap items-center justify-center gap-x-12 gap-y-8 opacity-70 grayscale transition-opacity hover:opacity-100 md:gap-x-16">
             {logos.map((logo) => {
               const img = (
                 <Image
@@ -596,22 +549,12 @@ interface CredentialsProps {
 export function Credentials({ items, label = "Credentials" }: CredentialsProps) {
   return (
     <div>
-      <p className="text-eyebrow uppercase tracking-[0.16em] text-ink-soft">
-        {label}
-      </p>
+      <p className="text-eyebrow text-ink-soft tracking-[0.16em] uppercase">{label}</p>
       <ul className="mt-4 flex flex-wrap gap-2">
         {items.map((item) => (
           <li
             key={item}
-            className="
-              inline-flex items-center
-              rounded-full
-              border border-ink/10 bg-paper
-              px-3 py-1.5
-              text-[13px] leading-none text-ink-soft
-              transition-colors
-              hover:border-mauve/40 hover:text-mauve
-            "
+            className="border-ink/10 bg-paper text-ink-soft hover:border-mauve/40 hover:text-mauve inline-flex items-center rounded-full border px-3 py-1.5 text-[13px] leading-none transition-colors"
           >
             {item}
           </li>
@@ -637,17 +580,7 @@ interface DropCapProps {
 export function DropCap({ children }: DropCapProps) {
   return (
     <span
-      className="
-        float-left
-        mr-3 mt-1
-        font-display
-        text-[5.5rem]
-        font-medium
-        leading-[0.85]
-        tracking-[-0.04em]
-        text-mauve
-        select-none
-      "
+      className="font-display text-mauve float-left mt-1 mr-3 text-[5.5rem] leading-[0.85] font-medium tracking-[-0.04em] select-none"
       aria-hidden
     >
       {children}
@@ -662,15 +595,7 @@ import type { ReactNode } from "react";
 
 export function PullQuote({ children }: { children: ReactNode }) {
   return (
-    <blockquote
-      className="
-        border-l-2 border-mauve
-        pl-5
-        font-display text-[clamp(20px,1.6vw,26px)]
-        italic leading-[1.35]
-        text-ink
-      "
-    >
+    <blockquote className="border-mauve font-display text-ink border-l-2 pl-5 text-[clamp(20px,1.6vw,26px)] leading-[1.35] italic">
       {children}
     </blockquote>
   );
@@ -709,7 +634,9 @@ The `<DropCap>` component above should set `data-dropcap=""` on its span:
 
 ```tsx
 // edit DropCap.tsx accordingly:
-<span data-dropcap className="...">{children}</span>
+<span data-dropcap className="...">
+  {children}
+</span>
 ```
 
 ### 4.11 `content/site.ts` — extend

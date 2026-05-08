@@ -14,23 +14,23 @@ The verdict from existing-site analysis: 16 pages, 3 digital ebooks (PKR 1,500�
 
 A single design thesis everything else flows from. The tone the redesign needs to hit:
 
-> **Aesop × Cup of Jo × NYT Cooking.** Warm, editorial, considered. Authority without coldness. Photography-led. Restrained motion. Award-distinctive via *typography moments*, not flashy effects.
+> **Aesop × Cup of Jo × NYT Cooking.** Warm, editorial, considered. Authority without coldness. Photography-led. Restrained motion. Award-distinctive via _typography moments_, not flashy effects.
 
-**Why this direction (not, e.g., maximalist Awwwards):** the brand is a personal practitioner, not a tech startup. Wellness audiences (women managing PCOS / hormonal health / weight) respond to *trust* signals over spectacle. The award-winning move here is restraint, beautiful typography, real photography, considered whitespace — see Aesop, Toogood, ssense editorial, Apartamento. Bold motion would undercut credibility.
+**Why this direction (not, e.g., maximalist Awwwards):** the brand is a personal practitioner, not a tech startup. Wellness audiences (women managing PCOS / hormonal health / weight) respond to _trust_ signals over spectacle. The award-winning move here is restraint, beautiful typography, real photography, considered whitespace — see Aesop, Toogood, ssense editorial, Apartamento. Bold motion would undercut credibility.
 
 ### Design tokens
 
-| Token | Value | Use |
-|---|---|---|
-| `--cream` | `#F4F0EE` | Base background (matches current "Beige Element") |
-| `--cream-deep` | `#E8E1D8` | Secondary surface, alternating sections |
-| `--shell` | `#E7D3CC` | Tertiary surface, hover states on warm chips |
-| `--ink` | `#1A1A1A` | Primary text, headings (slightly deeper than current `#282828` for editorial feel) |
-| `--ink-soft` | `#3E3E3E` | Body |
-| `--mauve` | `#895575` | Accent (links, underlines, small chips) |
-| `--mauve-deep` | `#6E3F5C` | Hover state for mauve |
-| `--moss` | `#5D6B4E` | Secondary accent for botanical/health cues — NEW token, used sparingly |
-| `--paper` | `#FFFFFF` | Cards, modals |
+| Token          | Value     | Use                                                                                |
+| -------------- | --------- | ---------------------------------------------------------------------------------- |
+| `--cream`      | `#F4F0EE` | Base background (matches current "Beige Element")                                  |
+| `--cream-deep` | `#E8E1D8` | Secondary surface, alternating sections                                            |
+| `--shell`      | `#E7D3CC` | Tertiary surface, hover states on warm chips                                       |
+| `--ink`        | `#1A1A1A` | Primary text, headings (slightly deeper than current `#282828` for editorial feel) |
+| `--ink-soft`   | `#3E3E3E` | Body                                                                               |
+| `--mauve`      | `#895575` | Accent (links, underlines, small chips)                                            |
+| `--mauve-deep` | `#6E3F5C` | Hover state for mauve                                                              |
+| `--moss`       | `#5D6B4E` | Secondary accent for botanical/health cues — NEW token, used sparingly             |
+| `--paper`      | `#FFFFFF` | Cards, modals                                                                      |
 
 The existing palette is already correct; we deepen the ink slightly for editorial contrast and add a single muted moss-green to reference the dietary/botanical world without going clichéd-leaf-emoji.
 
@@ -40,22 +40,23 @@ Keep **Inter** (variable, 100–900) for UI/body and **Epilogue** (variable, 100
 
 Type scale (clamp-based, fluid):
 
-| Role | Family | Size (clamp) | Weight | Tracking | Notes |
-|---|---|---|---|---|---|
-| Display XL | Epilogue | clamp(64px, 12vw, 220px) | 600 | -0.04em | The "moment" — homepage hero, section openers |
-| Display | Epilogue | clamp(40px, 6vw, 96px) | 500 | -0.03em | Page titles |
-| H1 | Epilogue | clamp(32px, 4vw, 56px) | 500 | -0.02em | |
-| H2 | Inter | clamp(24px, 2.5vw, 36px) | 500 | -0.01em | |
-| Eyebrow | Inter | 12px | 500 | 0.16em uppercase | Section labels |
-| Body | Inter | 17px | 400 | 0 | Editorial body, 1.6 line-height |
-| Small | Inter | 14px | 400 | 0 | |
-| Caption | Inter | 13px | 400 | 0.04em | Image captions, italics allowed |
+| Role       | Family   | Size (clamp)             | Weight | Tracking         | Notes                                         |
+| ---------- | -------- | ------------------------ | ------ | ---------------- | --------------------------------------------- |
+| Display XL | Epilogue | clamp(64px, 12vw, 220px) | 600    | -0.04em          | The "moment" — homepage hero, section openers |
+| Display    | Epilogue | clamp(40px, 6vw, 96px)   | 500    | -0.03em          | Page titles                                   |
+| H1         | Epilogue | clamp(32px, 4vw, 56px)   | 500    | -0.02em          |                                               |
+| H2         | Inter    | clamp(24px, 2.5vw, 36px) | 500    | -0.01em          |                                               |
+| Eyebrow    | Inter    | 12px                     | 500    | 0.16em uppercase | Section labels                                |
+| Body       | Inter    | 17px                     | 400    | 0                | Editorial body, 1.6 line-height               |
+| Small      | Inter    | 14px                     | 400    | 0                |                                               |
+| Caption    | Inter    | 13px                     | 400    | 0.04em           | Image captions, italics allowed               |
 
 The signature move: a single oversized **Epilogue lowercase moment** per page (e.g., the word **"nourish"** rendered at 220px on the homepage hero, sitting under the photograph). One per page max — that restraint is the trick.
 
 ### Photography & art direction
 
 The 320 MB media library is mostly usable but inconsistent. Audit during implementation:
+
 - **Keep**: the practitioner portraits (`coach-1.png`, `call1-1.png`, `AboutPage-Hero-1.jpg`), product mockups, real lifestyle shots.
 - **Drop**: stock placeholders, generic icon boxes, "quote graphic" PNGs (replace with real CSS-typeset blockquotes), the canned Elementor templates.
 - **New micro-elements (commission or DIY)**: 5–8 simple botanical/ingredient line-art SVGs (fennel, mint, citrus rind) used at 80px max as section anchors. Hand-drawn feel, single line, --ink color. These cost ~$200 on Fiverr or 1 afternoon in Figma.
@@ -63,6 +64,7 @@ The 320 MB media library is mostly usable but inconsistent. Audit during impleme
 ### Motion — minimal, opinionated
 
 **Three motions only**, no more:
+
 1. **Fade-up reveal** — content blocks fade up 16px on scroll-into-view, 600ms, ease-out. Disabled if `prefers-reduced-motion`.
 2. **Image reveal** — hero photographs reveal via a clip-path wipe (1.2s, custom cubic-bezier) on initial mount and route transition. One per page hero.
 3. **Letter stagger** — display headings stagger letter opacity 0→1 over 800ms on mount. The "moment" gets this; nothing else.
@@ -101,6 +103,7 @@ We carry over every existing page slug for SEO continuity (with three slug fixes
 The `/programs/` and `/focus/` namespaces are new — they group what's currently a flat list of overlapping pages. "Programs" = paid offerings with a clear funnel; "Focus areas" = content/educational pages that funnel into programs.
 
 ### Global navigation
+
 - **Top bar** (sticky, condensing on scroll): wordmark · Programs · Focus · Library · Journal · About · Contact (CTA pill)
 - **Footer**: 4 columns — Practice / Programs / Resources / Legal — plus newsletter signup, IG/email/WhatsApp icons, the current tagline "Nourishing You Inside Out For Healthy You Throughout" set in Epilogue 32px.
 
@@ -115,9 +118,10 @@ Each page below gets: **purpose** · **structure** (sections in order) · **sign
 **Purpose**: in 8 seconds, communicate (1) who Dr. Ruhma is, (2) what transformation she offers, (3) where to start.
 
 **Structure**:
+
 1. **Hero** — split layout. Left: H1 "Get transformed into your dream version" set Epilogue 96px, eyebrow "Healthy You By Ruhma — Lahore, Pakistan", body 2-line subhead, primary CTA "Book a consultation". Right: full-bleed practitioner portrait (`coach-1.png` cleaned up), with a 1.2s reveal wipe on load.
 2. **The "moment"** — full-width band, cream background. Single word **"nourish"** in Epilogue 220px lowercase, tightly tracked. Below: 3-line manifesto in Inter italic 18px — "Nourishing you inside out for healthy you throughout."
-3. **Three pillars** — 3-column editorial grid: *Hormonal Health* / *Weight Management* / *Diet Planning*. Each: small botanical SVG, eyebrow, 1-line description, "Read more →".
+3. **Three pillars** — 3-column editorial grid: _Hormonal Health_ / _Weight Management_ / _Diet Planning_. Each: small botanical SVG, eyebrow, 1-line description, "Read more →".
 4. **Featured ebook** — alternating layout. Left: PCOS Guidebook mockup (currently sale: PKR 3,000 → 1,500). Right: title, blurb, price, CTA.
 5. **About teaser** — half-bleed portrait + 2-paragraph "About Dr. Ruhma" + CTA to /about.
 6. **Testimonials** — 3-column quote grid, Epilogue pull-quotes, attribution in caption style. Re-typeset the existing "quote graphic" PNGs as actual text.
@@ -138,6 +142,7 @@ Each page below gets: **purpose** · **structure** (sections in order) · **sign
 **Purpose**: build trust. Show the human, the credentials, the philosophy.
 
 **Structure**:
+
 1. **Hero** — full-bleed portrait (`AboutPage-Hero-1.jpg` cleaned), title overlay bottom-left "Dr. Ruhma" Epilogue 96px, eyebrow above "Clinical Dietitian · Lahore".
 2. **Mission statement** — centered, max-width 720px: "My mission is to make you shine from inside." Epilogue 56px, italic body excerpt below.
 3. **Bio** — two-column editorial. Left: 4–6 paragraphs of Dr. Ruhma's story, Inter 17px, drop-cap on first paragraph. Right: small portrait + pull-quote + credentials list (chip style).
@@ -156,6 +161,7 @@ Each page below gets: **purpose** · **structure** (sections in order) · **sign
 **Purpose**: high-level menu of all paid offerings, routes to individual program pages.
 
 **Structure**:
+
 1. Page header — eyebrow "Services", H1 Epilogue.
 2. **Three cards** in editorial grid (not a typical service grid — make each card feel like a magazine feature): Diet Planning Program / Coaching Program / Consultation Call. Each: hero image, eyebrow ("Program 01" etc.), title, 2-line description, price-from chip, "Explore →".
 3. FAQ (5–7 questions) — clean accordion, mauve underline on hover.
@@ -170,6 +176,7 @@ Each page below gets: **purpose** · **structure** (sections in order) · **sign
 **Purpose**: convert. This page has 19k chars of existing content — give it editorial dignity.
 
 **Structure**:
+
 1. Hero — split: program title (Epilogue 96px), eyebrow "Program 01", body intro, price + CTA. Right: relevant lifestyle shot.
 2. **What's included** — 6-tile grid, each with botanical icon + 1-line. Spaced.
 3. **How it works** — 4-step horizontal scroll on desktop, vertical stack on mobile. Each step: number, title, description.
@@ -204,13 +211,14 @@ Shorter page. Hero, "What to expect" (3 steps), "How to prepare", pricing card, 
 **Purpose**: educational long-form, soft-funnel into programs.
 
 **Structure**:
+
 1. Editorial hero — large display title, eyebrow "Focus area", subhead. No image; just type-driven.
 2. Long-form article body — 2-column on desktop max-width 720px column, drop-caps, pull-quotes set in Epilogue, embedded ingredient illustrations.
 3. **"Where this shows up"** — 3 conditions (PCOS / thyroid / cortisol) with 1-line descriptions.
 4. **Related** — link card to PCOS Guidebook ebook + Coaching Program.
 5. CTA band.
 
-**Signature move**: this page feels like a *magazine longread*, not a service page. Drop-caps, pull-quotes, justified body where appropriate.
+**Signature move**: this page feels like a _magazine longread_, not a service page. Drop-caps, pull-quotes, justified body where appropriate.
 
 ---
 
@@ -225,6 +233,7 @@ Same template as 3.7. Different content (10k chars source).
 **Purpose**: present 3 ebooks as elevated objects, not generic product tiles. No on-site checkout — each ebook links out to its external store (URL editable per-book in MDX frontmatter).
 
 **Structure**:
+
 1. Header — Epilogue title "The Library", subhead "Three guidebooks. Practical, evidence-based, written for women who want answers."
 2. **Editorial product grid** — 3 large cards stacked alternating left/right (NOT a 3-column tile grid). Each card: book cover mockup (oversized, with subtle shadow), Epilogue title, 3-line description, price (with sale strikethrough where applicable), "Open →" linking to the local detail page.
 3. CTA band — "Not sure where to start? Book a consultation."
@@ -238,6 +247,7 @@ Same template as 3.7. Different content (10k chars source).
 **Purpose**: present the ebook editorially and hand off to the external checkout.
 
 **Structure**:
+
 1. **Split hero** — Left: cover mockup (large, with subtle 3D rotation on hover, 4° max). Right: eyebrow ("Guidebook 01"), title, price (regular + sale + savings chip), **primary CTA "Buy on [Platform] →"** (external link from MDX frontmatter, opens new tab with `rel="noopener"`), format ("Digital · PDF · ~60 pages"), instant-delivery note.
 2. **Inside** — table of contents preview as numbered editorial list.
 3. **Sample pages** — 3 image previews of internal spreads.
@@ -256,7 +266,7 @@ slug: pcos-guidebook
 price: 3000
 salePrice: 1500
 currency: PKR
-buyUrl: https://gumroad.com/...   # editable, swap platforms anytime
+buyUrl: https://gumroad.com/... # editable, swap platforms anytime
 cover: /media/library/pcos-cover.png
 sampleSpreads:
   - /media/library/pcos-sample-1.png
@@ -275,12 +285,14 @@ toc:
 **Purpose**: future content home. Currently empty (1 placeholder post). Build the structure ready to scale.
 
 **Structure** (`/journal`):
+
 - Featured post (large card, 16:9 image, title Epilogue 56px, eyebrow category, excerpt, "Read →").
 - Recent posts grid (3-col, magazine-style, mixed sizes).
 - Categories chip row.
 - Empty-state copy: "New entries coming soon — sign up for updates" with newsletter form.
 
 **Structure** (`/journal/[slug]`):
+
 - Hero with title, eyebrow (category + date + read time).
 - Article body (Inter 17/1.6, max-width 680px), drop-cap, pull-quotes, captioned images.
 - Author footer (Dr. Ruhma).
@@ -293,6 +305,7 @@ toc:
 **Purpose**: low-friction inquiries.
 
 **Structure**:
+
 1. Page header — Epilogue title "Let's talk".
 2. **Two-column** — Left: form (name, email, topic select, message). Right: contact details (email, WhatsApp, IG handle, response-time note).
 3. Embedded map (optional — only if there's a real practice address).
@@ -310,23 +323,23 @@ Plain typographic pages. Inter 17px, max-width 720px, eyebrow + title + body. No
 
 ## 4. Tech stack
 
-| Layer | Choice | Why |
-|---|---|---|
-| Framework | **Next.js 15** (App Router, RSC) | Default for awards-grade marketing |
-| Language | **TypeScript** strict | |
-| Styling | **Tailwind CSS v4** + CSS variables for tokens | Tokens defined once, swap themes easy |
-| UI primitives | **shadcn/ui** (Radix-backed) | Accessible primitives, no lock-in |
-| Animation | **Motion** (formerly Framer Motion) v11 | RSC-friendly, our 3 motions covered |
-| Type loading | **next/font** with Inter + Epilogue (variable) | Self-hosted, zero CLS |
-| Images | `next/image` with AVIF + WEBP fallbacks | 320MB media → ~25MB optimized |
-| Content | **MDX in repo** via `next-mdx-remote` v5 + `gray-matter` | Programs / focus / library / journal / legal as `.mdx`. Dev-managed updates via PR |
-| Commerce | **External link-out** — no on-site checkout. Each ebook MDX has a `buyUrl` field pointing to Gumroad/Lemon Squeezy/Amazon/etc. | Zero payment infra. Swap platforms anytime by editing frontmatter |
-| Forms | **React Hook Form** + Zod, **server actions** posting to Resend (transactional) | Single contact form, no separate API |
-| Newsletter | **Buttondown** (recommended, $9/mo) — embed simple form | Clean, privacy-friendly, owns its data. Defer signup if not ready |
-| Analytics | **Vercel Analytics** + **Plausible** (cloud, $9/mo) | Privacy-respecting, no cookie banner needed |
-| SEO | `next-sitemap`, JSON-LD via `schema-dts`, dynamic OG images via `@vercel/og` | |
-| Hosting | **Vercel** | Free tier covers this; matches Next.js capabilities |
-| Domain | `dietitianruhma.com` (cutover later) | |
+| Layer         | Choice                                                                                                                         | Why                                                                                |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------- |
+| Framework     | **Next.js 15** (App Router, RSC)                                                                                               | Default for awards-grade marketing                                                 |
+| Language      | **TypeScript** strict                                                                                                          |                                                                                    |
+| Styling       | **Tailwind CSS v4** + CSS variables for tokens                                                                                 | Tokens defined once, swap themes easy                                              |
+| UI primitives | **shadcn/ui** (Radix-backed)                                                                                                   | Accessible primitives, no lock-in                                                  |
+| Animation     | **Motion** (formerly Framer Motion) v11                                                                                        | RSC-friendly, our 3 motions covered                                                |
+| Type loading  | **next/font** with Inter + Epilogue (variable)                                                                                 | Self-hosted, zero CLS                                                              |
+| Images        | `next/image` with AVIF + WEBP fallbacks                                                                                        | 320MB media → ~25MB optimized                                                      |
+| Content       | **MDX in repo** via `next-mdx-remote` v5 + `gray-matter`                                                                       | Programs / focus / library / journal / legal as `.mdx`. Dev-managed updates via PR |
+| Commerce      | **External link-out** — no on-site checkout. Each ebook MDX has a `buyUrl` field pointing to Gumroad/Lemon Squeezy/Amazon/etc. | Zero payment infra. Swap platforms anytime by editing frontmatter                  |
+| Forms         | **React Hook Form** + Zod, **server actions** posting to Resend (transactional)                                                | Single contact form, no separate API                                               |
+| Newsletter    | **Buttondown** (recommended, $9/mo) — embed simple form                                                                        | Clean, privacy-friendly, owns its data. Defer signup if not ready                  |
+| Analytics     | **Vercel Analytics** + **Plausible** (cloud, $9/mo)                                                                            | Privacy-respecting, no cookie banner needed                                        |
+| SEO           | `next-sitemap`, JSON-LD via `schema-dts`, dynamic OG images via `@vercel/og`                                                   |                                                                                    |
+| Hosting       | **Vercel**                                                                                                                     | Free tier covers this; matches Next.js capabilities                                |
+| Domain        | `dietitianruhma.com` (cutover later)                                                                                           |                                                                                    |
 
 ---
 
@@ -379,6 +392,7 @@ GitHub repo (to be created during Phase 0 of build): **`muhammad-rafey/healthy-y
 ```
 
 ### Tooling
+
 - **Package manager**: pnpm (faster, disk-efficient — to be installed via corepack).
 - **Linter**: ESLint (Next config) + Prettier with Tailwind plugin.
 - **Pre-commit**: lint-staged + Husky.
@@ -392,6 +406,7 @@ GitHub repo (to be created during Phase 0 of build): **`muhammad-rafey/healthy-y
 ### Content
 
 For each page, copy is sourced from the running local WP. Workflow:
+
 1. Export each page's HTML via `wp post get <id> --field=post_content` from the running container.
 2. Manually copy-edit into MDX, fixing the typos surfaced earlier (e.g., "harmone" → "hormone", "manue" → "menu", "plannig" → "planning"). The existing voice is good — preserve it, polish for typos and parallelism only.
 3. Each MDX file gets frontmatter: `title, description, ogImage, eyebrow, slug`.
@@ -435,12 +450,12 @@ Estimated final asset weight: ~25–35 MB after optimization vs. 320 MB now.
 
 ## 7. Decisions made
 
-| # | Decision | Choice |
-|---|---|---|
-| 1 | Commerce | **External link-out only.** No on-site checkout, cart, or accounts. Each ebook MDX has a `buyUrl` field (Gumroad / Lemon Squeezy / Amazon KDP — Dr. Ruhma's choice, swappable). |
-| 2 | CMS | **MDX in repo.** All content lives as `.mdx` under `content/`. Updates ship via PR. No external CMS. |
-| 3 | Visual direction | **Quiet Authority.** Aesop × Cup of Jo. Warm cream + charcoal + dusty mauve. Large editorial Epilogue typography moments. Photography-led. Three motions only. |
-| 4 | Repo | **`muhammad-rafey/healthy-you-by-ruhma`**, **private**. Created during build Phase 0. |
+| #   | Decision         | Choice                                                                                                                                                                          |
+| --- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | Commerce         | **External link-out only.** No on-site checkout, cart, or accounts. Each ebook MDX has a `buyUrl` field (Gumroad / Lemon Squeezy / Amazon KDP — Dr. Ruhma's choice, swappable). |
+| 2   | CMS              | **MDX in repo.** All content lives as `.mdx` under `content/`. Updates ship via PR. No external CMS.                                                                            |
+| 3   | Visual direction | **Quiet Authority.** Aesop × Cup of Jo. Warm cream + charcoal + dusty mauve. Large editorial Epilogue typography moments. Photography-led. Three motions only.                  |
+| 4   | Repo             | **`muhammad-rafey/healthy-you-by-ruhma`**, **private**. Created during build Phase 0.                                                                                           |
 
 ### Operational items deferred to build time (not blocking the plan):
 
@@ -471,6 +486,7 @@ Total estimate: **~3 working weeks** for one developer at a comfortable pace.
 ## 9. Verification (how we'll know the design works)
 
 When implemented, the plan succeeds if:
+
 - **Award candidacy** — can submit to Awwwards SOTD with a straight face. Internal review against 5 reference award sites (aesop.com, cupofjo.com, basic.agency, hypeandhyper.com, glossier.com archive) the week of launch.
 - **Performance** — Lighthouse 95+ on every metric on the homepage, About, and a Program page; real-user LCP < 2.0s on 3G.
 - **Accessibility** — axe-core 0 violations, full keyboard nav, screen-reader pass on all flows, color contrast ≥ AA everywhere (mauve-on-cream specifically — verify).
@@ -484,6 +500,7 @@ When implemented, the plan succeeds if:
 ## 10. Critical files reference
 
 The redesign needs nothing from the existing WP file tree at code-level. It does need:
+
 - `/home/duh/Documents/website backup (1)/uploads/` — image source library (filtered).
 - DB queries against the running local stack to extract page text:
   - `sudo docker exec -u www-data dietitianruhma-local-wpcli-1 wp --path=/var/www/html post get <id> --field=post_content`

@@ -32,22 +32,23 @@ All packages installed as part of this phase. Versions are floor-pinned via `^` 
 
 ### Dev dependencies (added by this phase)
 
-| Package | Why |
-|---|---|
-| `typescript@^5` | Already added by scaffold; we tighten `tsconfig.json`. |
-| `@types/node`, `@types/react`, `@types/react-dom` | Already added by scaffold. |
-| `eslint@^9`, `eslint-config-next@^15` | Already added by scaffold; we tighten and add `next/core-web-vitals` + strict rules. |
-| `prettier@^3` | Code formatting, single source of truth for whitespace. |
-| `prettier-plugin-tailwindcss@^0.6` | Auto-sorts Tailwind class lists deterministically. |
-| `eslint-config-prettier@^9` | Disables ESLint stylistic rules that would fight Prettier. |
-| `husky@^9` | Git hook installer; runs lint-staged on `pre-commit`. |
-| `lint-staged@^15` | Runs Prettier + ESLint only on staged files for fast pre-commit feedback. |
-| `@types/lint-staged` | Type hints for the rare programmatic config. |
-| `vercel@^39` (devDep) | Local `vercel link` / `vercel env pull`; CI doesn't need it. |
+| Package                                           | Why                                                                                  |
+| ------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| `typescript@^5`                                   | Already added by scaffold; we tighten `tsconfig.json`.                               |
+| `@types/node`, `@types/react`, `@types/react-dom` | Already added by scaffold.                                                           |
+| `eslint@^9`, `eslint-config-next@^15`             | Already added by scaffold; we tighten and add `next/core-web-vitals` + strict rules. |
+| `prettier@^3`                                     | Code formatting, single source of truth for whitespace.                              |
+| `prettier-plugin-tailwindcss@^0.6`                | Auto-sorts Tailwind class lists deterministically.                                   |
+| `eslint-config-prettier@^9`                       | Disables ESLint stylistic rules that would fight Prettier.                           |
+| `husky@^9`                                        | Git hook installer; runs lint-staged on `pre-commit`.                                |
+| `lint-staged@^15`                                 | Runs Prettier + ESLint only on staged files for fast pre-commit feedback.            |
+| `@types/lint-staged`                              | Type hints for the rare programmatic config.                                         |
+| `vercel@^39` (devDep)                             | Local `vercel link` / `vercel env pull`; CI doesn't need it.                         |
 
 Tailwind v4's `@tailwindcss/postcss` is already added by the scaffold; we leave it untouched here.
 
 **Not added in this phase** (deferred to later plans, listed here so future agents don't double-add):
+
 - `motion`, `clsx`, `tailwind-variants`, `tailwind-merge` — plan #01 (design system)
 - `next-mdx-remote`, `gray-matter`, `rehype-*`, `remark-*` — plan #06 (content pipeline)
 - `react-hook-form`, `zod`, `resend` — plan #11 (contact)
@@ -203,13 +204,8 @@ Real `.env.local` is never committed. Vercel Project Settings → Environment Va
     "vercel": "^39"
   },
   "lint-staged": {
-    "*.{ts,tsx,js,jsx}": [
-      "prettier --write",
-      "eslint --fix --max-warnings=0"
-    ],
-    "*.{json,md,mdx,yml,yaml,css}": [
-      "prettier --write"
-    ]
+    "*.{ts,tsx,js,jsx}": ["prettier --write", "eslint --fix --max-warnings=0"],
+    "*.{json,md,mdx,yml,yaml,css}": ["prettier --write"]
   }
 }
 ```
@@ -258,6 +254,7 @@ Override the scaffold's generated config with the strict version:
 ```
 
 Notes:
+
 - `strict: true` + `noUncheckedIndexedAccess` means `array[i]` is typed as `T | undefined`. This will surface real bugs in plan #06's MDX iteration; we accept it.
 - `exactOptionalPropertyTypes` is **off** — Radix/shadcn props don't model `?: T | undefined` distinctly and we don't want the friction.
 - `noPropertyAccessFromIndexSignature` is **off** so `process.env.FOO` stays ergonomic.
@@ -277,11 +274,7 @@ const compat = new FlatCompat({
 });
 
 const config = [
-  ...compat.extends(
-    "next/core-web-vitals",
-    "next/typescript",
-    "prettier"
-  ),
+  ...compat.extends("next/core-web-vitals", "next/typescript", "prettier"),
   {
     rules: {
       "@typescript-eslint/no-unused-vars": [
@@ -297,23 +290,13 @@ const config = [
         "error",
         { prefer: "type-imports", fixStyle: "inline-type-imports" },
       ],
-      "react/jsx-curly-brace-presence": [
-        "error",
-        { props: "never", children: "never" },
-      ],
+      "react/jsx-curly-brace-presence": ["error", { props: "never", children: "never" }],
       "no-console": ["warn", { allow: ["warn", "error"] }],
       "import/order": "off",
     },
   },
   {
-    ignores: [
-      ".next/**",
-      "node_modules/**",
-      "out/**",
-      "public/**",
-      "next-env.d.ts",
-      ".vercel/**",
-    ],
+    ignores: [".next/**", "node_modules/**", "out/**", "public/**", "next-env.d.ts", ".vercel/**"],
   },
 ];
 
@@ -477,7 +460,7 @@ Skipped in Phase 0 — we'll add CodeQL in plan #14 (security/polish) once there
 
 ### 4.16 `README.md` (skeleton — replaces the scaffold's default)
 
-```md
+````md
 # Healthy You By Ruhma
 
 Next.js redesign of [dietitianruhma.com](https://dietitianruhma.com) for **Dr. Ruhma** — clinical dietitian, Lahore.
@@ -509,20 +492,21 @@ pnpm install
 cp .env.example .env.local   # fill in values as needed
 pnpm dev                     # http://localhost:3000
 ```
+````
 
 ## Scripts
 
-| Command | Description |
-|---|---|
-| `pnpm dev` | Dev server (Turbopack) on :3000 |
-| `pnpm build` | Production build |
-| `pnpm start` | Serve production build |
-| `pnpm lint` | ESLint with `next/core-web-vitals` + strict rules |
-| `pnpm lint:fix` | ESLint, auto-fix |
-| `pnpm format` | Prettier write |
-| `pnpm format:check` | Prettier check (CI uses this) |
-| `pnpm typecheck` | `tsc --noEmit`, strict mode |
-| `pnpm ci` | Run all of the above sequentially (parity with GitHub Actions) |
+| Command             | Description                                                    |
+| ------------------- | -------------------------------------------------------------- |
+| `pnpm dev`          | Dev server (Turbopack) on :3000                                |
+| `pnpm build`        | Production build                                               |
+| `pnpm start`        | Serve production build                                         |
+| `pnpm lint`         | ESLint with `next/core-web-vitals` + strict rules              |
+| `pnpm lint:fix`     | ESLint, auto-fix                                               |
+| `pnpm format`       | Prettier write                                                 |
+| `pnpm format:check` | Prettier check (CI uses this)                                  |
+| `pnpm typecheck`    | `tsc --noEmit`, strict mode                                    |
+| `pnpm ci`           | Run all of the above sequentially (parity with GitHub Actions) |
 
 ## Project structure
 
@@ -544,7 +528,8 @@ Tracked across `plan/00-setup.md` … `plan/14-cutover.md`. This README will gro
 ## License
 
 Private / unlicensed. All content © Healthy You By Ruhma.
-```
+
+````
 
 ---
 
@@ -559,7 +544,7 @@ node --version                                                 # expect v20.x
 gh auth status                                                 # expect "Logged in to github.com"
 gh repo view muhammad-rafey/healthy-you-by-ruhma --json name   # expect non-error; if error, see 5.2.b
 ls /home/duh/Projects/healthy-you-by-ruhma/                    # expect: only "plan"
-```
+````
 
 If `gh repo view` errors with "Could not resolve to a Repository", create it now:
 
@@ -636,6 +621,7 @@ Create / overwrite each file from §4 above:
 ### 5.7 Patch `package.json`
 
 Open `package.json` and merge in:
+
 - `engines`, `packageManager` fields
 - `scripts.format`, `scripts.format:check`, `scripts.typecheck`, `scripts.ci`, `scripts.prepare`, `scripts.lint:fix`
 - `lint-staged` block
@@ -751,6 +737,7 @@ Note the URL it prints. Verify the page loads.
 ### 5.15 Branch protection (one-time, via GitHub UI or CLI)
 
 Set up `main` to require:
+
 - PRs (no direct pushes)
 - The `verify` CI job to pass
 - Up-to-date branch before merge
@@ -841,15 +828,15 @@ Explicitly **not** in this phase. Each is owned by a numbered later plan; do not
 
 ## Appendix A — If something goes wrong
 
-| Symptom | Fix |
-|---|---|
-| `create-next-app` complains the directory isn't empty | Step 5.3 wasn't run; move `plan/` aside. |
-| `pnpm install` fails with `ERR_PNPM_UNSUPPORTED_ENGINE` | `engine-strict=true` + wrong Node. `nvm use 20` or install Node 20.11+. |
-| Husky hook doesn't run | `pnpm prepare` to reinstall hooks. Verify `.husky/pre-commit` is executable: `chmod +x .husky/pre-commit`. |
-| ESLint flat config errors with "Cannot find module 'eslint-config-next'" | The scaffold may have generated a legacy `.eslintrc.json`; delete it — flat config (`eslint.config.mjs`) is the only source. |
-| Vercel build fails with `NEXT_PUBLIC_SITE_URL is undefined` | Add it under all three environments via `vercel env add` (step 5.14). |
-| GH Actions `pnpm install --frozen-lockfile` fails | Lockfile drift. Run `pnpm install` locally, commit the updated `pnpm-lock.yaml`, push. |
-| Branch protection blocks the very first push to `main` | Set protection **after** the first push (5.13 before 5.15). The order in this plan is correct; if you ran them out of order, temporarily disable protection, push, re-enable. |
+| Symptom                                                                  | Fix                                                                                                                                                                           |
+| ------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `create-next-app` complains the directory isn't empty                    | Step 5.3 wasn't run; move `plan/` aside.                                                                                                                                      |
+| `pnpm install` fails with `ERR_PNPM_UNSUPPORTED_ENGINE`                  | `engine-strict=true` + wrong Node. `nvm use 20` or install Node 20.11+.                                                                                                       |
+| Husky hook doesn't run                                                   | `pnpm prepare` to reinstall hooks. Verify `.husky/pre-commit` is executable: `chmod +x .husky/pre-commit`.                                                                    |
+| ESLint flat config errors with "Cannot find module 'eslint-config-next'" | The scaffold may have generated a legacy `.eslintrc.json`; delete it — flat config (`eslint.config.mjs`) is the only source.                                                  |
+| Vercel build fails with `NEXT_PUBLIC_SITE_URL is undefined`              | Add it under all three environments via `vercel env add` (step 5.14).                                                                                                         |
+| GH Actions `pnpm install --frozen-lockfile` fails                        | Lockfile drift. Run `pnpm install` locally, commit the updated `pnpm-lock.yaml`, push.                                                                                        |
+| Branch protection blocks the very first push to `main`                   | Set protection **after** the first push (5.13 before 5.15). The order in this plan is correct; if you ran them out of order, temporarily disable protection, push, re-enable. |
 
 ---
 
@@ -860,7 +847,7 @@ Explicitly **not** in this phase. Each is owned by a numbered later plan; do not
 - **ESLint flat config**: Next 15 + ESLint 9 default. Avoids the legacy `.eslintrc.json` deprecation path.
 - **`noUncheckedIndexedAccess`**: catches a real category of bug (MDX iteration, redirect lookup tables, dynamic route params) at type-check time. Master plan §9 demands "0 axe violations" and a quality bar — this is the type-system equivalent.
 - **No Husky shebang/sourcing**: v9 simplified hooks to single-line scripts; the older `. "$(dirname -- "$0")/_/husky.sh"` line is no longer needed and is a deprecation noise source if added.
-- **`prettier-plugin-tailwindcss` from day one**: deterministic class ordering means diffs in plan #01+ are about *intent*, not *order*. Cheap to add now, expensive to retrofit later.
+- **`prettier-plugin-tailwindcss` from day one**: deterministic class ordering means diffs in plan #01+ are about _intent_, not _order_. Cheap to add now, expensive to retrofit later.
 - **CI = typecheck + lint + format:check + build** (in that order): fast feedback first (typecheck ~5s) before the slow step (build ~60s). Matches `pnpm ci` so local parity is exact.
 - **Branch protection requires `verify` only**: solo repo, zero reviewer requirement. Tighten when a second contributor joins.
 - **Vercel project linked early**: every PR gets a preview URL automatically — invaluable for design QA across plans #04–#13.

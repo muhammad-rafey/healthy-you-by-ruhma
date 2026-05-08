@@ -16,6 +16,7 @@ Build the homepage as the strongest single page on the site — the page that ea
 It must also be the page that most clearly performs the "Quiet Authority" thesis — restraint, editorial typography, real photography, three considered motions. The signature move on this page is the oversized lowercase **"nourish"** band; everything else exists to make that moment land.
 
 Performance targets (verified in plan 14):
+
 - LCP < 1.8s on 3G (the hero portrait is the LCP element).
 - CLS < 0.02.
 - INP < 100ms.
@@ -51,20 +52,20 @@ If a missing primitive is discovered while implementing (e.g. a `<SectionDivider
 
 ## 4. Files to create / modify
 
-| Path | Kind | Notes |
-|---|---|---|
-| `app/page.tsx` | create | Server component, composes sections, exports `metadata`, emits JSON-LD. |
-| `components/marketing/home/Hero.tsx` | create | Server wrapper. Mounts a small `<HeroPortrait>` client child for the image reveal. |
-| `components/marketing/home/HeroPortrait.tsx` | create | Client. `<ImageReveal>`-wrapped `<Image>`. |
-| `components/marketing/home/MomentBand.tsx` | create | Client. The "nourish" moment + `<LetterStagger>`. **Reference implementation.** |
-| `components/marketing/home/Pillars.tsx` | create | Server. Three editorial cards. |
-| `components/marketing/home/FeaturedEbook.tsx` | create | Server. PCOS Guidebook split layout. |
-| `components/marketing/home/AboutTeaser.tsx` | create | Server. Portrait + 2 paragraphs + CTA. |
-| `components/marketing/home/Testimonials.tsx` | create | Server. Three CSS-typeset blockquotes. |
-| `components/marketing/home/JournalPreview.tsx` | create | Server. 3 latest posts (or placeholder cards). |
-| `components/marketing/home/CtaBand.tsx` | create | Server. "Ready when you are." |
-| `lib/home-data.ts` | create | Pure data: pillars[], testimonials[], journal placeholders. |
-| `lib/jsonld.ts` | modify (or create) | Add `websiteSchema()` and `personSchema()` builders. |
+| Path                                           | Kind               | Notes                                                                              |
+| ---------------------------------------------- | ------------------ | ---------------------------------------------------------------------------------- |
+| `app/page.tsx`                                 | create             | Server component, composes sections, exports `metadata`, emits JSON-LD.            |
+| `components/marketing/home/Hero.tsx`           | create             | Server wrapper. Mounts a small `<HeroPortrait>` client child for the image reveal. |
+| `components/marketing/home/HeroPortrait.tsx`   | create             | Client. `<ImageReveal>`-wrapped `<Image>`.                                         |
+| `components/marketing/home/MomentBand.tsx`     | create             | Client. The "nourish" moment + `<LetterStagger>`. **Reference implementation.**    |
+| `components/marketing/home/Pillars.tsx`        | create             | Server. Three editorial cards.                                                     |
+| `components/marketing/home/FeaturedEbook.tsx`  | create             | Server. PCOS Guidebook split layout.                                               |
+| `components/marketing/home/AboutTeaser.tsx`    | create             | Server. Portrait + 2 paragraphs + CTA.                                             |
+| `components/marketing/home/Testimonials.tsx`   | create             | Server. Three CSS-typeset blockquotes.                                             |
+| `components/marketing/home/JournalPreview.tsx` | create             | Server. 3 latest posts (or placeholder cards).                                     |
+| `components/marketing/home/CtaBand.tsx`        | create             | Server. "Ready when you are."                                                      |
+| `lib/home-data.ts`                             | create             | Pure data: pillars[], testimonials[], journal placeholders.                        |
+| `lib/jsonld.ts`                                | modify (or create) | Add `websiteSchema()` and `personSchema()` builders.                               |
 
 All section components are **default-exported** from their files. Naming is identical to the file name.
 
@@ -95,8 +96,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     title: "Healthy You By Ruhma",
-    description:
-      "Quietly authoritative, evidence-based dietetics from Dr. Ruhma — Lahore.",
+    description: "Quietly authoritative, evidence-based dietetics from Dr. Ruhma — Lahore.",
     url: "/",
     siteName: "Healthy You By Ruhma",
     images: [
@@ -142,6 +142,7 @@ export default function HomePage() {
 ```
 
 Notes:
+
 - `revalidate` is not set; the page is fully static at build time. Once the journal is wired (plan 09), `JournalPreview` becomes the only data-driven section and will trigger ISR via `revalidate = 3600` at the page level.
 - The JSON-LD is emitted as a single `<script>` containing an array of two schemas — Google handles arrays since 2022 and it cuts one DOM node.
 - The OG image route `/opengraph-image` is delivered by plan 13. Until then, ship a static fallback at `public/og-default.png` and reference that instead of the dynamic route — the `metadata` object falls back gracefully.
@@ -164,14 +165,12 @@ export default function Hero() {
   return (
     <section
       aria-labelledby="hero-heading"
-      className="relative bg-cream pt-24 pb-16 md:pt-32 md:pb-24 lg:pt-40 lg:pb-32"
+      className="bg-cream relative pt-24 pb-16 md:pt-32 md:pb-24 lg:pt-40 lg:pb-32"
     >
       <Container className="grid grid-cols-1 gap-12 md:grid-cols-12 md:gap-8 lg:gap-12">
         {/* LEFT — copy */}
-        <div className="md:col-span-6 md:pr-4 lg:pr-12 flex flex-col justify-center">
-          <Eyebrow className="mb-6 text-mauve">
-            Healthy You By Ruhma · Lahore, Pakistan
-          </Eyebrow>
+        <div className="flex flex-col justify-center md:col-span-6 md:pr-4 lg:pr-12">
+          <Eyebrow className="text-mauve mb-6">Healthy You By Ruhma · Lahore, Pakistan</Eyebrow>
 
           <Heading
             as="h1"
@@ -181,10 +180,9 @@ export default function Hero() {
             Get transformed into your dream version.
           </Heading>
 
-          <p className="mt-6 max-w-xl text-body text-ink-soft leading-relaxed">
-            Evidence-based, deeply personal dietetics from Dr. Ruhma — focused
-            on hormonal health, sustainable weight management, and a way of
-            eating you can keep for life.
+          <p className="text-body text-ink-soft mt-6 max-w-xl leading-relaxed">
+            Evidence-based, deeply personal dietetics from Dr. Ruhma — focused on hormonal health,
+            sustainable weight management, and a way of eating you can keep for life.
           </p>
 
           <div className="mt-10 flex flex-wrap items-center gap-4">
@@ -217,7 +215,7 @@ import ImageReveal from "@/components/motion/ImageReveal";
 export default function HeroPortrait() {
   return (
     <ImageReveal duration={1.2}>
-      <div className="relative aspect-[3/4] w-full overflow-hidden bg-shell">
+      <div className="bg-shell relative aspect-[3/4] w-full overflow-hidden">
         <Image
           src="/media/home/coach-1.webp"
           alt="Dr. Ruhma, clinical dietitian, photographed in natural light"
@@ -234,8 +232,9 @@ export default function HeroPortrait() {
 ```
 
 Why two files:
+
 - `Hero` stays a server component → its layout, copy, and CTAs ship as static HTML and are crawled / rendered without JS.
-- The image reveal motion *needs* `useEffect` / `IntersectionObserver` and so must be a client component. Isolating it keeps the hydration cost to a single `<Image>` wrapper instead of the whole hero.
+- The image reveal motion _needs_ `useEffect` / `IntersectionObserver` and so must be a client component. Isolating it keeps the hydration cost to a single `<Image>` wrapper instead of the whole hero.
 
 LCP guarantee: the portrait carries `priority` and `fetchPriority="high"`, the image is preloaded via `next/image`, the wrapper is a plain CSS reveal that doesn't delay paint (the image paints behind the clip-path immediately, the reveal animates the clip-path on top). Confirm in plan 14 that LCP is the portrait, not the H1 — if the H1 wins, that's still <1.5s.
 
@@ -262,13 +261,10 @@ export default function MomentBand() {
   return (
     <section
       aria-label="Manifesto"
-      className="relative bg-cream py-24 md:py-32 lg:py-40 overflow-hidden"
+      className="bg-cream relative overflow-hidden py-24 md:py-32 lg:py-40"
     >
       {/* Optional: faint hairline above to separate from the hero block. */}
-      <div
-        aria-hidden="true"
-        className="absolute inset-x-0 top-0 h-px bg-ink/[0.06]"
-      />
+      <div aria-hidden="true" className="bg-ink/[0.06] absolute inset-x-0 top-0 h-px" />
 
       <Container className="flex flex-col items-center text-center">
         {/* The word. */}
@@ -338,10 +334,10 @@ The `<LetterStagger>` primitive (delivered by plan 01) signature, for reference:
 ```ts
 type LetterStaggerProps = {
   as?: "h1" | "h2" | "h3" | "p" | "span";
-  totalDurationMs?: number;        // default 800
-  perLetterDelayMs?: number;       // default totalDurationMs / chars.length
+  totalDurationMs?: number; // default 800
+  perLetterDelayMs?: number; // default totalDurationMs / chars.length
   className?: string;
-  children: string;                 // text only — split into chars internally
+  children: string; // text only — split into chars internally
 };
 ```
 
@@ -359,16 +355,13 @@ import type { Pillar } from "@/lib/home-data";
 
 export default function Pillars({ items }: { items: Pillar[] }) {
   return (
-    <section
-      aria-labelledby="pillars-heading"
-      className="bg-cream-deep py-24 md:py-32"
-    >
+    <section aria-labelledby="pillars-heading" className="bg-cream-deep py-24 md:py-32">
       <Container>
         <div className="mb-16 max-w-2xl">
           <Eyebrow className="text-mauve">Three quiet focuses</Eyebrow>
           <h2
             id="pillars-heading"
-            className="mt-4 font-epilogue text-h1 tracking-tight-h1 text-ink"
+            className="font-epilogue text-h1 tracking-tight-h1 text-ink mt-4"
           >
             Where most of the work happens.
           </h2>
@@ -387,18 +380,12 @@ export default function Pillars({ items }: { items: Pillar[] }) {
                     className="h-full w-full"
                   />
                 </div>
-                <Eyebrow className="text-ink-soft">
-                  {pillar.eyebrow}
-                </Eyebrow>
-                <h3 className="mt-3 font-epilogue text-h2 text-ink">
-                  {pillar.title}
-                </h3>
-                <p className="mt-4 text-body text-ink-soft leading-relaxed">
-                  {pillar.description}
-                </p>
+                <Eyebrow className="text-ink-soft">{pillar.eyebrow}</Eyebrow>
+                <h3 className="font-epilogue text-h2 text-ink mt-3">{pillar.title}</h3>
+                <p className="text-body text-ink-soft mt-4 leading-relaxed">{pillar.description}</p>
                 <Link
                   href={pillar.href}
-                  className="mt-6 inline-flex items-baseline gap-2 text-small font-medium text-mauve underline-offset-4 hover:underline hover:text-mauve-deep"
+                  className="text-small text-mauve hover:text-mauve-deep mt-6 inline-flex items-baseline gap-2 font-medium underline-offset-4 hover:underline"
                 >
                   Read more
                   <span aria-hidden="true">→</span>
@@ -428,13 +415,10 @@ import FadeUp from "@/components/motion/FadeUp";
 
 export default function FeaturedEbook() {
   return (
-    <section
-      aria-labelledby="featured-ebook-heading"
-      className="bg-cream py-24 md:py-32"
-    >
+    <section aria-labelledby="featured-ebook-heading" className="bg-cream py-24 md:py-32">
       <Container className="grid grid-cols-1 items-center gap-12 md:grid-cols-12 md:gap-16">
         {/* LEFT — cover mockup */}
-        <FadeUp className="md:col-span-6 md:order-1">
+        <FadeUp className="md:order-1 md:col-span-6">
           <div className="relative mx-auto aspect-[3/4] w-full max-w-md">
             <Image
               src="/media/library/pcos-cover.webp"
@@ -447,26 +431,23 @@ export default function FeaturedEbook() {
         </FadeUp>
 
         {/* RIGHT — copy */}
-        <FadeUp delayMs={120} className="md:col-span-6 md:order-2">
+        <FadeUp delayMs={120} className="md:order-2 md:col-span-6">
           <Eyebrow className="text-mauve">Guidebook · 02</Eyebrow>
           <h2
             id="featured-ebook-heading"
-            className="mt-4 font-epilogue text-h1 tracking-tight-h1 text-ink"
+            className="font-epilogue text-h1 tracking-tight-h1 text-ink mt-4"
           >
             The PCOS Guidebook.
           </h2>
-          <p className="mt-6 max-w-lg text-body text-ink-soft leading-relaxed">
-            The most-asked questions, answered plainly. Sixty pages on what is
-            actually happening with PCOS, what to eat, and what to stop
-            blaming yourself for.
+          <p className="text-body text-ink-soft mt-6 max-w-lg leading-relaxed">
+            The most-asked questions, answered plainly. Sixty pages on what is actually happening
+            with PCOS, what to eat, and what to stop blaming yourself for.
           </p>
 
           <div className="mt-8 flex items-baseline gap-3">
             <span className="font-epilogue text-h2 text-ink">PKR 1,500</span>
-            <span className="text-small text-ink-soft line-through">
-              PKR 3,000
-            </span>
-            <span className="rounded-full bg-shell px-3 py-1 text-caption text-mauve-deep">
+            <span className="text-small text-ink-soft line-through">PKR 3,000</span>
+            <span className="bg-shell text-caption text-mauve-deep rounded-full px-3 py-1">
               Save 50%
             </span>
           </div>
@@ -503,13 +484,10 @@ import FadeUp from "@/components/motion/FadeUp";
 
 export default function AboutTeaser() {
   return (
-    <section
-      aria-labelledby="about-teaser-heading"
-      className="bg-cream-deep py-24 md:py-32"
-    >
+    <section aria-labelledby="about-teaser-heading" className="bg-cream-deep py-24 md:py-32">
       <Container className="grid grid-cols-1 items-center gap-12 md:grid-cols-12 md:gap-16">
         <FadeUp className="md:col-span-5">
-          <div className="relative aspect-[4/5] w-full overflow-hidden bg-shell">
+          <div className="bg-shell relative aspect-[4/5] w-full overflow-hidden">
             <Image
               src="/media/home/about-portrait.webp"
               alt="Dr. Ruhma in her clinic"
@@ -524,21 +502,19 @@ export default function AboutTeaser() {
           <Eyebrow className="text-mauve">About Dr. Ruhma</Eyebrow>
           <h2
             id="about-teaser-heading"
-            className="mt-4 font-epilogue text-h1 tracking-tight-h1 text-ink"
+            className="font-epilogue text-h1 tracking-tight-h1 text-ink mt-4"
           >
             My mission is to make you shine from inside.
           </h2>
-          <div className="mt-8 space-y-5 text-body text-ink-soft leading-relaxed">
+          <div className="text-body text-ink-soft mt-8 space-y-5 leading-relaxed">
             <p>
-              I am a clinical dietitian based in Lahore. For the last several
-              years I have worked with women navigating PCOS, thyroid
-              imbalance, sustainable weight loss, and the slow daily work of
-              eating in a way that fits a real life.
+              I am a clinical dietitian based in Lahore. For the last several years I have worked
+              with women navigating PCOS, thyroid imbalance, sustainable weight loss, and the slow
+              daily work of eating in a way that fits a real life.
             </p>
             <p>
-              My approach is unhurried. We start with what is actually
-              happening in your body and your week, and we build from there
-              — small, evidence-based, repeatable.
+              My approach is unhurried. We start with what is actually happening in your body and
+              your week, and we build from there — small, evidence-based, repeatable.
             </p>
           </div>
           <div className="mt-10">
@@ -571,16 +547,13 @@ import type { Testimonial } from "@/lib/home-data";
 
 export default function Testimonials({ items }: { items: Testimonial[] }) {
   return (
-    <section
-      aria-labelledby="testimonials-heading"
-      className="bg-cream py-24 md:py-32"
-    >
+    <section aria-labelledby="testimonials-heading" className="bg-cream py-24 md:py-32">
       <Container>
         <div className="mb-16 max-w-xl">
           <Eyebrow className="text-mauve">In their own words</Eyebrow>
           <h2
             id="testimonials-heading"
-            className="mt-4 font-epilogue text-h1 tracking-tight-h1 text-ink"
+            className="font-epilogue text-h1 tracking-tight-h1 text-ink mt-4"
           >
             What a few months can do.
           </h2>
@@ -592,7 +565,7 @@ export default function Testimonials({ items }: { items: Testimonial[] }) {
               <figure className="flex h-full flex-col">
                 <blockquote
                   cite={t.context ?? undefined}
-                  className="font-epilogue text-[24px] leading-[1.35] tracking-[-0.015em] text-ink"
+                  className="font-epilogue text-ink text-[24px] leading-[1.35] tracking-[-0.015em]"
                 >
                   <span aria-hidden="true" className="text-mauve">
                     “
@@ -602,8 +575,8 @@ export default function Testimonials({ items }: { items: Testimonial[] }) {
                     ”
                   </span>
                 </blockquote>
-                <figcaption className="mt-6 text-caption text-ink-soft">
-                  <span className="font-medium text-ink">{t.name}</span>
+                <figcaption className="text-caption text-ink-soft mt-6">
+                  <span className="text-ink font-medium">{t.name}</span>
                   {t.detail && (
                     <>
                       <span className="mx-2" aria-hidden="true">
@@ -641,24 +614,21 @@ export default function JournalPreview({ items }: { items: JournalCard[] }) {
   const isPlaceholder = items.every((i) => i.placeholder);
 
   return (
-    <section
-      aria-labelledby="journal-heading"
-      className="bg-cream-deep py-24 md:py-32"
-    >
+    <section aria-labelledby="journal-heading" className="bg-cream-deep py-24 md:py-32">
       <Container>
         <div className="mb-16 flex flex-wrap items-end justify-between gap-6">
           <div className="max-w-xl">
             <Eyebrow className="text-mauve">From the journal</Eyebrow>
             <h2
               id="journal-heading"
-              className="mt-4 font-epilogue text-h1 tracking-tight-h1 text-ink"
+              className="font-epilogue text-h1 tracking-tight-h1 text-ink mt-4"
             >
               Reading, slowly.
             </h2>
           </div>
           <Link
             href="/journal"
-            className="text-small font-medium text-mauve underline-offset-4 hover:underline hover:text-mauve-deep"
+            className="text-small text-mauve hover:text-mauve-deep font-medium underline-offset-4 hover:underline"
           >
             All entries →
           </Link>
@@ -672,7 +642,7 @@ export default function JournalPreview({ items }: { items: JournalCard[] }) {
                 className="group block"
                 aria-disabled={post.placeholder}
               >
-                <div className="relative aspect-[4/3] w-full overflow-hidden bg-shell">
+                <div className="bg-shell relative aspect-[4/3] w-full overflow-hidden">
                   {post.cover ? (
                     <Image
                       src={post.cover}
@@ -683,19 +653,15 @@ export default function JournalPreview({ items }: { items: JournalCard[] }) {
                     />
                   ) : (
                     <div className="flex h-full w-full items-center justify-center">
-                      <span className="font-epilogue text-[120px] lowercase text-ink/10">
-                        soon
-                      </span>
+                      <span className="font-epilogue text-ink/10 text-[120px] lowercase">soon</span>
                     </div>
                   )}
                 </div>
-                <Eyebrow className="mt-6 text-ink-soft">
-                  {post.eyebrow}
-                </Eyebrow>
-                <h3 className="mt-2 font-epilogue text-h2 text-ink group-hover:text-mauve-deep">
+                <Eyebrow className="text-ink-soft mt-6">{post.eyebrow}</Eyebrow>
+                <h3 className="font-epilogue text-h2 text-ink group-hover:text-mauve-deep mt-2">
                   {post.title}
                 </h3>
-                <p className="mt-3 text-body text-ink-soft leading-relaxed line-clamp-3">
+                <p className="text-body text-ink-soft mt-3 line-clamp-3 leading-relaxed">
                   {post.excerpt}
                 </p>
               </Link>
@@ -704,7 +670,7 @@ export default function JournalPreview({ items }: { items: JournalCard[] }) {
         </div>
 
         {isPlaceholder && (
-          <p className="mt-10 text-caption text-ink-soft">
+          <p className="text-caption text-ink-soft mt-10">
             New entries coming. The journal opens later this season.
           </p>
         )}
@@ -726,10 +692,7 @@ import { Button } from "@/components/ui/Button";
 
 export default function CtaBand() {
   return (
-    <section
-      aria-labelledby="cta-heading"
-      className="bg-cream-deep py-24 md:py-32"
-    >
+    <section aria-labelledby="cta-heading" className="bg-cream-deep py-24 md:py-32">
       <Container className="flex flex-col items-center text-center">
         <h2
           id="cta-heading"
@@ -922,7 +885,7 @@ export function personSchema() {
 }
 ```
 
-These two schemas only — no `Organization`, no `LocalBusiness`, no `Service`. Per the master plan, the homepage represents the *practitioner*, not a business entity, and we don't claim local-business attributes (hours, geo, phone) we can't substantiate. Service pages get their own `Service` schemas in plan 06.
+These two schemas only — no `Organization`, no `LocalBusiness`, no `Service`. Per the master plan, the homepage represents the _practitioner_, not a business entity, and we don't claim local-business attributes (hours, geo, phone) we can't substantiate. Service pages get their own `Service` schemas in plan 06.
 
 ---
 
@@ -1009,7 +972,7 @@ This plan covers only the homepage. Explicitly out of scope:
 - **Other pages** (About, Services, Programs, Focus, Library, Journal, Contact, Legal) — separate plans 05, 06, 07, 08, 09, 10, 11.
 - **The Footer** — delivered by plan 02; this plan only confirms it sits under `<CtaBand>`.
 - **The Nav** — same.
-- **MDX content authoring beyond the homepage** — the journal placeholder entries here do *not* become MDX files; real journal posts land via plan 09.
+- **MDX content authoring beyond the homepage** — the journal placeholder entries here do _not_ become MDX files; real journal posts land via plan 09.
 - **Dynamic OG image generation** — plan 13. Until then, the homepage references a static `/og-default.png` fallback.
 - **Newsletter signup** — deferred to launch per master plan §7. The homepage does not have a newsletter form.
 - **Analytics events** — plan 14 wires Vercel Analytics + Plausible. The homepage CTAs are plain `<a>` tags here; event tracking is added later via the layout-level analytics provider.
@@ -1019,4 +982,4 @@ This plan covers only the homepage. Explicitly out of scope:
 
 ---
 
-*End of plan 04.*
+_End of plan 04._
