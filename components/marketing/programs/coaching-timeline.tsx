@@ -36,7 +36,7 @@ export function CoachingTimeline({ weeks }: CoachingTimelineProps) {
           />
           {weeks.map((w, i) => (
             <FadeUp key={w.week} delay={i * 0.05} as="li">
-              <div className="relative pb-12 last:pb-0 md:pb-14">
+              <div className="relative pb-16 last:pb-0 md:pb-24">
                 {/* Dot */}
                 <span
                   aria-hidden

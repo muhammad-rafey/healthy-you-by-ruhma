@@ -27,6 +27,7 @@ export function computeSavings(args: {
 }
 
 const PLATFORM_LABELS: Record<string, string> = {
+  "wa.me": "WhatsApp",
   "gumroad.com": "Gumroad",
   "lemonsqueezy.com": "Lemon Squeezy",
   "amazon.com": "Amazon",
@@ -95,7 +96,7 @@ export const LIBRARY_FAQ: readonly LibraryFaqItem[] = [
   },
   {
     q: "Do you offer 1:1 follow-up after I read it?",
-    a: "Yes. A consultation call with Dr. Ruhma is the most common follow-up — bring the chapters you have questions on and we'll build a plan from there. Coaching and Diet Planning programs are also options.",
+    a: "Yes. A consultation call with Dr. Ruhma is the most common follow-up — bring the chapters you have questions on and we'll build a plan from there. The Coaching Program is the right next step when you want a longer partnership.",
   },
 ] as const;
 
@@ -106,7 +107,7 @@ export const LIBRARY_FAQ: readonly LibraryFaqItem[] = [
  * coupling the Library section to about-page edits.
  */
 export const AUTHOR_BIO: readonly string[] = [
-  "Dr. Ruhma is a clinical dietitian based in Lahore, working with women across Pakistan and the diaspora on hormonal health, PCOS, gut health, and weight management. Her practice began with a question that wouldn't leave her — could the food on a plate be a precise enough lever to change how a body behaves? Five hundred clients later, the answer is a quiet, evidence-backed yes.",
+  "Dr. Ruhma is a clinical dietitian based in Faisalabad, working with women across Pakistan and the diaspora on hormonal health, PCOS, gut health, and weight management. Her practice began with a question that wouldn't leave her — could the food on a plate be a precise enough lever to change how a body behaves? Five hundred clients later, the answer is a quiet, evidence-backed yes.",
   "Her writing is the distilled version of conversations she's had with hundreds of clients. No fad diets, no shaming, no fast-fixes — just practical, regionally-relevant guidance for women who want answers, not another set of rules. Each guidebook in the Library is built the same way she builds her plans: clinical at the core, kind in the delivery, and designed for the kitchens her readers actually cook in.",
 ] as const;
 

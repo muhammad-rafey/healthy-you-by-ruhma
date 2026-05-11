@@ -11,7 +11,8 @@ export type ServiceCardProgram = {
   eyebrow: string;
   title: string;
   description: string;
-  priceFrom: number;
+  priceFrom?: number;
+  priceLabel?: string;
   currency: string;
   heroImage: string;
   heroAlt: string;
@@ -29,7 +30,10 @@ interface ServiceCardProps {
 export function ServiceCard({ program, index, reveal = false }: ServiceCardProps) {
   // Indices 0 and 2: image left, text right. Index 1: image right, text left.
   const imageOnLeft = index % 2 === 0;
-  const formattedPrice = new Intl.NumberFormat("en-PK").format(program.priceFrom);
+  const formattedPrice =
+    program.priceFrom !== undefined
+      ? new Intl.NumberFormat("en-PK").format(program.priceFrom)
+      : null;
 
   const imageInner = (
     <div className="bg-cream-deep relative aspect-[4/5] w-full overflow-hidden">
@@ -109,7 +113,9 @@ export function ServiceCard({ program, index, reveal = false }: ServiceCardProps
                 "text-[12px] font-medium tracking-[0.16em] uppercase",
               )}
             >
-              From {program.currency} {formattedPrice}
+              {formattedPrice
+                ? `From ${program.currency} ${formattedPrice}`
+                : (program.priceLabel ?? "On consultation")}
             </span>
           </div>
 

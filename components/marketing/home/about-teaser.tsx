@@ -14,7 +14,7 @@ export function AboutTeaser() {
           <div className="bg-shell relative aspect-[4/5] w-full overflow-hidden">
             <Image
               src="/media/home/about-teaser-1001.webp"
-              alt="Dr. Ruhma at her practice in Lahore."
+              alt="Dr. Ruhma at her practice in Faisalabad."
               fill
               sizes="(max-width: 768px) 100vw, 40vw"
               className="object-cover"
@@ -29,7 +29,7 @@ export function AboutTeaser() {
           </Heading>
           <div className="text-ink-soft mt-8 space-y-5 text-[17px] leading-relaxed">
             <p>
-              I&rsquo;m a clinical dietitian based in Lahore. For the last several years I have
+              I&rsquo;m a clinical dietitian based in Faisalabad. For the last several years I have
               worked with women navigating PCOS, thyroid imbalance, sustainable weight loss, and the
               slow daily work of eating in a way that fits a real life.
             </p>

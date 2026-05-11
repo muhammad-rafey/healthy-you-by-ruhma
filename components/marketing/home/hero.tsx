@@ -17,11 +17,11 @@ export function Hero() {
       >
         {/* Left — copy */}
         <div className="flex flex-col justify-center md:col-span-6 md:pr-4 lg:pr-8">
-          <Eyebrow className="mb-6">Healthy You By Ruhma · Lahore, Pakistan</Eyebrow>
+          <Eyebrow className="mb-6">Healthy You By Ruhma · Faisalabad, Pakistan</Eyebrow>
 
           <LetterStagger
             as="h1"
-            text="Get transformed into your dream version."
+            text="A healthy you, one quiet meal at a time."
             className="type-display block"
           />
 

@@ -12,20 +12,19 @@ import { ServicesCta } from "@/components/marketing/services/services-cta";
 export const metadata: Metadata = {
   title: `Services · ${site.name}`,
   description:
-    "Three ways to work with Dr. Ruhma — a personalised diet plan, a ninety-day coaching partnership, or a focused consultation call. Lahore-based, online worldwide.",
+    "Two ways to work with Dr. Ruhma — a ninety-day coaching partnership or a focused consultation call. Faisalabad-based, online worldwide.",
   alternates: { canonical: "/services" },
   openGraph: {
     title: `Services · ${site.name}`,
-    description: "Three ways to work together: Diet Planning, Coaching, and Consultation.",
+    description: "Two ways to work together: Coaching and Consultation.",
     url: "/services",
     type: "website",
   },
 };
 
-const PROGRAM_SLUGS = ["diet-planning", "coaching", "consultation"] as const;
+const PROGRAM_SLUGS = ["coaching", "consultation"] as const;
 
 const HERO_ALTS: Record<(typeof PROGRAM_SLUGS)[number], string> = {
-  "diet-planning": "Dr. Ruhma preparing a considered nutrition plan in her clinic.",
   coaching: "Dr. Ruhma in coaching session with a client.",
   consultation: "A consultation setup — notebook, phone, and a glass of water.",
 };
@@ -39,6 +38,7 @@ export default async function ServicesPage() {
     title: frontmatter.title,
     description: frontmatter.description,
     priceFrom: frontmatter.priceFrom,
+    priceLabel: frontmatter.priceLabel,
     currency: frontmatter.currency,
     heroImage: frontmatter.heroImage,
     heroAlt: HERO_ALTS[frontmatter.slug as (typeof PROGRAM_SLUGS)[number]] ?? frontmatter.title,
@@ -57,13 +57,15 @@ export default async function ServicesPage() {
       url: `${site.url}/about`,
     },
     areaServed: { "@type": "Country", name: "Pakistan" },
-    offers: {
-      "@type": "Offer",
-      priceCurrency: card.currency,
-      price: card.priceFrom,
-      availability: "https://schema.org/InStock",
-      url: `${site.url}${card.href}`,
-    },
+    ...(card.priceFrom !== undefined && {
+      offers: {
+        "@type": "Offer",
+        priceCurrency: card.currency,
+        price: card.priceFrom,
+        availability: "https://schema.org/InStock",
+        url: `${site.url}${card.href}`,
+      },
+    }),
   }));
 
   return (

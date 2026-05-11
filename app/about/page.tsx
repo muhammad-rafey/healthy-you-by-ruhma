@@ -16,11 +16,12 @@ import { PullQuote } from "@/components/marketing/about/pull-quote";
 export const metadata: Metadata = {
   title: "About Dr. Ruhma",
   description:
-    "Clinical dietitian based in Lahore. Dr. Ruhma helps women navigate hormonal health, PCOS, and weight management through evidence-based, deeply personal nutrition.",
+    "Clinical dietitian based in Faisalabad. Dr. Ruhma helps women navigate hormonal health, PCOS, and weight management through evidence-based, deeply personal nutrition.",
   alternates: { canonical: "/about" },
   openGraph: {
     title: `About Dr. Ruhma · ${site.name}`,
-    description: "Clinical dietitian based in Lahore. Hormonal health, PCOS, weight management.",
+    description:
+      "Clinical dietitian based in Faisalabad. Hormonal health, PCOS, weight management.",
     url: "/about",
     type: "profile",
     images: [{ url: "/media/about/hero-750.webp", width: 750, height: 938 }],
@@ -39,7 +40,7 @@ const CREDENTIALS = [
   "Clinical Nutrition",
   "PCOS & hormonal health",
   "500+ clients",
-  "Lahore, Pakistan",
+  "Faisalabad, Pakistan",
 ] as const;
 
 const MISSION_EXCERPT =

@@ -4,7 +4,7 @@ import { Container } from "@/components/ui/container";
 import { Eyebrow } from "@/components/ui/eyebrow";
 import { LetterStagger } from "@/components/motion/letter-stagger";
 import { FadeUp } from "@/components/motion/fade-up";
-import { ContactForm } from "@/components/marketing/contact/contact-form";
+import { WhatsappCta } from "@/components/marketing/contact/whatsapp-cta";
 import { ContactDetails } from "@/components/marketing/contact/contact-details";
 import { ContactFaq } from "@/components/marketing/contact/contact-faq";
 import { site } from "@/content/site";
@@ -12,12 +12,12 @@ import { site } from "@/content/site";
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Get in touch with Dr. Ruhma about diet planning, coaching, consultations, PCOS, or weight management. Replies within 1 business day.",
+    "Reach Dr. Ruhma on WhatsApp for hormonal health, weight management, coaching, or consultation enquiries. Replies within 1 business day.",
   alternates: { canonical: "/contact" },
   openGraph: {
     title: `Contact · ${site.name}`,
     description:
-      "Get in touch with Dr. Ruhma about diet planning, coaching, consultations, PCOS, or weight management.",
+      "Reach Dr. Ruhma on WhatsApp for hormonal health, weight management, coaching, or consultation enquiries.",
     url: "/contact",
     type: "website",
   },
@@ -29,7 +29,7 @@ const jsonLd = {
   name: `Contact · ${site.name}`,
   url: `${site.url}/contact`,
   description:
-    "Contact form and details for Healthy You by Ruhma. Reach out about diet planning, coaching, consultations, PCOS, or weight management.",
+    "Contact details for Healthy You by Ruhma. Reach out via WhatsApp about coaching, consultations, PCOS, or weight management.",
   mainEntity: {
     "@type": "Organization",
     name: site.name,
@@ -39,7 +39,15 @@ const jsonLd = {
   },
 };
 
-export default function ContactPage() {
+interface ContactPageProps {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}
+
+export default async function ContactPage({ searchParams }: ContactPageProps) {
+  const params = await searchParams;
+  const raw = params.topic;
+  const topic = typeof raw === "string" ? raw : undefined;
+
   return (
     <>
       <script
@@ -59,21 +67,20 @@ export default function ContactPage() {
           />
           <FadeUp delay={0.2}>
             <p className="text-ink-soft mt-6 max-w-[44ch] text-[17px] leading-[1.65]">
-              Tell us a little about what you’re working on and we’ll reply with the right next
-              step. No drip campaigns, no automated funnels — a real reply, usually within a
-              business day.
+              Tell me a little about what you&rsquo;re working on and I&rsquo;ll reply with the
+              right next step. No drip campaigns, no automated funnels — a real reply, usually
+              within a business day.
             </p>
           </FadeUp>
         </header>
 
-        <div className="grid gap-16 lg:grid-cols-[1.4fr_1fr] lg:gap-24">
-          <FadeUp delay={0.1}>
-            <ContactForm />
-          </FadeUp>
-          <FadeUp delay={0.25}>
-            <ContactDetails />
-          </FadeUp>
-        </div>
+        <FadeUp delay={0.1}>
+          <WhatsappCta topic={topic} />
+        </FadeUp>
+
+        <FadeUp delay={0.2} className="mx-auto mt-20 max-w-2xl">
+          <ContactDetails />
+        </FadeUp>
 
         <FadeUp as="section" className="mt-28 max-w-3xl">
           <ContactFaq />

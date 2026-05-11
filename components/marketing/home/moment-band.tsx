@@ -20,8 +20,8 @@ export function MomentBand() {
       <Container className="flex flex-col items-center text-center">
         <LetterStagger
           as="h2"
-          text="nourish"
-          className="font-display block translate-x-[0.02em] text-[clamp(64px,18vw,220px)] leading-[0.9] font-semibold tracking-[-0.04em] text-[var(--color-ink)] lowercase select-none"
+          text="Nourish"
+          className="font-display block translate-x-[0.02em] text-[clamp(64px,18vw,220px)] leading-[0.9] font-semibold tracking-[-0.04em] text-[var(--color-ink)] select-none"
         />
 
         <p className="text-ink-soft mt-10 max-w-md font-sans text-[18px] leading-[1.55] tracking-normal italic md:mt-12">

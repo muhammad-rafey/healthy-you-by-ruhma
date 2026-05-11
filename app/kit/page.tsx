@@ -72,7 +72,7 @@ export default function KitPage() {
 
             <div className="space-y-2">
               <Eyebrow>Display · Epilogue · 500 · -0.03em</Eyebrow>
-              <p className="type-display">Get transformed into your dream version</p>
+              <p className="type-display">A healthy you, one quiet meal at a time.</p>
             </div>
 
             <div className="space-y-2">
@@ -106,7 +106,9 @@ export default function KitPage() {
 
             <div className="space-y-2">
               <Eyebrow>Caption · Inter · italic · 13px · 0.04em</Eyebrow>
-              <p className="type-caption">Photograph: Dr. Ruhma at the practice, Lahore, 2024.</p>
+              <p className="type-caption">
+                Photograph: Dr. Ruhma at the practice, Faisalabad, 2024.
+              </p>
             </div>
           </div>
         </section>

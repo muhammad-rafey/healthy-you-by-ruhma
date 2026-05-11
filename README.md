@@ -1,7 +1,7 @@
 # Healthy You By Ruhma
 
 Next.js redesign of [dietitianruhma.com](https://dietitianruhma.com) for
-**Dr. Ruhma** — clinical dietitian, Lahore. Brand: **Healthy You By
+**Dr. Ruhma** — clinical dietitian, Faisalabad. Brand: **Healthy You By
 Ruhma**. Currency: **PKR**.
 
 > Editorial, photography-led, restrained motion. See
@@ -22,7 +22,7 @@ cutover, external integrations) — see [`LAUNCH_CHECKLIST.md`](./LAUNCH_CHECKLI
 - Motion v12 (three motion primitives only)
 - MDX in repo for long-form content (`content/`)
 - `@vercel/og` for dynamic OG images
-- React Hook Form + Zod for the contact form
+- Zod for MDX frontmatter validation
 - Hosted on Vercel (target)
 
 ## Requirements
@@ -70,14 +70,15 @@ scripts/     migration + content + asset tooling
 
 ## Routes shipped
 
-User-facing prerendered routes (16): `/`, `/about`, `/services`,
-`/programs/{diet-planning,coaching,consultation}`,
+User-facing prerendered routes: `/`, `/about`, `/services`,
+`/programs/{coaching,consultation}`,
 `/focus/{hormonal-health,weight-management}`, `/library`,
 `/library/{diabetes-essentials,pcos-guidebook,skin-secrets}`,
-`/journal`, `/journal/welcome`, `/contact`, `/legal/{privacy,terms,refunds}`.
+`/journal`, `/journal/welcome`, `/transformations`, `/contact`,
+`/legal/{privacy,terms,refunds}`.
 
-Plus `/kit` (design kit, dev reference), dynamic OG image routes per
-content section, and the contact form server endpoint.
+Plus `/kit` (design kit, dev reference) and dynamic OG image routes per
+content section.
 
 17 legacy WordPress URLs return HTTP 308 to the new IA — see
 `next.config.ts` `redirects()`.

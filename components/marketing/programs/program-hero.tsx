@@ -11,7 +11,8 @@ interface ProgramHeroProps {
   eyebrow: string;
   title: string;
   description: string;
-  priceFrom: number;
+  priceFrom?: number;
+  priceLabel?: string;
   currency: "PKR";
   ctaLabel: string;
   ctaHref: string;
@@ -24,13 +25,16 @@ export function ProgramHero({
   title,
   description,
   priceFrom,
+  priceLabel,
   currency,
   ctaLabel,
   ctaHref,
   heroImage,
   heroAlt,
 }: ProgramHeroProps) {
-  const formattedPrice = new Intl.NumberFormat("en-PK").format(priceFrom);
+  const formattedPrice =
+    priceFrom !== undefined ? new Intl.NumberFormat("en-PK").format(priceFrom) : null;
+  const showLabel = !!priceLabel || priceFrom === undefined;
 
   return (
     <section className="bg-cream pt-28 pb-20 md:pt-36 md:pb-28">
@@ -55,10 +59,16 @@ export function ProgramHero({
                 <Link href={ctaHref}>{ctaLabel}</Link>
               </Button>
               <span className="text-ink-soft text-[14px]">
-                <span className="text-mauve tracking-[0.16em] uppercase">From</span>{" "}
-                <span className="text-ink ml-1 font-medium">
-                  {currency} {formattedPrice}
-                </span>
+                {showLabel ? (
+                  <span className="text-ink font-medium">{priceLabel ?? "On consultation"}</span>
+                ) : (
+                  <>
+                    <span className="text-mauve tracking-[0.16em] uppercase">From</span>{" "}
+                    <span className="text-ink ml-1 font-medium">
+                      {currency} {formattedPrice}
+                    </span>
+                  </>
+                )}
               </span>
             </div>
           </FadeUp>

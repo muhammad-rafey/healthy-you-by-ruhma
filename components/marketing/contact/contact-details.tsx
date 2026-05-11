@@ -25,7 +25,7 @@ export function ContactDetails() {
 
       <div className="flex flex-col gap-3">
         <p className="type-eyebrow text-ink/70 !text-[11px] tracking-[0.18em]">Hours</p>
-        <p className="text-ink-soft text-[16px] leading-[1.6]">Lahore, Pakistan · GMT+5</p>
+        <p className="text-ink-soft text-[16px] leading-[1.6]">Faisalabad, Pakistan · GMT+5</p>
       </div>
     </aside>
   );

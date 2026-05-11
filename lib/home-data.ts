@@ -51,12 +51,12 @@ export const pillars: Pillar[] = [
     illustration: "/illustrations/citrus.svg",
   },
   {
-    slug: "diet-planning",
+    slug: "coaching",
     eyebrow: "Program · 03",
-    title: "Diet Planning",
+    title: "Coaching Program",
     description:
-      "A structured, personal program: assessment, plan, weekly check-ins, and tools you can keep.",
-    href: "/programs/diet-planning",
+      "Ninety days of partnership — weekly check-ins, plans that adapt as your body responds, support when life gets in the way.",
+    href: "/programs/coaching",
     illustration: "/illustrations/mint.svg",
   },
 ];
@@ -71,21 +71,21 @@ export const testimonials: Testimonial[] = [
     id: "t1",
     quote:
       "Three months in and my cycle is regular for the first time in eight years. Nothing about the plan felt like a punishment.",
-    name: "S. Ahmed",
-    detail: "PCOS · Lahore",
+    name: "Ayesha Khan",
+    detail: "PCOS · Faisalabad",
   },
   {
     id: "t2",
     quote:
       "I came in wanting to lose weight and left with something more useful — a way of eating that fits my life and my family's table.",
-    name: "M. Khan",
-    detail: "Weight Management · Lahore",
+    name: "Sana Malik",
+    detail: "Weight Management · Faisalabad",
   },
   {
     id: "t3",
     quote:
       "Dr. Ruhma is the first dietitian who actually listened before prescribing. Calm, clinical, kind.",
-    name: "N. Rauf",
+    name: "Hira Sheikh",
     detail: "Consultation · Karachi",
   },
 ];

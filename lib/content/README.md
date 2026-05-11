@@ -5,7 +5,7 @@ All long-form copy lives as MDX under `content/`:
 | Path                       | Purpose                                        |
 | -------------------------- | ---------------------------------------------- |
 | `content/about.mdx`        | Bio paragraphs imported by `app/about/page.tsx` |
-| `content/programs/*.mdx`   | Diet Planning / Coaching / Consultation pages  |
+| `content/programs/*.mdx`   | Coaching / Consultation pages                  |
 | `content/focus/*.mdx`      | Hormonal Health / Weight Management long-form  |
 | `content/library/*.mdx`    | Three ebook detail pages                       |
 | `content/journal/*.mdx`    | Blog posts                                     |

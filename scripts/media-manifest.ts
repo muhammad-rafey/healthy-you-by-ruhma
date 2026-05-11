@@ -41,7 +41,7 @@ export const MANIFEST: MediaEntry[] = [
     src: `${UPLOADS}/2024/02/HomePage-AboutUs-1.jpg`,
     category: "home",
     slug: "about-teaser",
-    alt: "Dr. Ruhma at her practice in Lahore.",
+    alt: "Dr. Ruhma at her practice in Faisalabad.",
   },
   // Three pillar tiles (327×293) — small editorial cards.
   {
@@ -112,13 +112,6 @@ export const MANIFEST: MediaEntry[] = [
   },
 
   // ── PROGRAMS ────────────────────────────────────────────────────────
-  // Diet planning hero (750×860 — same person as About hero, contextually fine).
-  {
-    src: `${UPLOADS}/2024/02/HomePage-Hero-1.jpg`,
-    category: "programs",
-    slug: "diet-planning-hero",
-    alt: "Sample weekly meal plan laid out on a wooden table.",
-  },
   // Coaching hero — uses the (1001×616) About-Section photo for variety.
   {
     src: `${UPLOADS}/2024/02/AboutPage-AboutSection-1.jpg`,
@@ -132,13 +125,6 @@ export const MANIFEST: MediaEntry[] = [
     category: "programs",
     slug: "consultation-hero",
     alt: "Dr. Ruhma on a video consultation call.",
-  },
-  // Diet-planning sample shot (482×497).
-  {
-    src: `${UPLOADS}/2024/02/HomePage-WorkGallery-img_3-1.jpg`,
-    category: "programs",
-    slug: "diet-planning-sample",
-    alt: "A balanced plate showing macronutrient distribution.",
   },
   // Coaching sample shot (482×497).
   {

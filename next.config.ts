@@ -15,10 +15,16 @@ const nextConfig: NextConfig = {
       { source: "/about-me", destination: "/about", permanent: true },
       { source: "/contact-me", destination: "/contact", permanent: true },
 
-      // Programs (with WP typos corrected)
+      // Programs (with WP typos corrected). Diet Planning was retired —
+      // any inbound link or stale redirect now lands on Coaching.
       {
         source: "/diet-plannig-program",
-        destination: "/programs/diet-planning",
+        destination: "/programs/coaching",
+        permanent: true,
+      },
+      {
+        source: "/programs/diet-planning",
+        destination: "/programs/coaching",
         permanent: true,
       },
       {

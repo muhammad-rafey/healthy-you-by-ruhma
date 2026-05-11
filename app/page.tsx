@@ -13,14 +13,14 @@ import { loadJournal } from "@/lib/mdx";
 import { site } from "@/content/site";
 
 export const metadata: Metadata = {
-  title: "Healthy You By Ruhma — Clinical dietitian in Lahore",
+  title: "Healthy You By Ruhma — Clinical dietitian in Faisalabad",
   description:
-    "Dr. Ruhma is a clinical dietitian in Lahore helping women take quiet, lasting control of hormonal health, weight, and daily nourishment.",
+    "Dr. Ruhma is a clinical dietitian in Faisalabad helping women take quiet, lasting control of hormonal health, weight, and daily nourishment.",
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     title: site.name,
-    description: "Quietly authoritative, evidence-based dietetics from Dr. Ruhma — Lahore.",
+    description: "Quietly authoritative, evidence-based dietetics from Dr. Ruhma — Faisalabad.",
     url: "/",
     siteName: site.name,
     locale: "en_PK",
@@ -28,8 +28,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: site.name,
-    description:
-      "Clinical dietitian Dr. Ruhma — hormonal health, weight management, diet planning.",
+    description: "Clinical dietitian Dr. Ruhma — hormonal health, weight management, coaching.",
   },
 };
 

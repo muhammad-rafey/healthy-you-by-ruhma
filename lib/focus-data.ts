@@ -69,9 +69,8 @@ export type RelatedRef = {
 
 /**
  * Two related cards per focus area. Hormonal Health → PCOS Guidebook +
- * Coaching Program (master §3.7). Weight Management → Diet Planning Program
- * + Diabetes Essentials guidebook (its frontmatter calls these out
- * explicitly).
+ * Coaching Program. Weight Management → Coaching Program + Diabetes
+ * Essentials guidebook.
  */
 export const FOCUS_RELATED: Record<FocusSlug, readonly RelatedRef[]> = {
   "hormonal-health": [
@@ -79,7 +78,7 @@ export const FOCUS_RELATED: Record<FocusSlug, readonly RelatedRef[]> = {
     { kind: "program", slug: "coaching" },
   ],
   "weight-management": [
-    { kind: "program", slug: "diet-planning" },
+    { kind: "program", slug: "coaching" },
     { kind: "library", slug: "diabetes-essentials" },
   ],
 };

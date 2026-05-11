@@ -6,7 +6,8 @@ import { Button } from "@/components/ui/button";
 import { FadeUp } from "@/components/motion/fade-up";
 
 interface PricingCardProps {
-  priceFrom: number;
+  priceFrom?: number;
+  priceLabel?: string;
   currency: "PKR";
   bullets: readonly string[];
   ctaLabel: string;
@@ -17,6 +18,7 @@ interface PricingCardProps {
 
 export function PricingCard({
   priceFrom,
+  priceLabel,
   currency,
   bullets,
   ctaLabel,
@@ -24,7 +26,10 @@ export function PricingCard({
   cadence = "starting from",
   note = "Installments available — monthly or fortnightly, no extra charge.",
 }: PricingCardProps) {
-  const formatted = new Intl.NumberFormat("en-PK").format(priceFrom);
+  const showLabel = !!priceLabel || priceFrom === undefined;
+  const formatted =
+    priceFrom !== undefined ? new Intl.NumberFormat("en-PK").format(priceFrom) : null;
+  const labelText = priceLabel ?? "On consultation";
 
   return (
     <section id="pricing" aria-label="Pricing" className="bg-cream py-24 md:py-32">
@@ -41,14 +46,22 @@ export function PricingCard({
         <FadeUp delay={0.14}>
           <div className="bg-paper border-ink/10 mt-12 border px-7 py-10 md:px-12 md:py-14">
             <span className="text-mauve text-[12px] tracking-[0.18em] uppercase">{cadence}</span>
-            <div className="mt-3 flex flex-wrap items-baseline gap-3">
-              <span className="font-display text-ink text-[clamp(56px,9vw,88px)] leading-[0.95] tracking-[-0.02em]">
-                {formatted}
-              </span>
-              <span className="text-ink-soft text-[16px] tracking-[0.16em] uppercase">
-                {currency}
-              </span>
-            </div>
+            {showLabel ? (
+              <div className="mt-3">
+                <span className="font-display text-ink text-[clamp(40px,6vw,64px)] leading-[1.05] tracking-[-0.02em]">
+                  {labelText}
+                </span>
+              </div>
+            ) : (
+              <div className="mt-3 flex flex-wrap items-baseline gap-3">
+                <span className="font-display text-ink text-[clamp(56px,9vw,88px)] leading-[0.95] tracking-[-0.02em]">
+                  {formatted}
+                </span>
+                <span className="text-ink-soft text-[16px] tracking-[0.16em] uppercase">
+                  {currency}
+                </span>
+              </div>
+            )}
 
             <ul className="text-ink-soft mt-10 space-y-3.5 text-[16px] leading-[1.6]">
               {bullets.map((b) => (

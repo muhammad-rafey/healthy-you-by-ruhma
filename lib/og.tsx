@@ -132,7 +132,7 @@ export function ogImageResponse({
             textTransform: "uppercase",
           }}
         >
-          <span>Lahore · Online</span>
+          <span>Faisalabad · Online</span>
           <span
             style={{
               display: "block",

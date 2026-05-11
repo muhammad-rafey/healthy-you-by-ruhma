@@ -31,7 +31,8 @@ export const ProgramFrontmatter = z.object({
   description: z.string().max(220),
   heroImage: mediaPath,
   ogImage: mediaPath.optional(),
-  priceFrom: z.number().int().positive(),
+  priceFrom: z.number().int().positive().optional(),
+  priceLabel: z.string().optional(),
   currency: z.literal("PKR"),
   ctaLabel: z.string().default("Book your slot"),
   ctaHref: z

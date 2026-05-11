@@ -22,7 +22,7 @@
   "home/about-teaser": {
     "category": "home",
     "slug": "about-teaser",
-    "alt": "Dr. Ruhma at her practice in Lahore.",
+    "alt": "Dr. Ruhma at her practice in Faisalabad.",
     "widths": [
       400,
       800,
@@ -206,23 +206,6 @@
       "/media/about/portrait-secondary-1080.webp"
     ]
   },
-  "programs/diet-planning-hero": {
-    "category": "programs",
-    "slug": "diet-planning-hero",
-    "alt": "Sample weekly meal plan laid out on a wooden table.",
-    "widths": [
-      400,
-      750
-    ],
-    "avif": [
-      "/media/programs/diet-planning-hero-400.avif",
-      "/media/programs/diet-planning-hero-750.avif"
-    ],
-    "webp": [
-      "/media/programs/diet-planning-hero-400.webp",
-      "/media/programs/diet-planning-hero-750.webp"
-    ]
-  },
   "programs/coaching-hero": {
     "category": "programs",
     "slug": "coaching-hero",
@@ -261,23 +244,6 @@
       "/media/programs/consultation-hero-400.webp",
       "/media/programs/consultation-hero-800.webp",
       "/media/programs/consultation-hero-1080.webp"
-    ]
-  },
-  "programs/diet-planning-sample": {
-    "category": "programs",
-    "slug": "diet-planning-sample",
-    "alt": "A balanced plate showing macronutrient distribution.",
-    "widths": [
-      400,
-      482
-    ],
-    "avif": [
-      "/media/programs/diet-planning-sample-400.avif",
-      "/media/programs/diet-planning-sample-482.avif"
-    ],
-    "webp": [
-      "/media/programs/diet-planning-sample-400.webp",
-      "/media/programs/diet-planning-sample-482.webp"
     ]
   },
   "programs/coaching-sample": {

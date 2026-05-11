@@ -10,7 +10,7 @@ const STATIC_ROUTES: {
   { path: "/", priority: 1.0, changeFrequency: "monthly" },
   { path: "/about", priority: 0.9, changeFrequency: "yearly" },
   { path: "/services", priority: 0.9, changeFrequency: "monthly" },
-  { path: "/programs/diet-planning", priority: 0.8, changeFrequency: "monthly" },
+  { path: "/transformations", priority: 0.5, changeFrequency: "monthly" },
   { path: "/programs/coaching", priority: 0.8, changeFrequency: "monthly" },
   { path: "/programs/consultation", priority: 0.8, changeFrequency: "monthly" },
   { path: "/focus/hormonal-health", priority: 0.7, changeFrequency: "monthly" },

@@ -22,7 +22,7 @@ export function organizationSchema() {
     },
     address: {
       "@type": "PostalAddress",
-      addressLocality: "Lahore",
+      addressLocality: "Faisalabad",
       addressCountry: "PK",
     },
     sameAs: [site.contact.instagramUrl],
@@ -59,7 +59,7 @@ export function personSchema() {
     },
     address: {
       "@type": "PostalAddress",
-      addressLocality: "Lahore",
+      addressLocality: "Faisalabad",
       addressCountry: "PK",
     },
     knowsAbout: [

@@ -7,7 +7,6 @@ import { breadcrumbSchema } from "@/lib/jsonld";
 import {
   PROGRAMS_FAQ,
   PROGRAMS_TESTIMONIALS,
-  SAMPLE_WEEK,
   COACHING_TIMELINE,
   CONSULTATION_EXPECT,
   CONSULTATION_PREPARE,
@@ -17,16 +16,15 @@ import {
 import { ProgramHero } from "@/components/marketing/programs/program-hero";
 import { WhatsIncluded } from "@/components/marketing/programs/whats-included";
 import { HowItWorks } from "@/components/marketing/programs/how-it-works";
-import { SampleWeek } from "@/components/marketing/programs/sample-week";
 import { CoachingTimeline } from "@/components/marketing/programs/coaching-timeline";
-import { BookingPlaceholder } from "@/components/marketing/programs/booking-placeholder";
+import { Booking } from "@/components/marketing/programs/booking";
 import { ConsultationRails } from "@/components/marketing/programs/consultation-rails";
 import { ProgramTestimonials } from "@/components/marketing/programs/program-testimonials";
 import { PricingCard } from "@/components/marketing/programs/pricing-card";
 import { ProgramFaq } from "@/components/marketing/programs/program-faq";
 import { ProgramCtaBand } from "@/components/marketing/programs/program-cta-band";
 
-const PROGRAM_SLUGS = ["diet-planning", "coaching", "consultation"] as const;
+const PROGRAM_SLUGS = ["coaching", "consultation"] as const;
 
 export const dynamicParams = false;
 
@@ -35,20 +33,11 @@ export function generateStaticParams() {
 }
 
 const HERO_ALTS: Record<ProgramSlug, string> = {
-  "diet-planning":
-    "A considered plate — whole grains, greens, and seasonal vegetables on a cream tablecloth.",
   coaching: "Dr. Ruhma in a coaching session with a client, notes spread between them.",
   consultation: "A consultation setup — notebook, phone, and a glass of water on a quiet desk.",
 };
 
 const PRICING_BULLETS: Record<ProgramSlug, readonly string[]> = {
-  "diet-planning": [
-    "A custom plan built around your blood work, routine, and pantry",
-    "A weekly grocery guide and a tested recipe pack",
-    "Plan revisions every fifteen days as your body responds",
-    "WhatsApp access for questions during business hours",
-    "A free consultation call to use whenever you like",
-  ],
   coaching: [
     "Ninety days of partnership — weekly twenty-minute calls",
     "Diet plans that update as your body responds",
@@ -66,25 +55,22 @@ const PRICING_BULLETS: Record<ProgramSlug, readonly string[]> = {
 };
 
 const PRICING_CADENCE: Record<ProgramSlug, string> = {
-  "diet-planning": "from · per month",
-  coaching: "from · ninety-day program",
+  coaching: "shared on the discovery call",
   consultation: "single call",
 };
 
 const PRICING_NOTE: Record<ProgramSlug, string | undefined> = {
-  "diet-planning": "Installments available — monthly or fortnightly, no extra charge.",
-  coaching: "Installments available — monthly or fortnightly, no extra charge.",
+  coaching:
+    "Every program is shaped to your situation — pricing comes after we talk through the fit.",
   consultation: undefined,
 };
 
 const CTA_BAND_LINE: Record<ProgramSlug, string> = {
-  "diet-planning": "Ready to eat for the body you live in?",
   coaching: "Ready to do the work that lasts?",
   consultation: "Still have questions? Start with a call.",
 };
 
 const HOW_IT_WORKS_HEADINGS: Record<ProgramSlug, string> = {
-  "diet-planning": "Four steps from inquiry to result.",
   coaching: "Four phases across ninety days.",
   consultation: "Three steps to the call.",
 };
@@ -148,13 +134,17 @@ export default async function ProgramPage({ params }: { params: Promise<{ slug: 
       url: `${site.url}/about`,
     },
     areaServed: { "@type": "Country", name: "Pakistan" },
-    offers: {
-      "@type": "Offer",
-      priceCurrency: fm.currency,
-      price: fm.priceFrom,
-      availability: "https://schema.org/InStock",
-      url: `${site.url}/programs/${slug}`,
-    },
+    // Only emit Offer.price when an actual numeric price exists; coaching is
+    // priced on consultation so there's nothing to publish here.
+    ...(fm.priceFrom !== undefined && {
+      offers: {
+        "@type": "Offer",
+        priceCurrency: fm.currency,
+        price: fm.priceFrom,
+        availability: "https://schema.org/InStock",
+        url: `${site.url}/programs/${slug}`,
+      },
+    }),
   };
 
   const breadcrumbs = breadcrumbSchema([
@@ -176,6 +166,7 @@ export default async function ProgramPage({ params }: { params: Promise<{ slug: 
         title={fm.title}
         description={fm.description}
         priceFrom={fm.priceFrom}
+        priceLabel={fm.priceLabel}
         currency={fm.currency}
         ctaLabel={fm.ctaLabel}
         ctaHref={slug === "consultation" ? "#book" : "#pricing"}
@@ -183,8 +174,8 @@ export default async function ProgramPage({ params }: { params: Promise<{ slug: 
         heroAlt={HERO_ALTS[slug]}
       />
 
-      {/* Diet Planning + Coaching: shared "What's included" 6-tile grid.
-          Consultation gets the slimmer "What to expect / How to prepare" rails. */}
+      {/* Coaching gets the "What's included" 6-tile grid. Consultation gets
+          the slimmer "What to expect / How to prepare" rails. */}
       {slug === "consultation" ? (
         <ConsultationRails expect={CONSULTATION_EXPECT} prepare={CONSULTATION_PREPARE} />
       ) : (
@@ -200,15 +191,15 @@ export default async function ProgramPage({ params }: { params: Promise<{ slug: 
       )}
 
       {/* Per-program signature section. */}
-      {slug === "diet-planning" && <SampleWeek week={SAMPLE_WEEK} />}
       {slug === "coaching" && <CoachingTimeline weeks={COACHING_TIMELINE} />}
-      {slug === "consultation" && <BookingPlaceholder />}
+      {slug === "consultation" && <Booking />}
 
       {/* Testimonials — skipped on the shorter consultation page. */}
       {slug !== "consultation" && <ProgramTestimonials items={testimonials} />}
 
       <PricingCard
         priceFrom={fm.priceFrom}
+        priceLabel={fm.priceLabel}
         currency={fm.currency}
         bullets={PRICING_BULLETS[slug]}
         ctaLabel={fm.ctaLabel}

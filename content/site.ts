@@ -20,7 +20,7 @@ export const site = {
   practitioner: "Dr. Ruhma",
   tagline: "Nourishing You Inside Out For Healthy You Throughout",
   description:
-    "Editorial nutrition practice with Dr. Ruhma — clinical dietitian based in Lahore. Programs, focus areas, and guidebooks for hormonal health, weight management, and considered eating.",
+    "Editorial nutrition practice with Dr. Ruhma — clinical dietitian based in Faisalabad. Programs, focus areas, and guidebooks for hormonal health, weight management, and considered eating.",
   locale: "en",
   url:
     process.env.NEXT_PUBLIC_SITE_URL ??
@@ -50,6 +50,7 @@ export const site = {
       items: [
         { label: "About Dr. Ruhma", href: "/about" },
         { label: "Services", href: "/services" },
+        { label: "Transformations", href: "/transformations" },
         { label: "Contact", href: "/contact" },
         { label: "Journal", href: "/journal" },
       ],
@@ -57,7 +58,6 @@ export const site = {
     {
       heading: "Programs",
       items: [
-        { label: "Diet Planning", href: "/programs/diet-planning" },
         { label: "Coaching", href: "/programs/coaching" },
         { label: "Consultation Call", href: "/programs/consultation" },
       ],

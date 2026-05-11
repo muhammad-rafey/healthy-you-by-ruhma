@@ -27,7 +27,7 @@ export function AuthorFooter() {
           <div className="text-ink-soft text-[15px] leading-[1.65]">
             <p>
               <span className="text-ink font-medium">{site.practitioner}</span> is a clinical
-              dietitian based in Lahore. She runs {site.name} — a practice focused on hormonal
+              dietitian based in Faisalabad. She runs {site.name} — a practice focused on hormonal
               health, PCOS, and sustainable weight management.{" "}
               <Link
                 href="/about"
