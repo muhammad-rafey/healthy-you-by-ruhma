@@ -2,6 +2,9 @@ import type { Metadata, Viewport } from "next";
 import { Inter, Epilogue } from "next/font/google";
 import { Nav } from "@/components/layout/nav";
 import { Footer } from "@/components/layout/footer";
+import { ClickTracker } from "@/components/analytics/click-tracker";
+import { ConsentBanner } from "@/components/analytics/consent-banner";
+import { GoogleAnalyticsLoader } from "@/components/analytics/google-analytics";
 import { site } from "@/content/site";
 import "./globals.css";
 
@@ -82,6 +85,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {children}
         </main>
         <Footer />
+        <ClickTracker />
+        <GoogleAnalyticsLoader />
+        <ConsentBanner />
       </body>
     </html>
   );

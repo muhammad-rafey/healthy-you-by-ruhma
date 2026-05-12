@@ -32,7 +32,9 @@ export function ProgramCtaBand({
         <FadeUp delay={0.12}>
           <div className="mt-10">
             <Button asChild variant="mauve" size="lg">
-              <Link href={ctaHref}>{ctaLabel}</Link>
+              <Link href={ctaHref} data-event-name="cta_click" data-event-label="program_cta">
+                {ctaLabel}
+              </Link>
             </Button>
           </div>
         </FadeUp>

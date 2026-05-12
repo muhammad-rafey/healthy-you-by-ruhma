@@ -16,7 +16,13 @@ export function CtaBand() {
         <FadeUp delay={0.12}>
           <div className="mt-10">
             <Button asChild variant="default" size="lg">
-              <Link href="/programs/consultation">Book a consultation</Link>
+              <Link
+                href="/programs/consultation"
+                data-event-name="cta_click"
+                data-event-label="home_consultation"
+              >
+                Book a consultation
+              </Link>
             </Button>
           </div>
         </FadeUp>

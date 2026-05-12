@@ -40,7 +40,13 @@ export function WhatsappCta({ topic }: WhatsappCtaProps = {}) {
         within one business day.
       </p>
       <Button asChild variant="default" size="lg">
-        <a href={href} target="_blank" rel="noopener noreferrer">
+        <a
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-event-name="cta_click"
+          data-event-label={`whatsapp_${topic ?? "general"}`}
+        >
           Message on WhatsApp →
         </a>
       </Button>
