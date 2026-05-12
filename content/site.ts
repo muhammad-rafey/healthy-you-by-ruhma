@@ -39,6 +39,7 @@ export const site = {
   nav: [
     { label: "Programs", href: "/services" },
     { label: "Focus", href: "/focus/hormonal-health" },
+    { label: "Stories", href: "/transformations" },
     { label: "Library", href: "/library" },
     { label: "Journal", href: "/journal" },
     { label: "About", href: "/about" },
@@ -50,7 +51,7 @@ export const site = {
       items: [
         { label: "About Dr. Ruhma", href: "/about" },
         { label: "Services", href: "/services" },
-        { label: "Transformations", href: "/transformations" },
+        { label: "Success Stories", href: "/transformations" },
         { label: "Contact", href: "/contact" },
         { label: "Journal", href: "/journal" },
       ],

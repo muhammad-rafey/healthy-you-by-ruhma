@@ -4,6 +4,7 @@ import { MomentBand } from "@/components/marketing/home/moment-band";
 import { Pillars } from "@/components/marketing/home/pillars";
 import { FeaturedEbook } from "@/components/marketing/home/featured-ebook";
 import { AboutTeaser } from "@/components/marketing/home/about-teaser";
+import { SuccessStoriesTeaser } from "@/components/marketing/home/success-stories";
 import { Testimonials } from "@/components/marketing/home/testimonials";
 import { JournalPreview } from "@/components/marketing/home/journal-preview";
 import { CtaBand } from "@/components/marketing/home/cta-band";
@@ -61,6 +62,7 @@ export default async function HomePage() {
       <Pillars items={pillars} />
       <FeaturedEbook />
       <AboutTeaser />
+      <SuccessStoriesTeaser />
       <Testimonials items={testimonials} />
       <JournalPreview items={journalItems} />
       <CtaBand />
