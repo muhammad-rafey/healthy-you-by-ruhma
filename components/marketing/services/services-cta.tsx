@@ -32,7 +32,13 @@ export function ServicesCta() {
         <FadeUp delay={0.24}>
           <div className="mt-10">
             <Button asChild variant="default" size="lg">
-              <Link href="/programs/consultation">Book a consultation</Link>
+              <Link
+                href="/programs/consultation"
+                data-event-name="cta_click"
+                data-event-label="services_consultation"
+              >
+                Book a consultation
+              </Link>
             </Button>
           </div>
         </FadeUp>

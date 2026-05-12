@@ -49,6 +49,8 @@ export function BuyButton({ buyUrl, size = "lg", className }: BuyButtonProps) {
       href={buyUrl}
       target="_blank"
       rel="noopener noreferrer"
+      data-event-name="cta_click"
+      data-event-label="library_buy"
       className={cn(base, sizing, "bg-ink text-cream hover:bg-mauve-deep", className)}
     >
       <span>{label}</span>

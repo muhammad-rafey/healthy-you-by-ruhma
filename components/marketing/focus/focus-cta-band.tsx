@@ -36,7 +36,13 @@ export function FocusCtaBand() {
         <FadeUp delay={0.12}>
           <div className="mt-10">
             <Button asChild variant="mauve" size="lg">
-              <Link href="/programs/consultation">Book a consultation</Link>
+              <Link
+                href="/programs/consultation"
+                data-event-name="cta_click"
+                data-event-label="focus_consultation"
+              >
+                Book a consultation
+              </Link>
             </Button>
           </div>
         </FadeUp>
