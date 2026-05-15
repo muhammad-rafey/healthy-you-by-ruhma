@@ -44,13 +44,17 @@ export async function generateMetadata({
   const { entry } = loaded;
   const url = `/journal/${slug}`;
   const image = entry.heroImage;
+  const description =
+    entry.description.length > 200
+      ? `${entry.description.slice(0, 197).trimEnd()}…`
+      : entry.description;
   return {
     title: `${entry.title} · ${site.name}`,
-    description: entry.description,
+    description,
     alternates: { canonical: url },
     openGraph: {
       title: entry.title,
-      description: entry.description,
+      description,
       url,
       type: "article",
       publishedTime: entry.publishedAt,
@@ -62,7 +66,7 @@ export async function generateMetadata({
     twitter: {
       card: "summary_large_image",
       title: entry.title,
-      description: entry.description,
+      description,
       images: image ? [image] : undefined,
     },
   };
@@ -149,7 +153,7 @@ export default async function JournalPostPage({ params }: { params: Promise<{ sl
       />
 
       <article>
-        <PostHero post={entry} />
+        <PostHero post={entry} showDescription={bodyKind === "mdx"} />
 
         <section
           aria-label="Article body"

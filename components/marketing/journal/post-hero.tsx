@@ -13,9 +13,15 @@ import { formatCategory, formatPostDate } from "@/lib/journal-data";
 
 interface PostHeroProps {
   post: UnifiedEntry;
+  /**
+   * Show the description as a hero lede. True for MDX entries (description
+   * is a short summary distinct from the body). False for blog posts, whose
+   * `description` IS the article body — showing it here would duplicate it.
+   */
+  showDescription?: boolean;
 }
 
-export function PostHero({ post }: PostHeroProps) {
+export function PostHero({ post, showDescription = true }: PostHeroProps) {
   return (
     <header
       aria-label="Journal post header"
@@ -37,7 +43,7 @@ export function PostHero({ post }: PostHeroProps) {
             text={post.title}
             className="font-display text-ink mt-8 block text-[clamp(36px,6vw,72px)] leading-[1.05] font-medium tracking-[-0.03em] text-balance"
           />
-          {post.description ? (
+          {showDescription && post.description ? (
             <p className="text-ink-soft mt-6 max-w-[640px] text-[clamp(17px,1.4vw,19px)] leading-[1.55] text-pretty">
               {post.description}
             </p>
