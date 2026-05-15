@@ -55,7 +55,7 @@ export function FeaturedPost({ post }: FeaturedPostProps) {
                 <h2 className="font-display text-ink text-[clamp(32px,4vw,56px)] leading-[1.05] font-medium tracking-[-0.02em]">
                   {post.title}
                 </h2>
-                <p className="text-ink-soft mt-6 max-w-[58ch] text-[17px] leading-[1.6]">
+                <p className="text-ink-soft mt-6 line-clamp-3 max-w-[58ch] text-[17px] leading-[1.6]">
                   {post.description}
                 </p>
               </div>
