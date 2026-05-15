@@ -6,10 +6,9 @@
 // The whole block is one link so the entire surface is the primary
 // action (master §3.11).
 
-import Image from "next/image";
 import Link from "next/link";
 
-import type { JournalFrontmatter } from "@/lib/mdx";
+import type { UnifiedEntry } from "@/lib/journal-unified";
 import { formatCategory, formatPostDate } from "@/lib/journal-data";
 
 import { Container } from "@/components/ui/container";
@@ -17,8 +16,10 @@ import { Eyebrow } from "@/components/ui/eyebrow";
 import { ImageReveal } from "@/components/motion/image-reveal";
 import { FadeUp } from "@/components/motion/fade-up";
 
+import { EntryCover } from "./entry-cover";
+
 interface FeaturedPostProps {
-  post: JournalFrontmatter;
+  post: UnifiedEntry;
 }
 
 export function FeaturedPost({ post }: FeaturedPostProps) {
@@ -32,10 +33,9 @@ export function FeaturedPost({ post }: FeaturedPostProps) {
         <Link href={href} aria-label={ariaLabel} className="group block focus-visible:outline-none">
           {cover ? (
             <ImageReveal className="bg-cream-deep relative aspect-[16/9] w-full overflow-hidden rounded-sm">
-              <Image
+              <EntryCover
                 src={cover}
-                alt=""
-                fill
+                source={post.source}
                 priority
                 sizes="(min-width: 1024px) 1100px, 100vw"
                 className="object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] group-hover:scale-[1.02]"

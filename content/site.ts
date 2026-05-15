@@ -42,7 +42,6 @@ export const site = {
     { label: "Stories", href: "/transformations" },
     { label: "Library", href: "/library" },
     { label: "Journal", href: "/journal" },
-    { label: "Blog", href: "/blog" },
     { label: "About", href: "/about" },
     { label: "Contact", href: "/contact", cta: true },
   ] satisfies NavItem[],
@@ -55,7 +54,6 @@ export const site = {
         { label: "Success Stories", href: "/transformations" },
         { label: "Contact", href: "/contact" },
         { label: "Journal", href: "/journal" },
-        { label: "Blog", href: "/blog" },
       ],
     },
     {

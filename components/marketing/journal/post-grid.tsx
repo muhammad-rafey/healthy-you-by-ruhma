@@ -7,7 +7,7 @@
 
 import type { ReactNode } from "react";
 
-import type { JournalFrontmatter } from "@/lib/mdx";
+import type { UnifiedEntry } from "@/lib/journal-unified";
 
 import { Eyebrow } from "@/components/ui/eyebrow";
 import { FadeUp } from "@/components/motion/fade-up";
@@ -15,7 +15,7 @@ import { FadeUp } from "@/components/motion/fade-up";
 import { PostCard } from "./post-card";
 
 interface PostGridProps {
-  posts: JournalFrontmatter[];
+  posts: UnifiedEntry[];
 }
 
 const PLACEHOLDER_TARGET = 3;

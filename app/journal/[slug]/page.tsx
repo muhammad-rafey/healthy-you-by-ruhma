@@ -1,24 +1,24 @@
 // app/journal/[slug]/page.tsx
 //
-// Static-rendered single journal post. Layout follows master plan §3.11:
+// Single journal entry. Resolves the slug against BOTH sources via the
+// merge layer: MDX entries render their MDX body; Mongo posts (formerly
+// /blog) render their plain-text body with line breaks preserved. Layout
+// is unchanged (master plan §3.11):
 //   1. <PostHero> — eyebrow strip (category · date · read time) + title
-//   2. MDX body inside <Prose dropcap> — Inter 17/1.6, 680px column
+//   2. body inside <Prose> — 680px column
 //   3. <AuthorFooter> — small portrait + 1-paragraph bio + /about link
 //   4. <RelatedPosts> — up to 3 other entries (placeholders fill gaps)
 //
-// JSON-LD `BlogPosting` per post. generateStaticParams() and
-// generateMetadata() pull from the visible MDX catalogue so a post that
-// is set draft in production never SSGs and never advertises a URL.
+// Mongo-backed → dynamic (Node runtime + revalidate 0, CLAUDE.md). No
+// generateStaticParams: blog slugs are created at runtime in /admin.
 
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { MDXRemote } from "next-mdx-remote/rsc";
 
-import { loadJournal } from "@/lib/mdx";
-import type { JournalFrontmatter } from "@/lib/mdx";
 import { site } from "@/content/site";
-import { loadAllJournal, loadRelatedJournal } from "@/lib/journal-data";
+import { loadEntryBySlug, loadRelatedEntries } from "@/lib/journal-unified";
 import { breadcrumbSchema } from "@/lib/jsonld";
 
 import { Container } from "@/components/ui/container";
@@ -30,12 +30,8 @@ import { AuthorFooter } from "@/components/marketing/journal/author-footer";
 import { RelatedPosts } from "@/components/marketing/journal/related-posts";
 import { JournalPullQuote } from "@/components/marketing/journal/pull-quote";
 
-export const dynamicParams = false;
-
-export async function generateStaticParams(): Promise<{ slug: string }[]> {
-  const docs = await loadAllJournal();
-  return docs.map((d) => ({ slug: d.frontmatter.slug }));
-}
+export const runtime = "nodejs";
+export const revalidate = 0;
 
 export async function generateMetadata({
   params,
@@ -43,34 +39,31 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  let fm: JournalFrontmatter;
-  try {
-    fm = (await loadJournal(slug)).frontmatter;
-  } catch {
-    return {};
-  }
+  const loaded = await loadEntryBySlug(slug);
+  if (!loaded) return {};
+  const { entry } = loaded;
   const url = `/journal/${slug}`;
-  const ogImage = fm.ogImage ?? fm.heroImage;
+  const image = entry.heroImage;
   return {
-    title: `${fm.title} · ${site.name}`,
-    description: fm.description,
+    title: `${entry.title} · ${site.name}`,
+    description: entry.description,
     alternates: { canonical: url },
     openGraph: {
-      title: fm.title,
-      description: fm.description,
+      title: entry.title,
+      description: entry.description,
       url,
       type: "article",
-      publishedTime: fm.publishedAt,
-      modifiedTime: fm.updatedAt ?? fm.publishedAt,
+      publishedTime: entry.publishedAt,
+      modifiedTime: entry.updatedAt ?? entry.publishedAt,
       authors: [`${site.url}/about`],
-      tags: [fm.category],
-      images: ogImage ? [{ url: ogImage }] : undefined,
+      tags: [entry.category],
+      images: image ? [{ url: image }] : undefined,
     },
     twitter: {
       card: "summary_large_image",
-      title: fm.title,
-      description: fm.description,
-      images: ogImage ? [ogImage] : undefined,
+      title: entry.title,
+      description: entry.description,
+      images: image ? [image] : undefined,
     },
   };
 }
@@ -101,30 +94,27 @@ const mdxComponents = {
   },
 };
 
+function absoluteImage(image: string | undefined): string | undefined {
+  if (!image) return undefined;
+  return /^https?:\/\//u.test(image) ? image : `${site.url}${image}`;
+}
+
 export default async function JournalPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
 
-  let fm: JournalFrontmatter;
-  let body: string;
-  try {
-    const doc = await loadJournal(slug);
-    fm = doc.frontmatter;
-    body = doc.body;
-  } catch {
-    notFound();
-  }
+  const loaded = await loadEntryBySlug(slug);
+  if (!loaded) notFound();
+  const { entry, body, bodyKind } = loaded;
 
-  const relatedDocs = await loadRelatedJournal(slug, 3);
-  const related = relatedDocs.map((d) => d.frontmatter);
+  const related = await loadRelatedEntries(slug, 3);
 
-  const image = fm.ogImage ?? fm.heroImage;
   const blogPostingSchema = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
-    headline: fm.title,
-    description: fm.description,
-    datePublished: fm.publishedAt,
-    dateModified: fm.updatedAt ?? fm.publishedAt,
+    headline: entry.title,
+    description: entry.description,
+    datePublished: entry.publishedAt,
+    dateModified: entry.updatedAt ?? entry.publishedAt,
     inLanguage: "en-PK",
     author: {
       "@type": "Person",
@@ -136,8 +126,8 @@ export default async function JournalPostPage({ params }: { params: Promise<{ sl
       name: site.name,
       url: site.url,
     },
-    image: image ? `${site.url}${image}` : undefined,
-    articleSection: fm.category,
+    image: absoluteImage(entry.heroImage),
+    articleSection: entry.category,
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": `${site.url}/journal/${slug}`,
@@ -146,7 +136,7 @@ export default async function JournalPostPage({ params }: { params: Promise<{ sl
 
   const breadcrumbs = breadcrumbSchema([
     ["Journal", "/journal"],
-    [fm.title, `/journal/${slug}`],
+    [entry.title, `/journal/${slug}`],
   ]);
 
   return (
@@ -159,7 +149,7 @@ export default async function JournalPostPage({ params }: { params: Promise<{ sl
       />
 
       <article>
-        <PostHero post={fm} />
+        <PostHero post={entry} />
 
         <section
           aria-label="Article body"
@@ -167,9 +157,15 @@ export default async function JournalPostPage({ params }: { params: Promise<{ sl
         >
           <Container>
             <FadeUp>
-              <Prose dropcap as="div" className="mx-auto max-w-[680px]">
-                <MDXRemote source={body} components={mdxComponents} />
-              </Prose>
+              {bodyKind === "mdx" ? (
+                <Prose dropcap as="div" className="mx-auto max-w-[680px]">
+                  <MDXRemote source={body} components={mdxComponents} />
+                </Prose>
+              ) : (
+                <Prose as="div" className="mx-auto max-w-[680px]">
+                  <p className="whitespace-pre-line">{body}</p>
+                </Prose>
+              )}
             </FadeUp>
           </Container>
         </section>

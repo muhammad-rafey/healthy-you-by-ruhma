@@ -8,11 +8,11 @@
 import { Container } from "@/components/ui/container";
 import { Eyebrow } from "@/components/ui/eyebrow";
 import { LetterStagger } from "@/components/motion/letter-stagger";
-import type { JournalFrontmatter } from "@/lib/mdx";
+import type { UnifiedEntry } from "@/lib/journal-unified";
 import { formatCategory, formatPostDate } from "@/lib/journal-data";
 
 interface PostHeroProps {
-  post: JournalFrontmatter;
+  post: UnifiedEntry;
 }
 
 export function PostHero({ post }: PostHeroProps) {

@@ -5,11 +5,13 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 
 import { Button } from "@/components/ui/button";
+import { BLOG_CATEGORIES, blogCategoryLabel } from "@/lib/blog-categories";
 
 interface EditPostFormProps {
   slug: string;
   initialTitle: string;
   initialDescription: string;
+  initialCategory: string;
   initialCoverImage: string;
 }
 
@@ -17,10 +19,12 @@ export function EditPostForm({
   slug,
   initialTitle,
   initialDescription,
+  initialCategory,
   initialCoverImage,
 }: EditPostFormProps) {
   const router = useRouter();
   const [title, setTitle] = useState(initialTitle);
+  const [category, setCategory] = useState(initialCategory);
   const [coverImage, setCoverImage] = useState(initialCoverImage);
   const [description, setDescription] = useState(initialDescription);
   const [error, setError] = useState<string | null>(null);
@@ -35,10 +39,12 @@ export function EditPostForm({
       const payload: {
         title: string;
         description: string;
+        category: string;
         coverImage?: string | null;
       } = {
         title,
         description,
+        category,
       };
       // Pass an explicit value: a non-empty string sets it,
       // null clears the field on the document.
@@ -57,7 +63,7 @@ export function EditPostForm({
         return;
       }
       toast.success("Changes saved");
-      router.push(`/blog/${slug}`);
+      router.push(`/journal/${slug}`);
       router.refresh();
     } finally {
       setSubmitting(false);
@@ -77,6 +83,24 @@ export function EditPostForm({
           onChange={(event) => setTitle(event.target.value)}
           className="border-ink/20 focus:border-mauve focus:ring-mauve/30 bg-cream text-ink h-12 rounded-full border px-5 shadow-sm focus:ring-2 focus:outline-none"
         />
+      </label>
+
+      <label className="flex flex-col gap-2">
+        <span className="type-eyebrow text-ink/70">Category</span>
+        <select
+          name="category"
+          required
+          value={category}
+          onChange={(event) => setCategory(event.target.value)}
+          className="border-ink/20 focus:border-mauve focus:ring-mauve/30 bg-cream text-ink h-12 rounded-full border px-5 shadow-sm focus:ring-2 focus:outline-none"
+        >
+          {BLOG_CATEGORIES.map((value) => (
+            <option key={value} value={value}>
+              {blogCategoryLabel(value)}
+            </option>
+          ))}
+        </select>
+        <span className="text-ink/50 text-xs">Drives the “Browse by” filter on /journal.</span>
       </label>
 
       <label className="flex flex-col gap-2">

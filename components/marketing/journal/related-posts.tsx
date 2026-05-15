@@ -4,7 +4,7 @@
 // Falls back to "Coming soon" placeholder tiles when only one post exists,
 // so the section never reads as broken on a fresh install.
 
-import type { JournalFrontmatter } from "@/lib/mdx";
+import type { UnifiedEntry } from "@/lib/journal-unified";
 
 import { Container } from "@/components/ui/container";
 import { Eyebrow } from "@/components/ui/eyebrow";
@@ -14,7 +14,7 @@ import { FadeUp } from "@/components/motion/fade-up";
 import { PostCard } from "./post-card";
 
 interface RelatedPostsProps {
-  posts: JournalFrontmatter[];
+  posts: UnifiedEntry[];
 }
 
 const TARGET = 3;

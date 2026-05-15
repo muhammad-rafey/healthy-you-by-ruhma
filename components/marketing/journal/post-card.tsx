@@ -4,15 +4,16 @@
 // different image aspect and title scale, used by <PostGrid> for the
 // magazine rhythm and by <RelatedPosts> for the post-page tail strip.
 
-import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
-import type { JournalFrontmatter } from "@/lib/mdx";
+import type { UnifiedEntry } from "@/lib/journal-unified";
 import { formatCategory, formatPostDate } from "@/lib/journal-data";
 
+import { EntryCover } from "./entry-cover";
+
 interface PostCardProps {
-  post: JournalFrontmatter;
+  post: UnifiedEntry;
   size?: "lg" | "md" | "sm";
 }
 
@@ -48,10 +49,9 @@ export function PostCard({ post, size = "sm" }: PostCardProps): ReactNode {
     >
       {cover ? (
         <div className={`bg-cream-deep relative w-full overflow-hidden rounded-sm ${cfg.aspect}`}>
-          <Image
+          <EntryCover
             src={cover}
-            alt=""
-            fill
+            source={post.source}
             sizes={cfg.sizes}
             className="object-cover transition-transform duration-[700ms] ease-out group-hover:scale-[1.02]"
           />
