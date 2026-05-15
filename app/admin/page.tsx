@@ -66,7 +66,7 @@ export default async function AdminDashboardPage() {
                 />
                 <div className="min-w-0 flex-1">
                   <Link
-                    href={`/blog/${post.slug}`}
+                    href={`/journal/${post.slug}`}
                     className="text-ink hover:text-mauve-deep block truncate font-medium"
                   >
                     {post.title}
@@ -75,7 +75,7 @@ export default async function AdminDashboardPage() {
                 </div>
                 <div className="flex items-center gap-2">
                   <Button asChild variant="ghost" size="sm">
-                    <Link href={`/blog/${post.slug}`}>View</Link>
+                    <Link href={`/journal/${post.slug}`}>View</Link>
                   </Button>
                   <Button asChild variant="outline" size="sm">
                     <Link href={`/admin/blog/${post.slug}/edit`}>Edit</Link>

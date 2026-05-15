@@ -15,6 +15,10 @@ const nextConfig: NextConfig = {
       { source: "/about-me", destination: "/about", permanent: true },
       { source: "/contact-me", destination: "/contact", permanent: true },
 
+      // Blog folded into the Journal (posts now surface at /journal).
+      { source: "/blog", destination: "/journal", permanent: true },
+      { source: "/blog/:slug", destination: "/journal/:slug", permanent: true },
+
       // Programs (with WP typos corrected). Diet Planning was retired —
       // any inbound link or stale redirect now lands on Coaching.
       {

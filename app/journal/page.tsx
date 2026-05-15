@@ -1,25 +1,30 @@
 // app/journal/page.tsx
 //
-// /journal — editorial blog index. Layout follows master plan §3.11:
-//   1. Type-only header (Eyebrow + LetterStagger title + subhead)
-//   2. <FeaturedPost> — most recent published post, large 16:9 card
-//   3. <CategoryChips> — anchors to filterable views (deferred, links only)
+// /journal — editorial blog index. Now merges the static MDX entries
+// (content/journal/*.mdx) with the MongoDB-backed posts authored in /admin
+// (the former standalone /blog). Layout is unchanged (master plan §3.11):
+//   1. <JournalHero> — type-only header
+//   2. <FeaturedPost> — most recent entry, large card
+//   3. <CategoryChips> — now a live `?category=` filter, active chip lit
 //   4. <PostGrid> — 3-col grid; placeholder cards when catalogue is small
 //   5. <JournalEmptyState> — newsletter capture below the grid
 //
-// Static generation only. Drafts are surfaced in dev to ease previews and
-// hidden in production via loadAllJournal().
+// Mongo-backed → Node runtime + revalidate 0 (CLAUDE.md). MDX drafts stay
+// hidden in production via loadAllJournal() inside the merge layer.
 
 import type { Metadata } from "next";
 
 import { site } from "@/content/site";
-import { loadAllJournal, loadJournalCategories } from "@/lib/journal-data";
+import { loadAllEntries, loadEntryCategories, isJournalCategory } from "@/lib/journal-unified";
 
 import { JournalHero } from "@/components/marketing/journal/journal-hero";
 import { FeaturedPost } from "@/components/marketing/journal/featured-post";
 import { CategoryChips } from "@/components/marketing/journal/category-chips";
 import { PostGrid } from "@/components/marketing/journal/post-grid";
 import { JournalEmptyState } from "@/components/marketing/journal/empty-state";
+
+export const runtime = "nodejs";
+export const revalidate = 0;
 
 const PAGE_DESCRIPTION =
   "Notes from Dr. Ruhma's clinic — on hormones, nutrition, and the small habits that actually move the needle.";
@@ -41,15 +46,24 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function JournalIndexPage() {
-  const docs = await loadAllJournal();
-  const categories = await loadJournalCategories();
-  const posts = docs.map((d) => d.frontmatter);
+export default async function JournalIndexPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ category?: string }>;
+}) {
+  const { category } = await searchParams;
+  const active = category && isJournalCategory(category) ? category : undefined;
+
+  const [all, categories] = await Promise.all([loadAllEntries(), loadEntryCategories()]);
+  const posts = active ? all.filter((e) => e.category === active) : all;
 
   if (posts.length === 0) {
+    // Keep the chips visible when a filter emptied the view so the reader
+    // can switch categories without back-buttoning.
     return (
       <>
         <JournalHero postCount={0} />
+        {active ? <CategoryChips categories={categories} activeCategory={active} /> : null}
         <JournalEmptyState />
       </>
     );
@@ -69,7 +83,7 @@ export default async function JournalIndexPage() {
     <>
       <JournalHero postCount={posts.length} />
       <FeaturedPost post={featured} />
-      <CategoryChips categories={categories} />
+      <CategoryChips categories={categories} activeCategory={active} />
       <PostGrid posts={rest} />
       <JournalEmptyState />
     </>

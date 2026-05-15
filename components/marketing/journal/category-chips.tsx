@@ -1,10 +1,8 @@
 // components/marketing/journal/category-chips.tsx
 //
-// Visual chip row above the post grid. Per phase 10 plan §4.8 we ship the
-// chips as visual anchors only for v1 (deferred client-side filtering until
-// the catalogue grows). Each chip renders as a small pill link so it's
-// keyboard-reachable, but the href is a `?category=` query that the index
-// route may later honour.
+// Chip row above the post grid. Each chip is a `?category=` link the
+// /journal index now honours: clicking one filters the merged catalogue
+// (MDX + Mongo) and the matching chip renders in the active style.
 
 import Link from "next/link";
 
@@ -15,8 +13,14 @@ import { Eyebrow } from "@/components/ui/eyebrow";
 import { FadeUp } from "@/components/motion/fade-up";
 import { formatCategory } from "@/lib/journal-data";
 
+const BASE_CHIP = "rounded-full px-4 py-2 text-[13px] tracking-[0.04em] transition-colors";
+const ACTIVE_CHIP = "bg-ink text-cream";
+const IDLE_CHIP = "bg-shell text-ink hover:bg-mauve hover:text-cream";
+
 interface CategoryChipsProps {
   categories: { value: JournalFrontmatter["category"]; label: string }[];
+  /** Currently filtered category, or undefined for the "All" view. */
+  activeCategory?: string;
 }
 
 const FALLBACK: CategoryChipsProps["categories"] = [
@@ -26,7 +30,7 @@ const FALLBACK: CategoryChipsProps["categories"] = [
   { value: "recipes", label: formatCategory("recipes") },
 ];
 
-export function CategoryChips({ categories }: CategoryChipsProps) {
+export function CategoryChips({ categories, activeCategory }: CategoryChipsProps) {
   // If the catalogue only has one published category we still show a row
   // of editorial anchors so the section reads as scaffolded for growth.
   const items = categories.length >= 2 ? categories : FALLBACK;
@@ -43,21 +47,26 @@ export function CategoryChips({ categories }: CategoryChipsProps) {
             <li>
               <Link
                 href="/journal"
-                className="bg-ink text-cream rounded-full px-4 py-2 text-[13px] tracking-[0.04em] transition-colors"
+                aria-current={activeCategory ? undefined : "page"}
+                className={`${BASE_CHIP} ${activeCategory ? IDLE_CHIP : ACTIVE_CHIP}`}
               >
                 All
               </Link>
             </li>
-            {items.map((cat) => (
-              <li key={cat.value}>
-                <Link
-                  href={`/journal?category=${cat.value}`}
-                  className="bg-shell text-ink hover:bg-mauve hover:text-cream rounded-full px-4 py-2 text-[13px] tracking-[0.04em] transition-colors"
-                >
-                  {cat.label}
-                </Link>
-              </li>
-            ))}
+            {items.map((cat) => {
+              const isActive = cat.value === activeCategory;
+              return (
+                <li key={cat.value}>
+                  <Link
+                    href={`/journal?category=${cat.value}`}
+                    aria-current={isActive ? "page" : undefined}
+                    className={`${BASE_CHIP} ${isActive ? ACTIVE_CHIP : IDLE_CHIP}`}
+                  >
+                    {cat.label}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         </FadeUp>
       </Container>

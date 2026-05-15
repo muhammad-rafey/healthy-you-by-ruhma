@@ -5,10 +5,12 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 
 import { Button } from "@/components/ui/button";
+import { BLOG_CATEGORIES, DEFAULT_BLOG_CATEGORY, blogCategoryLabel } from "@/lib/blog-categories";
 
 export function NewPostForm() {
   const router = useRouter();
   const [title, setTitle] = useState("");
+  const [category, setCategory] = useState<string>(DEFAULT_BLOG_CATEGORY);
   const [coverImage, setCoverImage] = useState("");
   const [description, setDescription] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -20,9 +22,15 @@ export function NewPostForm() {
     setSubmitting(true);
     try {
       const trimmedCover = coverImage.trim();
-      const payload: { title: string; description: string; coverImage?: string } = {
+      const payload: {
+        title: string;
+        description: string;
+        category: string;
+        coverImage?: string;
+      } = {
         title,
         description,
+        category,
       };
       if (trimmedCover.length > 0) payload.coverImage = trimmedCover;
 
@@ -40,7 +48,7 @@ export function NewPostForm() {
       }
       const { slug } = (await res.json()) as { slug: string };
       toast.success("Post published");
-      router.push(`/blog/${slug}`);
+      router.push(`/journal/${slug}`);
       router.refresh();
     } finally {
       setSubmitting(false);
@@ -60,6 +68,24 @@ export function NewPostForm() {
           onChange={(event) => setTitle(event.target.value)}
           className="border-ink/20 focus:border-mauve focus:ring-mauve/30 bg-cream text-ink h-12 rounded-full border px-5 shadow-sm focus:ring-2 focus:outline-none"
         />
+      </label>
+
+      <label className="flex flex-col gap-2">
+        <span className="type-eyebrow text-ink/70">Category</span>
+        <select
+          name="category"
+          required
+          value={category}
+          onChange={(event) => setCategory(event.target.value)}
+          className="border-ink/20 focus:border-mauve focus:ring-mauve/30 bg-cream text-ink h-12 rounded-full border px-5 shadow-sm focus:ring-2 focus:outline-none"
+        >
+          {BLOG_CATEGORIES.map((value) => (
+            <option key={value} value={value}>
+              {blogCategoryLabel(value)}
+            </option>
+          ))}
+        </select>
+        <span className="text-ink/50 text-xs">Drives the “Browse by” filter on /journal.</span>
       </label>
 
       <label className="flex flex-col gap-2">

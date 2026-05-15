@@ -46,6 +46,7 @@ export default async function EditPostPage({ params }: PageProps) {
           slug={post.slug}
           initialTitle={post.title}
           initialDescription={post.description}
+          initialCategory={post.category}
           initialCoverImage={post.coverImage ?? ""}
         />
       </div>

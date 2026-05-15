@@ -1,16 +1,40 @@
 import { z } from "zod";
 
 import { getDb } from "@/lib/mongodb";
+import { BLOG_CATEGORIES, DEFAULT_BLOG_CATEGORY } from "@/lib/blog-categories";
+import type { BlogCategory } from "@/lib/blog-categories";
+
+export { BLOG_CATEGORIES, DEFAULT_BLOG_CATEGORY } from "@/lib/blog-categories";
+export type { BlogCategory } from "@/lib/blog-categories";
 
 const COLLECTION = "posts";
 
-export const DEFAULT_COVER_IMAGE =
-  "https://cdn.dribbble.com/userupload/23935150/file/original-c1ef5f86f928ecf4ac1c1683f0b2edb3.png?resize=752x&vertical=center";
+// Per-category fallback covers — warm, editorial Unsplash stills that sit
+// well next to the cream/mauve palette. Used when a post has no cover so a
+// recipes entry doesn't get a hormones image, etc. (Blog covers render via
+// plain <img>, so no remote-host whitelisting is needed.)
+const UNSPLASH = (id: string) =>
+  `https://images.unsplash.com/${id}?auto=format&fit=crop&w=1200&q=80`;
+
+export const DEFAULT_COVER_BY_CATEGORY: Record<BlogCategory, string> = {
+  recipes: UNSPLASH("photo-1495521821757-a1efb6729352"), // ingredients on board
+  nutrition: UNSPLASH("photo-1512621776951-a57141f2eefd"), // fresh salad bowl
+  hormones: UNSPLASH("photo-1556679343-c7306c1976bc"), // calm herbal tea
+  lifestyle: UNSPLASH("photo-1499209974431-9dddcece7f88"), // soft morning light
+};
+
+// Generic fallback for legacy docs whose category can't be resolved.
+export const DEFAULT_COVER_IMAGE = DEFAULT_COVER_BY_CATEGORY[DEFAULT_BLOG_CATEGORY];
+
+export function defaultCoverFor(category: BlogCategory | undefined): string {
+  return (category && DEFAULT_COVER_BY_CATEGORY[category]) || DEFAULT_COVER_IMAGE;
+}
 
 export const BlogPostSchema = z.object({
   slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/u),
   title: z.string().min(1).max(200),
   description: z.string().min(1).max(8000),
+  category: z.enum(BLOG_CATEGORIES),
   coverImage: z.url().max(2048).optional(),
   createdAt: z.date(),
   updatedAt: z.date(),
@@ -20,6 +44,7 @@ export type BlogPost = z.infer<typeof BlogPostSchema>;
 export const CreateBlogPostInput = BlogPostSchema.pick({
   title: true,
   description: true,
+  category: true,
   coverImage: true,
 });
 export type CreateBlogPostInput = z.infer<typeof CreateBlogPostInput>;
@@ -27,12 +52,20 @@ export type CreateBlogPostInput = z.infer<typeof CreateBlogPostInput>;
 export const UpdateBlogPostInput = z.object({
   title: z.string().min(1).max(200),
   description: z.string().min(1).max(8000),
+  category: z.enum(BLOG_CATEGORIES),
   coverImage: z.url().max(2048).optional().nullable(),
 });
 export type UpdateBlogPostInput = z.infer<typeof UpdateBlogPostInput>;
 
-export function getCoverImage(post: Pick<BlogPost, "coverImage">): string {
-  return post.coverImage ?? DEFAULT_COVER_IMAGE;
+// Legacy documents predate the category field. Default them so reads never
+// surface an undefined category to the journal merge layer.
+function withCategory(post: BlogPost): BlogPost {
+  const stored = post.category as BlogCategory | undefined;
+  return { ...post, category: stored ?? DEFAULT_BLOG_CATEGORY };
+}
+
+export function getCoverImage(post: Pick<BlogPost, "coverImage" | "category">): string {
+  return post.coverImage ?? defaultCoverFor(post.category);
 }
 
 function slugify(title: string): string {
@@ -62,12 +95,15 @@ export async function getAllPosts(): Promise<BlogPost[]> {
     .find({}, { projection: { _id: 0 } })
     .sort({ createdAt: -1 })
     .toArray();
-  return docs;
+  return docs.map(withCategory);
 }
 
 export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
   const db = await getDb();
-  return db.collection<BlogPost>(COLLECTION).findOne({ slug }, { projection: { _id: 0 } });
+  const post = await db
+    .collection<BlogPost>(COLLECTION)
+    .findOne({ slug }, { projection: { _id: 0 } });
+  return post ? withCategory(post) : null;
 }
 
 export async function createPost(input: CreateBlogPostInput): Promise<BlogPost> {
@@ -101,6 +137,7 @@ export async function updatePostBySlug(
   const $set: Partial<BlogPost> = {
     title: input.title,
     description: input.description,
+    category: input.category,
     updatedAt: now,
   };
   const update: { $set: Partial<BlogPost>; $unset?: Record<string, ""> } = { $set };

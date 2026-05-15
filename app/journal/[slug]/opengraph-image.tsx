@@ -1,6 +1,6 @@
-// Per-journal-entry OG image.
+// Per-journal-entry OG image. Resolves MDX or Mongo via the merge layer.
 
-import { loadJournal } from "@/lib/content/load";
+import { loadEntryBySlug } from "@/lib/journal-unified";
 import { ogImageResponse, OG_SIZE, OG_CONTENT_TYPE } from "@/lib/og";
 
 export const runtime = "nodejs";
@@ -10,10 +10,14 @@ export const contentType = OG_CONTENT_TYPE;
 
 export default async function Image({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const { frontmatter } = await loadJournal(slug);
+  const loaded = await loadEntryBySlug(slug);
+  if (!loaded) {
+    return ogImageResponse({ eyebrow: "JOURNAL", title: "Healthy You By Ruhma" });
+  }
+  const { entry } = loaded;
   return ogImageResponse({
-    eyebrow: frontmatter.category?.toUpperCase() ?? "JOURNAL",
-    title: frontmatter.title,
-    subtitle: frontmatter.description,
+    eyebrow: entry.category.toUpperCase(),
+    title: entry.title,
+    subtitle: entry.description,
   });
 }
