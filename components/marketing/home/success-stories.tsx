@@ -56,13 +56,13 @@ export function SuccessStoriesTeaser() {
                       aria-hidden="true"
                       className="bg-shell absolute -bottom-2 -left-2 hidden h-full w-full md:block"
                     />
-                    <div className="bg-cream-deep border-ink/10 relative aspect-[4/5] w-full overflow-hidden border">
+                    <div className="bg-cream-deep border-ink/10 relative aspect-square w-full overflow-hidden border md:aspect-4/5">
                       <Image
                         src={story.image}
                         alt={story.imageAlt}
                         fill
                         sizes="(min-width: 1024px) 40vw, (min-width: 768px) 45vw, 100vw"
-                        className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.025]"
+                        className="ease-editorial object-contain transition-transform duration-700 group-hover:scale-[1.025] md:object-cover"
                       />
                     </div>
                   </figure>

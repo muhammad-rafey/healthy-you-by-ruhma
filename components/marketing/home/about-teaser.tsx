@@ -38,7 +38,7 @@ export function AboutTeaser() {
               your week, and we build from there — small, evidence-based, repeatable.
             </p>
           </div>
-          <div className="mt-10">
+          <div className="mt-10 flex justify-center md:justify-start">
             <Button asChild variant="ghost" size="lg">
               <Link href="/about">More about Dr. Ruhma →</Link>
             </Button>
