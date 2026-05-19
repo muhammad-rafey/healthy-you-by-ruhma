@@ -10,8 +10,11 @@ import { JournalPreview } from "@/components/marketing/home/journal-preview";
 import { CtaBand } from "@/components/marketing/home/cta-band";
 import { pillars, testimonials, journalPlaceholders, type JournalCard } from "@/lib/home-data";
 import { websiteSchema, personSchema, organizationSchema } from "@/lib/jsonld";
-import { loadJournal } from "@/lib/mdx";
+import { loadAllEntries } from "@/lib/journal-unified";
+import { formatCategory } from "@/lib/journal-data";
 import { site } from "@/content/site";
+export const runtime = "nodejs";
+export const revalidate = 0;
 
 export const metadata: Metadata = {
   title: "Healthy You By Ruhma — Clinical dietitian in Faisalabad",
@@ -34,19 +37,16 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  // Compose the journal preview: real welcome post + 2 placeholders.
-  const welcome = await loadJournal("welcome").catch(() => null);
-  const journalItems: JournalCard[] = welcome
-    ? [
-        {
-          slug: welcome.frontmatter.slug,
-          eyebrow: welcome.frontmatter.category,
-          title: welcome.frontmatter.title,
-          excerpt: welcome.frontmatter.description,
-          cover: welcome.frontmatter.heroImage,
-        },
-        ...journalPlaceholders,
-      ]
+  const entries = await loadAllEntries();
+  const journalItems: JournalCard[] = entries.length
+    ? entries.map((entry) => ({
+        slug: entry.slug,
+        eyebrow: formatCategory(entry.category),
+        title: entry.title,
+        excerpt: entry.description,
+        cover: entry.heroImage,
+        source: entry.source,
+      }))
     : journalPlaceholders;
 
   return (

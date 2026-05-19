@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
@@ -99,7 +98,7 @@ export function ContactForm() {
 
       {error && <p className="text-sm text-red-700">{error}</p>}
 
-      <div className="flex flex-wrap items-center justify-between gap-4">
+      <div className="flex flex-wrap items-center gap-4">
         <Button
           type="submit"
           disabled={
@@ -107,9 +106,6 @@ export function ContactForm() {
           }
         >
           {submitting ? "Sending…" : "Send message"}
-        </Button>
-        <Button asChild type="button" data-event-label="contact_consultation">
-          <Link href="/programs/consultation">Book a consultation</Link>
         </Button>
       </div>
     </form>

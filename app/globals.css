@@ -497,3 +497,34 @@
     }
   }
 }
+
+/* ---------------------------------------------------------------
+   Scroll rails — replace the chunky OS scrollbar on snap-x
+   carousels (home journal preview etc.) with a slim, on-brand
+   bar. It only renders when the rail overflows, so it doubles as
+   the "there's more, scroll →" affordance.
+--------------------------------------------------------------- */
+
+@utility slim-scrollbar {
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in oklab, var(--color-mauve) 55%, transparent) transparent;
+
+  /* Chromium / Safari */
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 9999px;
+    background: color-mix(in oklab, var(--color-mauve) 55%, transparent);
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: var(--color-mauve);
+  }
+}

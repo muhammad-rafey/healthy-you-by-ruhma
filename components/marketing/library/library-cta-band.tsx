@@ -35,7 +35,7 @@ export function LibraryCtaBand() {
         </FadeUp>
         <FadeUp delay={0.12}>
           <div className="mt-10">
-            <Button asChild variant="mauve" size="lg">
+            <Button asChild variant="default" size="lg">
               <Link href="/programs/consultation">Book a consultation</Link>
             </Button>
           </div>

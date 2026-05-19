@@ -37,7 +37,7 @@ export function WhatsIncluded({
         <ul className="mt-16 grid gap-x-12 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
           {items.map((item, i) => (
             <FadeUp key={item.label} delay={i * 0.05} as="li">
-              <div className="flex flex-col">
+              <div className="flex flex-col items-center text-center sm:items-start sm:text-left">
                 <Image
                   src={`/illustrations/${item.icon}.svg`}
                   alt=""

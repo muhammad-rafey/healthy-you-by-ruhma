@@ -1,9 +1,9 @@
-import Image from "next/image";
 import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import { Eyebrow } from "@/components/ui/eyebrow";
 import { Heading } from "@/components/ui/heading";
 import { FadeUp } from "@/components/motion/fade-up";
+import { EntryCover } from "@/components/marketing/journal/entry-cover";
 import type { JournalCard } from "@/lib/home-data";
 
 type Item = JournalCard;
@@ -31,9 +31,13 @@ export function JournalPreview({ items }: { items: Item[] }) {
           </div>
         </FadeUp>
 
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-3 md:gap-8 lg:gap-12">
+        <div className="slim-scrollbar -mx-6 flex snap-x snap-mandatory gap-8 overflow-x-auto px-6 pb-4 sm:-mx-8 sm:px-8 lg:-mx-12 lg:gap-12 lg:px-12">
           {items.map((post, i) => (
-            <FadeUp key={post.slug} delay={i * 0.08}>
+            <FadeUp
+              key={post.slug}
+              delay={i * 0.08}
+              className="w-[82%] flex-shrink-0 snap-center sm:w-[46%] lg:w-[31%]"
+            >
               {post.placeholder ? (
                 <div className="block opacity-90">
                   <div className="bg-shell relative aspect-[4/3] w-full overflow-hidden">
@@ -55,10 +59,9 @@ export function JournalPreview({ items }: { items: Item[] }) {
                 <Link href={`/journal/${post.slug}`} className="group block">
                   <div className="bg-shell relative aspect-[4/3] w-full overflow-hidden">
                     {post.cover && (
-                      <Image
+                      <EntryCover
                         src={post.cover}
-                        alt=""
-                        fill
+                        source={post.source ?? "mdx"}
                         sizes="(max-width: 768px) 100vw, 33vw"
                         className="object-cover transition-transform duration-700 group-hover:scale-[1.02]"
                       />

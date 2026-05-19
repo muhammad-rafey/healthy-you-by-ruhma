@@ -31,6 +31,12 @@ export function FeaturedPost({ post }: FeaturedPostProps) {
     <section aria-label="Featured journal entry" className="bg-cream pb-[clamp(56px,7vw,96px)]">
       <Container>
         <Link href={href} aria-label={ariaLabel} className="group block focus-visible:outline-none">
+          <FadeUp>
+            <h2 className="font-display text-ink mb-10 text-[clamp(32px,4vw,56px)] leading-[1.05] font-medium tracking-[-0.02em]">
+              {post.title}
+            </h2>
+          </FadeUp>
+
           {cover ? (
             <ImageReveal className="bg-cream-deep relative aspect-[16/9] w-full overflow-hidden rounded-sm">
               <EntryCover
@@ -52,10 +58,7 @@ export function FeaturedPost({ post }: FeaturedPostProps) {
               </div>
 
               <div className="md:col-span-7">
-                <h2 className="font-display text-ink text-[clamp(32px,4vw,56px)] leading-[1.05] font-medium tracking-[-0.02em]">
-                  {post.title}
-                </h2>
-                <p className="text-ink-soft mt-6 line-clamp-3 max-w-[58ch] text-[17px] leading-[1.6]">
+                <p className="text-ink-soft line-clamp-3 max-w-[58ch] text-[17px] leading-[1.6]">
                   {post.description}
                 </p>
               </div>

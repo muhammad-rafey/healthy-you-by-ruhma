@@ -27,7 +27,7 @@ export const metadata: Metadata = {
 };
 
 const HEADER_STATS: { value: string; label: string }[] = [
-  { value: "5", label: "Client stories" },
+  { value: "50+", label: "Client stories" },
   { value: "2–6 mo", label: "Program length" },
   { value: "PCOS · postpartum · fertility", label: "Focus areas" },
   { value: "No quick fixes", label: "Approach" },
@@ -182,14 +182,14 @@ function StoryImage({ story }: { story: Transformation }) {
       />
       <ImageReveal
         direction="up"
-        className="bg-cream-deep border-ink/10 relative aspect-[4/5] w-full border"
+        className="bg-cream-deep border-ink/10 relative aspect-square w-full border"
       >
         <Image
           src={story.image}
           alt={story.imageAlt}
           fill
           sizes="(min-width: 1024px) 40vw, (min-width: 768px) 80vw, 100vw"
-          className="object-cover"
+          className="object-contain"
         />
       </ImageReveal>
     </figure>
