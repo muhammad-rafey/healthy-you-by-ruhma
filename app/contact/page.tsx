@@ -6,6 +6,7 @@ import { LetterStagger } from "@/components/motion/letter-stagger";
 import { FadeUp } from "@/components/motion/fade-up";
 import { WhatsappCta } from "@/components/marketing/contact/whatsapp-cta";
 import { ContactDetails } from "@/components/marketing/contact/contact-details";
+import { ContactForm } from "@/components/marketing/contact/contact-form";
 import { ContactFaq } from "@/components/marketing/contact/contact-faq";
 import { site } from "@/content/site";
 
@@ -78,7 +79,14 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
           <WhatsappCta topic={topic} />
         </FadeUp>
 
-        <FadeUp delay={0.2} className="mx-auto mt-20 max-w-2xl">
+        <FadeUp as="section" delay={0.2} className="mx-auto mt-20 max-w-2xl">
+          <Eyebrow as="p" className="mb-4 block">
+            Send a message
+          </Eyebrow>
+          <ContactForm />
+        </FadeUp>
+
+        <FadeUp delay={0.3} className="mx-auto mt-20 max-w-2xl">
           <ContactDetails />
         </FadeUp>
 
