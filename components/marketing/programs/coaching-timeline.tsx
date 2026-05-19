@@ -35,8 +35,8 @@ export function CoachingTimeline({ weeks }: CoachingTimelineProps) {
             className="bg-mauve/40 pointer-events-none absolute top-2 bottom-4 left-[7px] w-px md:left-[11px]"
           />
           {weeks.map((w, i) => (
-            <FadeUp key={w.week} delay={i * 0.05} as="li">
-              <div className="relative pb-16 last:pb-0 md:pb-24">
+            <FadeUp key={w.week} delay={i * 0.05} as="li" className="pb-14 last:pb-0 md:pb-28">
+              <div className="relative">
                 {/* Dot */}
                 <span
                   aria-hidden
@@ -47,8 +47,8 @@ export function CoachingTimeline({ weeks }: CoachingTimelineProps) {
                       : "bg-cream border-mauve h-3 w-3 border",
                   )}
                 />
-                <div className="grid items-baseline gap-2 md:grid-cols-[140px_1fr] md:gap-10">
-                  <span className="font-display text-mauve text-[36px] leading-none -tracking-[0.02em] md:text-[52px]">
+                <div className="grid items-baseline gap-1 md:grid-cols-[140px_1fr] md:items-start md:gap-10">
+                  <span className="font-display text-mauve mt-1 text-[28px] leading-none tracking-[-0.02em] md:mt-0 md:text-[52px]">
                     {`Week ${String(w.week).padStart(2, "0")}`}
                   </span>
                   <div>

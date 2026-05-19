@@ -17,7 +17,7 @@ export function ServicesHeader() {
         />
         <FadeUp delay={0.2}>
           <p className="text-ink-soft mt-8 max-w-[52ch] text-[17px] leading-[1.6]">
-            From a thirty-five minute consultation to a ninety-day coaching partnership, every
+            From a fifteen mins introductory call to a ninety-day coaching partnership, every
             program is built around one idea: nutrition that fits the life you actually live.
           </p>
         </FadeUp>

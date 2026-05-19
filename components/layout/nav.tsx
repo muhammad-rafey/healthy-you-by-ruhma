@@ -95,8 +95,8 @@ export function Nav() {
                   href={item.href}
                   aria-current={active ? "page" : undefined}
                   className={cn(
-                    "border-ink/15 bg-ink text-cream rounded-full border px-4 py-2 text-sm font-medium transition",
-                    "hover:bg-mauve-deep hover:border-mauve-deep",
+                    "border-ink/15 bg-ink text-cream rounded-full border px-4 py-2 text-sm font-medium transition-colors",
+                    "hover:bg-ink/90 hover:border-ink/90",
                   )}
                 >
                   {item.label}

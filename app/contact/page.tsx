@@ -7,6 +7,7 @@ import { FadeUp } from "@/components/motion/fade-up";
 import { WhatsappCta } from "@/components/marketing/contact/whatsapp-cta";
 import { ContactDetails } from "@/components/marketing/contact/contact-details";
 import { ContactForm } from "@/components/marketing/contact/contact-form";
+import { ConsultationCard } from "@/components/marketing/contact/consultation-card";
 import { ContactFaq } from "@/components/marketing/contact/contact-faq";
 import { site } from "@/content/site";
 
@@ -77,6 +78,10 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
 
         <FadeUp delay={0.1}>
           <WhatsappCta topic={topic} />
+        </FadeUp>
+
+        <FadeUp delay={0.3} className="mt-20">
+          <ConsultationCard />
         </FadeUp>
 
         <FadeUp as="section" delay={0.2} className="mx-auto mt-20 max-w-2xl">

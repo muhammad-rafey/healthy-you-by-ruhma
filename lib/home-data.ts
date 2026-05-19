@@ -28,6 +28,7 @@ export type JournalCard = {
   title: string;
   excerpt: string;
   cover?: string;
+  source?: "mdx" | "blog";
   placeholder?: boolean;
 };
 
