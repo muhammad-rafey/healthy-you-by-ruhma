@@ -55,7 +55,7 @@ export async function FeaturedEbook() {
             )}
           </div>
 
-          <div className="mt-10 flex flex-wrap gap-4">
+          <div className="mt-10 flex flex-wrap justify-center gap-4 md:justify-start">
             <Button asChild variant="default" size="lg">
               <Link href="/library/pcos-guidebook">Open the guidebook →</Link>
             </Button>

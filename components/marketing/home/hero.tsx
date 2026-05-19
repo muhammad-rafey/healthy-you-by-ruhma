@@ -30,7 +30,7 @@ export function Hero() {
             sustainable weight management, and a way of eating you can keep for life.
           </p>
 
-          <div className="mt-10 flex flex-wrap items-center gap-4">
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-4 md:justify-start">
             <Button asChild variant="default" size="lg">
               <Link href="/programs/consultation">Book a consultation</Link>
             </Button>

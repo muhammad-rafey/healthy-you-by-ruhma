@@ -22,7 +22,7 @@ export function Pillars({ items }: { items: Pillar[] }) {
         <div className="grid grid-cols-1 gap-12 md:grid-cols-3 md:gap-10 lg:gap-16">
           {items.map((pillar, i) => (
             <FadeUp key={pillar.slug} delay={i * 0.08}>
-              <article className="flex flex-col">
+              <article className="flex flex-col items-center text-center md:items-start md:text-left">
                 <div className="mb-6 h-20 w-20">
                   <Image
                     src={pillar.illustration}
