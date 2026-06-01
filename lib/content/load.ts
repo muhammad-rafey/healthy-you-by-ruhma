@@ -97,7 +97,15 @@ export async function listSlugs(
   dir: "programs" | "focus" | "library" | "journal" | "legal",
 ): Promise<string[]> {
   const { readdir } = await import("node:fs/promises");
-  const entries = await readdir(path.join(CONTENT_ROOT, dir));
+  let entries: string[];
+  try {
+    entries = await readdir(path.join(CONTENT_ROOT, dir));
+  } catch (err) {
+    // A section with no entries leaves no directory (git can't track an empty
+    // dir). Treat a missing directory as "no slugs" rather than crashing the page.
+    if ((err as NodeJS.ErrnoException).code === "ENOENT") return [];
+    throw err;
+  }
   return entries
     .filter((f) => f.endsWith(".mdx"))
     .map((f) => f.replace(/\.mdx$/u, ""))
