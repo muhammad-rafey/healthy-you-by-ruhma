@@ -13,6 +13,6 @@ export default function Image() {
     eyebrow: "Healthy You By Ruhma",
     title: "Nourishing you inside out for healthy you throughout.",
     subtitle:
-      "Editorial nutrition practice with Dr. Ruhma — programs, focus areas, and guidebooks for hormonal health and weight management.",
+      "Editorial nutrition practice with Dt. Ruhma — programs, focus areas, and guidebooks for hormonal health and weight management.",
   });
 }

@@ -71,7 +71,7 @@ export function JournalEmptyState() {
               >
                 send a question
               </Link>{" "}
-              and Dr. Ruhma may answer it in the next entry.
+              and Dt. Ruhma may answer it in the next entry.
             </p>
           </div>
 

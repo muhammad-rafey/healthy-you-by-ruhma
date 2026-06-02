@@ -26,7 +26,7 @@ export function Hero() {
           />
 
           <p className="text-ink-soft mt-6 max-w-xl text-[17px] leading-relaxed">
-            Evidence-based, deeply personal dietetics from Dr. Ruhma — focused on hormonal health,
+            Evidence-based, deeply personal dietetics from Dt. Ruhma — focused on hormonal health,
             sustainable weight management, and a way of eating you can keep for life.
           </p>
 
@@ -35,7 +35,7 @@ export function Hero() {
               <Link href="/programs/consultation">Book a consultation</Link>
             </Button>
             <Button asChild variant="ghost" size="lg">
-              <Link href="/about">Meet Dr. Ruhma</Link>
+              <Link href="/about">Meet Dt. Ruhma</Link>
             </Button>
           </div>
         </div>

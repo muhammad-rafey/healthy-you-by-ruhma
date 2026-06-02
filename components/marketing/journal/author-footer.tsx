@@ -1,6 +1,6 @@
 // components/marketing/journal/author-footer.tsx
 //
-// Small portrait + 1-paragraph "About Dr. Ruhma" tail used at the bottom
+// Small portrait + 1-paragraph "About Dt. Ruhma" tail used at the bottom
 // of every journal post (master §3.11). Links into /about for the full
 // bio.
 

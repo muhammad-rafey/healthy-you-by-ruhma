@@ -15,7 +15,7 @@ import { TRANSFORMATIONS, type Transformation } from "@/lib/transformations-data
 export const metadata: Metadata = {
   title: `Success Stories · ${site.name}`,
   description:
-    "Anonymized client success stories from Dr. Ruhma's practice — PCOS, postpartum recovery, fertility, and weight management transformations over 2–6 month programs.",
+    "Anonymized client success stories from Dt. Ruhma's practice — PCOS, postpartum recovery, fertility, and weight management transformations over 2–6 month programs.",
   alternates: { canonical: "/transformations" },
   openGraph: {
     title: `Success Stories · ${site.name}`,

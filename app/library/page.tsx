@@ -64,7 +64,7 @@ export default async function LibraryIndexPage() {
           />
           <p className="text-ink-soft mt-8 max-w-[58ch] text-[clamp(17px,1.4vw,19px)] leading-[1.6] text-pretty">
             Practical, evidence-based, written for women who want answers — not another fad. Each
-            one is the distilled version of conversations Dr. Ruhma has had with hundreds of
+            one is the distilled version of conversations Dt. Ruhma has had with hundreds of
             clients.
           </p>
         </Container>

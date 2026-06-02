@@ -31,7 +31,7 @@ export function AuthorCard() {
           <div className="md:col-span-8">
             <Eyebrow className="text-mauve">About the author</Eyebrow>
             <Heading as="h2" id="ebook-author-heading" variant="h2" className="mt-4 max-w-[18ch]">
-              Dr. Ruhma.
+              Dt. Ruhma.
             </Heading>
             <div className="text-ink-soft mt-6 max-w-[58ch] space-y-5 text-[17px] leading-[1.65]">
               {AUTHOR_BIO.map((para, i) => (
@@ -42,7 +42,7 @@ export function AuthorCard() {
               href="/about"
               className="border-ink/40 text-ink hover:border-mauve hover:text-mauve-deep mt-8 inline-flex items-center gap-2 border-b pb-1 text-[15px] font-medium transition-colors"
             >
-              More about Dr. Ruhma <span aria-hidden>→</span>
+              More about Dt. Ruhma <span aria-hidden>→</span>
             </Link>
           </div>
         </div>

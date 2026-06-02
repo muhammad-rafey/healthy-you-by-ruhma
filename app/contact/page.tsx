@@ -14,12 +14,12 @@ import { site } from "@/content/site";
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Reach Dr. Ruhma on WhatsApp for hormonal health, weight management, coaching, or consultation enquiries. Replies within 1 business day.",
+    "Reach Dt. Ruhma on WhatsApp for hormonal health, weight management, coaching, or consultation enquiries. Replies within 1 business day.",
   alternates: { canonical: "/contact" },
   openGraph: {
     title: `Contact · ${site.name}`,
     description:
-      "Reach Dr. Ruhma on WhatsApp for hormonal health, weight management, coaching, or consultation enquiries.",
+      "Reach Dt. Ruhma on WhatsApp for hormonal health, weight management, coaching, or consultation enquiries.",
     url: "/contact",
     type: "website",
   },

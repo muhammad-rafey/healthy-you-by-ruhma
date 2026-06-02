@@ -12,7 +12,7 @@ import { ServicesCta } from "@/components/marketing/services/services-cta";
 export const metadata: Metadata = {
   title: `Services · ${site.name}`,
   description:
-    "Two ways to work with Dr. Ruhma — a ninety-day coaching partnership or a focused consultation call. Faisalabad-based, online worldwide.",
+    "Two ways to work with Dt. Ruhma — a ninety-day coaching partnership or a focused consultation call. Faisalabad-based, online worldwide.",
   alternates: { canonical: "/services" },
   openGraph: {
     title: `Services · ${site.name}`,
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
 const PROGRAM_SLUGS = ["coaching", "consultation"] as const;
 
 const HERO_ALTS: Record<(typeof PROGRAM_SLUGS)[number], string> = {
-  coaching: "Dr. Ruhma in coaching session with a client.",
+  coaching: "Dt. Ruhma in coaching session with a client.",
   consultation: "A consultation setup — notebook, phone, and a glass of water.",
 };
 

@@ -62,7 +62,7 @@ export const pillars: Pillar[] = [
   },
 ];
 
-// TODO(content): confirm all three with Dr. Ruhma — these are placeholders
+// TODO(content): confirm all three with Dt. Ruhma — these are placeholders
 // in her audience's voice. There are no real testimonials in the WP backup;
 // the existing "quote" PNGs are decorative IG marketing tiles, not client
 // quotes. Pull real ones from IG DMs / WhatsApp / program follow-up forms
@@ -85,7 +85,7 @@ export const testimonials: Testimonial[] = [
   {
     id: "t3",
     quote:
-      "Dr. Ruhma is the first dietitian who actually listened before prescribing. Calm, clinical, kind.",
+      "Dt. Ruhma is the first dietitian who actually listened before prescribing. Calm, clinical, kind.",
     name: "Hira Sheikh",
     detail: "Consultation · Karachi",
   },

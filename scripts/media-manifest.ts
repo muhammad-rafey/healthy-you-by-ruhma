@@ -10,6 +10,8 @@
 // The script is idempotent — encodes only when the source is newer than the
 // most recent output.
 
+import path from "node:path";
+
 export type MediaCategory = "home" | "about" | "programs" | "focus" | "library" | "journal";
 
 export interface MediaEntry {
@@ -34,14 +36,14 @@ export const MANIFEST: MediaEntry[] = [
     src: `${UPLOADS}/2024/02/coach-1.png`,
     category: "home",
     slug: "hero-portrait",
-    alt: "Dr. Ruhma, clinical dietitian, in studio portrait.",
+    alt: "Dt. Ruhma, clinical dietitian, in studio portrait.",
   },
   // About teaser (1001×616) — half-bleed below the hero.
   {
     src: `${UPLOADS}/2024/02/HomePage-AboutUs-1.jpg`,
     category: "home",
     slug: "about-teaser",
-    alt: "Dr. Ruhma at her practice in Faisalabad.",
+    alt: "Dt. Ruhma at her practice in Faisalabad.",
   },
   // Three pillar tiles (327×293) — small editorial cards.
   {
@@ -94,21 +96,29 @@ export const MANIFEST: MediaEntry[] = [
     src: `${UPLOADS}/2024/02/AboutPage-Hero-1.jpg`,
     category: "about",
     slug: "hero",
-    alt: "Dr. Ruhma in her clinic, consulting at her desk.",
+    alt: "Dt. Ruhma in her clinic, consulting at her desk.",
   },
   // Secondary about photo (1001×616).
   {
     src: `${UPLOADS}/2024/02/AboutPage-AboutSection-1.jpg`,
     category: "about",
     slug: "secondary",
-    alt: "Dr. Ruhma reviewing a patient's notes.",
+    alt: "Dt. Ruhma reviewing a patient's notes.",
   },
   // Secondary portrait (1080×1080).
   {
     src: `${UPLOADS}/2024/02/call1-1.png`,
     category: "about",
     slug: "portrait-secondary",
-    alt: "Dr. Ruhma on a consultation call.",
+    alt: "Dt. Ruhma on a consultation call.",
+  },
+  // About hero portrait (720×1280) — split-layout hero. Unlike the other
+  // entries, the source lives in-repo at content/ruhma.png.
+  {
+    src: path.resolve(process.cwd(), "content/ruhma.png"),
+    category: "about",
+    slug: "portrait-hero",
+    alt: "Dt. Ruhma, clinical dietitian — studio portrait.",
   },
 
   // ── PROGRAMS ────────────────────────────────────────────────────────
@@ -117,14 +127,14 @@ export const MANIFEST: MediaEntry[] = [
     src: `${UPLOADS}/2024/02/AboutPage-AboutSection-1.jpg`,
     category: "programs",
     slug: "coaching-hero",
-    alt: "Dr. Ruhma walking with a client during a coaching session.",
+    alt: "Dt. Ruhma walking with a client during a coaching session.",
   },
   // Consultation hero (1080×1080) — uses the call1-1 portrait.
   {
     src: `${UPLOADS}/2024/02/call1-1.png`,
     category: "programs",
     slug: "consultation-hero",
-    alt: "Dr. Ruhma on a video consultation call.",
+    alt: "Dt. Ruhma on a video consultation call.",
   },
   // Coaching sample shot (482×497).
   {

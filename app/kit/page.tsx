@@ -107,7 +107,7 @@ export default function KitPage() {
             <div className="space-y-2">
               <Eyebrow>Caption · Inter · italic · 13px · 0.04em</Eyebrow>
               <p className="type-caption">
-                Photograph: Dr. Ruhma at the practice, Faisalabad, 2024.
+                Photograph: Dt. Ruhma at the practice, Faisalabad, 2024.
               </p>
             </div>
           </div>

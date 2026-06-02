@@ -17,10 +17,10 @@ export type FooterColumn = {
 export const site = {
   name: "Healthy You By Ruhma",
   shortName: "Healthy You",
-  practitioner: "Dr. Ruhma",
+  practitioner: "Dt. Ruhma",
   tagline: "Nourishing You Inside Out For Healthy You Throughout",
   description:
-    "Editorial nutrition practice with Dr. Ruhma — clinical dietitian based in Faisalabad. Programs, focus areas, and guidebooks for hormonal health, weight management, and considered eating.",
+    "Editorial nutrition practice with Dt. Ruhma — clinical dietitian based in Faisalabad. Programs, focus areas, and guidebooks for hormonal health, weight management, and considered eating.",
   locale: "en",
   url:
     process.env.NEXT_PUBLIC_SITE_URL ??
@@ -49,7 +49,7 @@ export const site = {
     {
       heading: "Practice",
       items: [
-        { label: "About Dr. Ruhma", href: "/about" },
+        { label: "About Dt. Ruhma", href: "/about" },
         { label: "Services", href: "/services" },
         { label: "Success Stories", href: "/transformations" },
         { label: "Contact", href: "/contact" },

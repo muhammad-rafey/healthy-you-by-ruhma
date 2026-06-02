@@ -19,12 +19,12 @@ export const revalidate = 0;
 export const metadata: Metadata = {
   title: "Healthy You By Ruhma — Clinical dietitian in Faisalabad",
   description:
-    "Dr. Ruhma is a clinical dietitian in Faisalabad helping women take quiet, lasting control of hormonal health, weight, and daily nourishment.",
+    "Dt. Ruhma is a clinical dietitian in Faisalabad helping women take quiet, lasting control of hormonal health, weight, and daily nourishment.",
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     title: site.name,
-    description: "Quietly authoritative, evidence-based dietetics from Dr. Ruhma — Faisalabad.",
+    description: "Quietly authoritative, evidence-based dietetics from Dt. Ruhma — Faisalabad.",
     url: "/",
     siteName: site.name,
     locale: "en_PK",
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: site.name,
-    description: "Clinical dietitian Dr. Ruhma — hormonal health, weight management, coaching.",
+    description: "Clinical dietitian Dt. Ruhma — hormonal health, weight management, coaching.",
   },
 };
 

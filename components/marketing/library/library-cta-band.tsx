@@ -29,7 +29,7 @@ export function LibraryCtaBand() {
             Book a consultation.
           </Heading>
           <p className="text-ink-soft mx-auto mt-6 max-w-[520px] text-[17px] leading-[1.55] text-pretty">
-            Twenty-five minutes with Dr. Ruhma is the fastest way to know which guidebook fits your
+            Twenty-five minutes with Dt. Ruhma is the fastest way to know which guidebook fits your
             body — or whether a tailored plan is the better next step.
           </p>
         </FadeUp>

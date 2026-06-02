@@ -14,12 +14,12 @@ import { BotanicalDivider } from "@/components/marketing/about/botanical-divider
 import { PullQuote } from "@/components/marketing/about/pull-quote";
 
 export const metadata: Metadata = {
-  title: "About Dr. Ruhma",
+  title: "About Dt. Ruhma",
   description:
-    "Clinical dietitian based in Faisalabad. Dr. Ruhma helps women navigate hormonal health, PCOS, and weight management through evidence-based, deeply personal nutrition.",
+    "Clinical dietitian based in Faisalabad. Dt. Ruhma helps women navigate hormonal health, PCOS, and weight management through evidence-based, deeply personal nutrition.",
   alternates: { canonical: "/about" },
   openGraph: {
-    title: `About Dr. Ruhma · ${site.name}`,
+    title: `About Dt. Ruhma · ${site.name}`,
     description:
       "Clinical dietitian based in Faisalabad. Hormonal health, PCOS, weight management.",
     url: "/about",
@@ -60,24 +60,22 @@ export default async function AboutPage() {
 
       <AboutHero
         eyebrow={frontmatter.eyebrow}
-        title="Dr. Ruhma"
+        title="Dt. Ruhma"
+        intro={MISSION_EXCERPT}
         image={{
-          src: "/media/about/hero-750.webp",
-          alt: "Dr. Ruhma in her clinic, consulting at her desk.",
+          src: "/media/about/portrait-hero-720.webp",
+          alt: "Dt. Ruhma, clinical dietitian — studio portrait.",
         }}
       />
 
-      <MissionStatement
-        statement="My mission is to make you shine from inside."
-        excerpt={MISSION_EXCERPT}
-      />
+      <MissionStatement statement="My mission is to make you shine from inside." />
 
       <BotanicalDivider variant="sprig" />
 
       <Bio
         portrait={{
           src: "/media/about/portrait-secondary-800.webp",
-          alt: "Dr. Ruhma on a consultation call.",
+          alt: "Dt. Ruhma on a consultation call.",
         }}
         pullQuote={PULL_QUOTE}
         credentials={[...CREDENTIALS]}

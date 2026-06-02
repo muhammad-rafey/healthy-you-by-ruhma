@@ -8,13 +8,13 @@ import { Button } from "@/components/ui/button";
 import { site } from "@/content/site";
 
 const PREFILLS: Record<string, string> = {
-  coaching: "Hi Dr. Ruhma, I'd like to ask about the Coaching Program.",
-  consultation: "Hi Dr. Ruhma, I'd like to book a consultation call.",
-  "pcos-hormonal": "Hi Dr. Ruhma, I'd like to ask about PCOS / hormonal support.",
-  "weight-management": "Hi Dr. Ruhma, I'd like to ask about weight management.",
+  coaching: "Hi Dt. Ruhma, I'd like to ask about the Coaching Program.",
+  consultation: "Hi Dt. Ruhma, I'd like to book a consultation call.",
+  "pcos-hormonal": "Hi Dt. Ruhma, I'd like to ask about PCOS / hormonal support.",
+  "weight-management": "Hi Dt. Ruhma, I'd like to ask about weight management.",
 };
 
-const DEFAULT_PREFILL = "Hi Dr. Ruhma, I'd like to ask about your services.";
+const DEFAULT_PREFILL = "Hi Dt. Ruhma, I'd like to ask about your services.";
 
 interface WhatsappCtaProps {
   topic?: string;
@@ -28,7 +28,7 @@ export function WhatsappCta({ topic }: WhatsappCtaProps = {}) {
   return (
     <div
       role="region"
-      aria-label="Message Dr. Ruhma on WhatsApp"
+      aria-label="Message Dt. Ruhma on WhatsApp"
       className="bg-paper border-ink/10 mx-auto flex max-w-2xl flex-col items-center gap-7 border px-8 py-14 text-center md:px-12 md:py-16"
     >
       <p className="font-display text-ink max-w-[26ch] text-[clamp(24px,3vw,32px)] leading-[1.2]">

@@ -10,7 +10,7 @@ const PRACTICE: Link[] = [
   { path: "/", title: "Home", description: "Overview of the practice and how to start." },
   {
     path: "/about",
-    title: "About Dr. Ruhma",
+    title: "About Dt. Ruhma",
     description: "Background, credentials, and clinical philosophy.",
   },
   {
@@ -39,7 +39,7 @@ const PROGRAMS: Link[] = [
   {
     path: "/programs/consultation",
     title: "Consultation Call",
-    description: "One-off clinical consultation with Dr. Ruhma.",
+    description: "One-off clinical consultation with Dt. Ruhma.",
   },
 ];
 

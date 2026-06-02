@@ -33,7 +33,7 @@ export function generateStaticParams() {
 }
 
 const HERO_ALTS: Record<ProgramSlug, string> = {
-  coaching: "Dr. Ruhma in a coaching session with a client, notes spread between them.",
+  coaching: "Dt. Ruhma in a coaching session with a client, notes spread between them.",
   consultation: "A consultation setup — notebook, phone, and a glass of water on a quiet desk.",
 };
 
@@ -47,7 +47,7 @@ const PRICING_BULLETS: Record<ProgramSlug, readonly string[]> = {
     "Sustainability strategies to keep changes long after the program ends",
   ],
   consultation: [
-    "A thirty-five minute video call with Dr. Ruhma",
+    "A thirty-five minute video call with Dt. Ruhma",
     "Pre-call review of any reports you send in advance",
     "A written summary of agreed next steps within twenty-four hours",
     "Free access to the full ebook library after the call",

@@ -2,7 +2,7 @@
   "home/hero-portrait": {
     "category": "home",
     "slug": "hero-portrait",
-    "alt": "Dr. Ruhma, clinical dietitian, in studio portrait.",
+    "alt": "Dt. Ruhma, clinical dietitian, in studio portrait.",
     "widths": [
       400,
       800,
@@ -22,7 +22,7 @@
   "home/about-teaser": {
     "category": "home",
     "slug": "about-teaser",
-    "alt": "Dr. Ruhma at her practice in Faisalabad.",
+    "alt": "Dt. Ruhma at her practice in Faisalabad.",
     "widths": [
       400,
       800,
@@ -152,7 +152,7 @@
   "about/hero": {
     "category": "about",
     "slug": "hero",
-    "alt": "Dr. Ruhma in her clinic, consulting at her desk.",
+    "alt": "Dt. Ruhma in her clinic, consulting at her desk.",
     "widths": [
       400,
       750
@@ -169,7 +169,7 @@
   "about/secondary": {
     "category": "about",
     "slug": "secondary",
-    "alt": "Dr. Ruhma reviewing a patient's notes.",
+    "alt": "Dt. Ruhma reviewing a patient's notes.",
     "widths": [
       400,
       800,
@@ -189,7 +189,7 @@
   "about/portrait-secondary": {
     "category": "about",
     "slug": "portrait-secondary",
-    "alt": "Dr. Ruhma on a consultation call.",
+    "alt": "Dt. Ruhma on a consultation call.",
     "widths": [
       400,
       800,
@@ -206,10 +206,27 @@
       "/media/about/portrait-secondary-1080.webp"
     ]
   },
+  "about/portrait-hero": {
+    "category": "about",
+    "slug": "portrait-hero",
+    "alt": "Dt. Ruhma, clinical dietitian — studio portrait.",
+    "widths": [
+      400,
+      720
+    ],
+    "avif": [
+      "/media/about/portrait-hero-400.avif",
+      "/media/about/portrait-hero-720.avif"
+    ],
+    "webp": [
+      "/media/about/portrait-hero-400.webp",
+      "/media/about/portrait-hero-720.webp"
+    ]
+  },
   "programs/coaching-hero": {
     "category": "programs",
     "slug": "coaching-hero",
-    "alt": "Dr. Ruhma walking with a client during a coaching session.",
+    "alt": "Dt. Ruhma walking with a client during a coaching session.",
     "widths": [
       400,
       800,
@@ -229,7 +246,7 @@
   "programs/consultation-hero": {
     "category": "programs",
     "slug": "consultation-hero",
-    "alt": "Dr. Ruhma on a video consultation call.",
+    "alt": "Dt. Ruhma on a video consultation call.",
     "widths": [
       400,
       800,

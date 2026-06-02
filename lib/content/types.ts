@@ -132,7 +132,7 @@ export const JournalFrontmatter = z.object({
   heroImage: mediaPath.optional(),
   ogImage: mediaPath.optional(),
   status: z.enum(["draft", "published"]).default("draft"),
-  author: z.literal("Dr. Ruhma").default("Dr. Ruhma"),
+  author: z.literal("Dt. Ruhma").default("Dt. Ruhma"),
 });
 export type JournalFrontmatter = z.infer<typeof JournalFrontmatter>;
 

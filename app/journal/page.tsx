@@ -27,7 +27,7 @@ export const runtime = "nodejs";
 export const revalidate = 0;
 
 const PAGE_DESCRIPTION =
-  "Notes from Dr. Ruhma's clinic — on hormones, nutrition, and the small habits that actually move the needle.";
+  "Notes from Dt. Ruhma's clinic — on hormones, nutrition, and the small habits that actually move the needle.";
 
 export const metadata: Metadata = {
   title: `Journal · ${site.name}`,

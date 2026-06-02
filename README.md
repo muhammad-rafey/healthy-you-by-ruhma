@@ -1,7 +1,7 @@
 # Healthy You By Ruhma
 
 Next.js redesign of [dietitianruhma.com](https://dietitianruhma.com) for
-**Dr. Ruhma** — clinical dietitian, Faisalabad. Brand: **Healthy You By
+**Dt. Ruhma** — clinical dietitian, Faisalabad. Brand: **Healthy You By
 Ruhma**. Currency: **PKR**.
 
 > Editorial, photography-led, restrained motion. See

@@ -204,6 +204,6 @@ export const CONSULTATION_PREPARE: readonly ConsultationStep[] = [
 export const BOOKING = {
   calendlyUrl: "https://calendly.com/ruhmanazeer/30min",
   headline: "Pick a time that works for you.",
-  note: "A thirty-five minute video call with Dr. Ruhma. Book the slot that fits — confirmation lands in your inbox.",
+  note: "A thirty-five minute video call with Dt. Ruhma. Book the slot that fits — confirmation lands in your inbox.",
   ctaLabel: "Book on Calendly",
 } as const;
