@@ -66,3 +66,5 @@ export async function GET() {
     headers: { "Content-Type": "text/markdown; charset=utf-8" },
   });
 }
+
+//now the deploy issue fix
